@@ -1,0 +1,29 @@
+---
+import { site } from '../config/site';
+import { affiliateEnabled, amazonAssociateEnabled } from '../lib/affiliate';
+import { url } from '../lib/url';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container">
+    <ul class="footer-links">
+      <li><a href={url('/about/')}>このサイトについて</a></li>
+      <li><a href={url('/privacy/')}>プライバシーポリシー・免責事項</a></li>
+      <li><a href={url('/contact/')}>お問い合わせ</a></li>
+      <li><a href={url('/platforms/')}>ハード一覧</a></li>
+      <li><a href={url('/makers/')}>メーカー一覧</a></li>
+      <li><a href={url('/sitemap-index.xml')}>サイトマップ（XML）</a></li>
+    </ul>
+    <p class="footer-disclosure">
+      ソフト一覧の情報は、Wikipedia日本語版の各「ゲームタイトル一覧」記事（<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" rel="license noopener" target="_blank">CC BY-SA 4.0</a>）をもとに作成し、ジャンル・開発元の一部に <a href="https://www.wikidata.org/" rel="noopener" target="_blank">Wikidata</a>（CC0）を利用しています。
+      発売日などの情報は正確さに努めていますが、誤りを含む可能性があります。購入の際は各ショップ・公式サイトで最新情報をご確認ください。
+    </p>
+    {affiliateEnabled && (
+      <p class="footer-disclosure">
+        当サイトはアフィリエイトプログラムを利用して商品を紹介しています（リンク先での購入により当サイトが紹介料を受け取る場合があります）。
+        {amazonAssociateEnabled && <>Amazonのアソシエイトとして、{site.name}は適格販売により収入を得ています。</>}
+      </p>
+    )}
+    <p class="copyright">© {site.since === year ? year : `${site.since}-${year}`} {site.name}</p>
+  </div>
+</footer>

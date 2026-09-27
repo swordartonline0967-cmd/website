@@ -1,0 +1,55 @@
+---
+/**
+ * メーカー詳細ページ  /makers/<ID>/
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GameTable from '../../components/GameTable.astro';
+import ListFilter from '../../components/ListFilter.astro';
+import { getGamesByMaker, getMaker, getMakers, getPlatform, getPlatforms } from '../../lib/data';
+import { formatNumber } from '../../lib/format';
+import { platformClass } from '../../lib/platform-style';
+import { url } from '../../lib/url';
+
+export function getStaticPaths() {
+  return getMakers().map((m) => ({ params: { id: m.id } }));
+}
+
+const maker = getMaker(Astro.params.id!)!;
+const games = getGamesByMaker(maker.id);
+const platforms = getPlatforms().filter((p) => maker.platformCounts[p.id]);
+const mainPlatforms = Object.entries(maker.platformCounts).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([pid]) => getPlatform(pid)!.shortName);
+const period = maker.firstYear ? (maker.firstYear === maker.lastYear ? `${maker.firstYear}年` : `${maker.firstYear}年〜${maker.lastYear}年`) : '';
+const roles = [maker.publishedCount && `発売 ${formatNumber(maker.publishedCount)}本`, maker.developedCount && `開発 ${formatNumber(maker.developedCount)}本`].filter(Boolean).join('／');
+const title = `${maker.name}のゲームソフト一覧（${formatNumber(games.length)}本）`;
+const description = `${maker.name}が発売・開発した家庭用ゲームソフト${formatNumber(games.length)}本の一覧。${mainPlatforms.join('・')}など機種別に発売日順で紹介します。${period ? `掲載期間: ${period}。` : ''}`;
+const wikiUrl = maker.wiki ? `https://ja.wikipedia.org/wiki/${encodeURIComponent(maker.wiki.replace(/ /g, '_'))}` : null;
+---
+<BaseLayout title={title} description={description} breadcrumbs={[{ name: 'メーカー一覧', href: url('/makers/') }, { name: maker.name }]}>
+  <div class="page-head">
+    <h1>{maker.name}のゲームソフト一覧</h1>
+    <p class="lead">
+      {maker.name}が発売・開発したソフトとして {formatNumber(games.length)}本を掲載しています（{roles}）。
+      {period && <>{period}にかけて、</>}{mainPlatforms.join('・')}などでソフトを出しています。
+      {wikiUrl && <> <a href={wikiUrl} target="_blank" rel="noopener">Wikipediaで{maker.wiki}について読む</a></>}
+    </p>
+  </div>
+
+  <section class="card">
+    <div class="card-title"><h2>機種別のソフト数</h2></div>
+    <ul class="chip-list">
+      {platforms.map((p) => (
+        <li><a class="chip" href={`#p-${p.id}`}><span class={`badge ${platformClass(p)}`}>{p.abbr}</span>{p.shortName}<span class="count">{maker.platformCounts[p.id]}</span></a></li>
+      ))}
+    </ul>
+  </section>
+
+  <section id="maker-games">
+    <ListFilter target="#maker-games" />
+    {platforms.map((p) => (
+      <div data-filter-section>
+        <h2 class="month-heading" id={`p-${p.id}`}>{p.name}<span class="muted small">（{maker.platformCounts[p.id]}本）</span></h2>
+        <GameTable games={games.filter((g) => g.platform === p.id)} />
+      </div>
+    ))}
+  </section>
+</BaseLayout>

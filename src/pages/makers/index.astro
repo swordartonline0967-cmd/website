@@ -1,0 +1,85 @@
+---
+/**
+ * メーカー一覧  /makers/
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getMakers, getPlatform } from '../../lib/data';
+import { formatNumber } from '../../lib/format';
+import { makerUrl, url } from '../../lib/url';
+
+const makers = getMakers();
+const top = makers.slice(0, 100);
+const MIN = 5;
+const listed = makers.filter((m) => m.count >= MIN).sort((a, b) => a.name.localeCompare(b.name, 'ja'));
+const mainPlatforms = (m: (typeof makers)[number]) =>
+  Object.entries(m.platformCounts).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([pid]) => getPlatform(pid)?.shortName).join('・');
+---
+<BaseLayout
+  title="ゲームメーカー一覧"
+  description={`任天堂・セガ・コナミ・カプコンなど、家庭用ゲームソフトを発売・開発したメーカー${formatNumber(makers.length)}社の一覧。各メーカーのソフトを機種別に確認できます。`}
+  breadcrumbs={[{ name: 'メーカー一覧' }]}
+>
+  <div class="page-head">
+    <h1>ゲームメーカー一覧</h1>
+    <p class="lead">ゲームソフトの発売元・開発元として掲載している {formatNumber(makers.length)}社の一覧です。</p>
+  </div>
+
+  <section class="card">
+    <div class="card-title"><h2>メーカー名で探す</h2></div>
+    <div class="filter-bar">
+      <input id="maker-q" type="search" placeholder="メーカー名の一部を入力（例: ハドソン）" aria-label="メーカー名で探す" />
+    </div>
+    <ul id="maker-results" class="maker-columns"></ul>
+  </section>
+
+  <h2 class="section-title">ソフトが多いメーカー TOP100</h2>
+  <div class="card table-wrap" style="padding:0">
+    <table class="game-table">
+      <thead><tr><th>順位</th><th>メーカー名</th><th>ソフト数</th><th>主な機種</th><th>活動期間</th></tr></thead>
+      <tbody>
+        {top.map((m, i) => (
+          <tr>
+            <td class="d">{i + 1}</td>
+            <td class="t"><a href={makerUrl(m.id)}>{m.name}</a></td>
+            <td class="m">{formatNumber(m.count)}本</td>
+            <td class="m">{mainPlatforms(m)}</td>
+            <td class="m">{m.firstYear && `${m.firstYear}〜${m.lastYear}年`}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="section-title">メーカー一覧（ソフト{MIN}本以上・五十音順）</h2>
+  <ul class="maker-columns card">
+    {listed.map((m) => <li><a href={makerUrl(m.id)}>{m.name}</a><span class="count">{m.count}</span></li>)}
+  </ul>
+  <p class="muted small">※{MIN}本未満のメーカーは、ページ上部の「メーカー名で探す」から検索できます。</p>
+
+  <script is:inline define:vars={{ indexUrl: url('/data/makers.json'), base: url('/makers/') }}>
+    (function () {
+      var input = document.getElementById('maker-q');
+      var out = document.getElementById('maker-results');
+      var data = null;
+      var norm = function (s) {
+        return s.normalize('NFKC').toLowerCase().replace(/[ァ-ヶ]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0x60); }).replace(/[\s・\-]/g, '');
+      };
+      var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+      function render() {
+        var q = norm(input.value);
+        if (!q || !data) { out.innerHTML = ''; return; }
+        var hits = data.filter(function (m) { return m[3].indexOf(q) >= 0; }).slice(0, 60);
+        out.innerHTML = hits.length
+          ? hits.map(function (m) { return '<li><a href="' + base + m[0] + '/">' + esc(m[1]) + '</a><span class="count">' + m[2] + '</span></li>'; }).join('')
+          : '<li class="muted">見つかりませんでした</li>';
+      }
+      input.addEventListener('input', function () {
+        if (data) return render();
+        fetch(indexUrl).then(function (r) { return r.json(); }).then(function (d) {
+          data = d.map(function (m) { return [m[0], m[1], m[2], norm(m[1])]; });
+          render();
+        });
+      });
+    })();
+  </script>
+</BaseLayout>

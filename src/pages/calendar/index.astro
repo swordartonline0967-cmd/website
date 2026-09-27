@@ -1,0 +1,53 @@
+---
+/**
+ * 今日は何の日（カレンダー）  /calendar/
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getGamesByMonthDay } from '../../lib/data';
+import { calendarUrl } from '../../lib/url';
+
+const months = Array.from({ length: 12 }, (_, i) => {
+  const m = i + 1;
+  const days = new Date(Date.UTC(2024, m, 0)).getUTCDate();
+  return {
+    m,
+    days: Array.from({ length: days }, (_, j) => {
+      const md = `${String(m).padStart(2, '0')}-${String(j + 1).padStart(2, '0')}`;
+      return { d: j + 1, md, n: getGamesByMonthDay(md).length };
+    }),
+  };
+});
+---
+<BaseLayout
+  title="今日は何の日？ゲーム発売日カレンダー"
+  description="1年366日、それぞれの日に発売された家庭用ゲームソフトを一覧で紹介。「今日は何の日？」をゲームの発売日から振り返れます。"
+  breadcrumbs={[{ name: '今日は何の日' }]}
+>
+  <div class="page-head">
+    <h1>今日は何の日？ゲーム発売日カレンダー</h1>
+    <p class="lead">日付を選ぶと、過去にその日に発売されたゲームソフトを一覧で見られます。<a id="go-today" href="#">今日のページを見る →</a></p>
+  </div>
+  {months.map(({ m, days }) => (
+    <section style="margin-bottom:20px">
+      <h2 class="section-title">{m}月</h2>
+      <div class="year-grid" style="grid-template-columns:repeat(auto-fill,minmax(64px,1fr))">
+        {days.map(({ d, md, n }) => (
+          <a class="year-cell" href={calendarUrl(md)} data-md={md}><strong>{d}日</strong><span>{n}本</span></a>
+        ))}
+      </div>
+    </section>
+  ))}
+  <script is:inline>
+    (function () {
+      var now = new Date();
+      var jst = new Date(now.getTime() + (now.getTimezoneOffset() + 540) * 60000);
+      var md = String(jst.getMonth() + 1).padStart(2, '0') + '-' + String(jst.getDate()).padStart(2, '0');
+      var cell = document.querySelector('[data-md="' + md + '"]');
+      if (cell) {
+        cell.style.borderColor = 'var(--primary)';
+        cell.style.borderWidth = '2px';
+        document.getElementById('go-today').href = cell.getAttribute('href');
+      }
+    })();
+  </script>
+</BaseLayout>

@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+import { getStats } from '../lib/data';
+import { formatNumber } from '../lib/format';
+import { url } from '../lib/url';
+const stats = getStats();
+---
+<BaseLayout title="このサイトについて" description={`${site.name}の概要、掲載データの出典、運営方針について。`} breadcrumbs={[{ name: 'このサイトについて' }]}>
+  <article class="card prose">
+    <h1>このサイトについて</h1>
+    <p>「{site.name}」は、日本で発売された家庭用ゲーム機のソフトを、機種・発売年・メーカー・ジャンルなどから調べられるデータベースサイトです。ファミコンから最新のゲーム機まで、現在 {formatNumber(stats.games)}本のソフトと {stats.platforms}機種のハードを掲載しています。</p>
+
+    <h2>できること</h2>
+    <ul>
+      <li><a href={url('/platforms/')}>ハード（機種）ごと</a>・<a href={url('/years/')}>発売年ごと</a>のソフト一覧</li>
+      <li><a href={url('/makers/')}>メーカーごと</a>・<a href={url('/genres/')}>ジャンルごと</a>のソフト一覧</li>
+      <li><a href={url('/calendar/')}>今日は何の日？</a>（過去の同じ日に発売されたゲーム）</li>
+      <li><a href={url('/upcoming/')}>発売予定のソフト</a>の確認</li>
+      <li><a href={url('/search/')}>ソフト名・メーカー名での検索</a></li>
+    </ul>
+
+    <h2>掲載データの出典</h2>
+    <p>ソフトの一覧（タイトル・日本での発売日・発売元・備考など）は、Wikipedia日本語版の各「ゲームタイトル一覧」記事をもとに作成しています。これらの記事は <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener">クリエイティブ・コモンズ 表示-継承 4.0 国際（CC BY-SA 4.0）</a> で提供されており、当サイトのソフト一覧データも同じライセンスで提供します。各ソフトのページに出典記事へのリンクを記載しています。</p>
+    <p>ジャンル・開発元の一部は <a href="https://www.wikidata.org/" target="_blank" rel="noopener">Wikidata</a>（CC0）の情報を利用しています。ジャンルの分類は当サイト独自の基準で行っているため、一般的な分類と異なる場合があります。</p>
+    <p>ゲーム機の説明文は当サイトが独自に作成したものです。</p>
+
+    <h2>情報の正確性について</h2>
+    <p>掲載内容の正確さには注意していますが、元データの誤りや更新の遅れなどにより、実際の情報と異なる場合があります。購入の際は、各ショップや公式サイトで最新の情報をご確認ください。誤りを見つけた場合は<a href={url('/contact/')}>お問い合わせ</a>からお知らせいただけると助かります。</p>
+
+    <h2>商標について</h2>
+    <p>掲載しているゲーム機・ゲームソフトの名称は、各社の商標または登録商標です。</p>
+
+    <h2>運営者</h2>
+    <p>{site.operator}</p>
+  </article>
+</BaseLayout>

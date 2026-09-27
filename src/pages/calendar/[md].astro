@@ -1,0 +1,64 @@
+---
+/**
+ * ◯月◯日に発売されたゲーム  /calendar/MM-DD/
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GameTable from '../../components/GameTable.astro';
+import { getGamesByMonthDay, getPlatforms } from '../../lib/data';
+import { formatNumber, yearOf } from '../../lib/format';
+import { calendarUrl, platformUrl, url } from '../../lib/url';
+
+export function getStaticPaths() {
+  const out = [];
+  for (let m = 1; m <= 12; m++) {
+    const days = new Date(Date.UTC(2024, m, 0)).getUTCDate();
+    for (let d = 1; d <= days; d++) out.push({ params: { md: `${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}` } });
+  }
+  return out;
+}
+
+const md = Astro.params.md!;
+const [mm, dd] = md.split('-').map(Number);
+const label = `${mm}月${dd}日`;
+const thisYear = new Date().getFullYear();
+const games = getGamesByMonthDay(md).filter((g) => (yearOf(g.date) ?? 0) <= thisYear);
+const years = [...new Set(games.map((g) => yearOf(g.date)!))].sort((a, b) => b - a);
+const hardware = getPlatforms().filter((p) => p.releaseDate.slice(5) === md);
+
+const base = new Date(Date.UTC(2024, mm - 1, dd));
+const shift = (n: number) => {
+  const t = new Date(base.getTime() + n * 86400000);
+  return `${String(t.getUTCMonth() + 1).padStart(2, '0')}-${String(t.getUTCDate()).padStart(2, '0')}`;
+};
+const prevMd = shift(-1);
+const nextMd = shift(1);
+const fmt = (s: string) => `${Number(s.slice(0, 2))}月${Number(s.slice(3))}日`;
+---
+<BaseLayout
+  title={`${label}に発売されたゲーム一覧｜今日は何の日`}
+  description={`${label}は何の日？過去に${label}に発売された家庭用ゲームソフト${formatNumber(games.length)}本を年ごとに紹介します。`}
+  breadcrumbs={[{ name: '今日は何の日', href: url('/calendar/') }, { name: label }]}
+>
+  <div class="page-head">
+    <h1>{label}に発売されたゲーム</h1>
+    <p class="lead">過去の{label}に発売されたソフトは {formatNumber(games.length)}本 あります。周年表示は{thisYear}年時点のものです。</p>
+  </div>
+  <nav class="prev-next" aria-label="前後の日">
+    <a class="prev" href={calendarUrl(prevMd)}><small>← 前の日</small>{fmt(prevMd)}</a>
+    <a class="next" href={calendarUrl(nextMd)}><small>次の日 →</small>{fmt(nextMd)}</a>
+  </nav>
+  {hardware.length > 0 && (
+    <section class="card">
+      <div class="card-title"><h2>{label}に発売されたハード</h2></div>
+      <ul class="simple-list">
+        {hardware.map((p) => <li><a href={platformUrl(p.id)}>{p.name}</a><span class="sub">{p.releaseDate.slice(0, 4)}年・{p.maker}（{thisYear - Number(p.releaseDate.slice(0, 4))}周年）</span></li>)}
+      </ul>
+    </section>
+  )}
+  {years.map((y) => (
+    <section>
+      <h2 class="month-heading">{y}年{y < thisYear && <span class="muted small">（{thisYear - y}年前）</span>}</h2>
+      <GameTable games={games.filter((g) => yearOf(g.date) === y)} showPlatform anniversaryYear={thisYear} />
+    </section>
+  ))}
+</BaseLayout>

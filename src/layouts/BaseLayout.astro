@@ -1,0 +1,109 @@
+---
+/**
+ * 全ページ共通の枠組み（<head>のSEO設定、ヘッダー、フッター）
+ */
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../config/site';
+import { affiliateEnabled } from '../lib/affiliate';
+import { url } from '../lib/url';
+
+export interface Crumb {
+  name: string;
+  href?: string;
+}
+
+interface Props {
+  /** ページタイトル（サイト名は自動で後ろに付きます） */
+  title: string;
+  /** 検索結果などに表示される説明文（120文字程度） */
+  description: string;
+  /** パンくずリスト（トップは自動で先頭に付きます） */
+  breadcrumbs?: Crumb[];
+  /** 構造化データ（JSON-LD） */
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  ogType?: 'website' | 'article';
+  /** 検索エンジンに登録しないページなら true */
+  noindex?: boolean;
+  /** トップページ用：タイトルにサイト名を重ねない */
+  isHome?: boolean;
+}
+
+const { title, description, breadcrumbs = [], jsonLd, ogType = 'website', noindex = false, isHome = false } = Astro.props;
+const fullTitle = isHome ? `${site.name}｜${site.tagline}` : `${title}｜${site.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(url('/og-image.png'), Astro.site).href;
+
+const crumbs: Crumb[] = [{ name: 'トップ', href: url('/') }, ...breadcrumbs];
+const ld: Record<string, unknown>[] = [];
+if (breadcrumbs.length) {
+  ld.push({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: crumbs.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: c.name,
+      ...(c.href ? { item: new URL(c.href, Astro.site).href } : {}),
+    })),
+  });
+}
+if (jsonLd) ld.push(...(Array.isArray(jsonLd) ? jsonLd : [jsonLd]));
+---
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={isHome ? site.name : title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {site.xAccount && <meta name="twitter:site" content={`@${site.xAccount}`} />}
+    <meta name="theme-color" content="#16181d" />
+    {site.googleSiteVerification && <meta name="google-site-verification" content={site.googleSiteVerification} />}
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+    <link rel="sitemap" href={url('/sitemap-index.xml')} />
+    {ld.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
+    <slot name="head" />
+    {site.googleAnalyticsId && (
+      <>
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${site.googleAnalyticsId}`}></script>
+        <script is:inline define:vars={{ gaId: site.googleAnalyticsId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() { dataLayer.push(arguments); }
+          gtag('js', new Date());
+          gtag('config', gaId);
+        </script>
+      </>
+    )}
+  </head>
+  <body>
+    <Header />
+    {affiliateEnabled && <div class="pr-notice">本ページはプロモーション（アフィリエイト広告）を含みます</div>}
+    <main>
+      <div class="container">
+        {breadcrumbs.length > 0 && (
+          <nav class="breadcrumbs" aria-label="パンくずリスト">
+            <ol>
+              {crumbs.map((c) => (
+                <li>{c.href ? <a href={c.href}>{c.name}</a> : <span aria-current="page">{c.name}</span>}</li>
+              ))}
+            </ol>
+          </nav>
+        )}
+        <slot />
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>

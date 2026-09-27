@@ -1,0 +1,203 @@
+---
+/**
+ * ソフト詳細ページ  /games/<ID>/
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ShopLinks from '../../components/ShopLinks.astro';
+import {
+  dateSortKey, getGame, getGames, getGenre, getNeighbors, getOtherVersions, getPlatform, getSameDayGames, getSameMakerGames, makerByName,
+} from '../../lib/data';
+import { formatDate, formatDateShort, parseDate, yearOf } from '../../lib/format';
+import { platformClass } from '../../lib/platform-style';
+import { calendarUrl, gameUrl, genreUrl, makerUrl, platformUrl, platformYearUrl, url, yearUrl } from '../../lib/url';
+import type { Game } from '../../lib/types';
+
+export function getStaticPaths() {
+  return getGames().map((g) => ({ params: { id: g.id } }));
+}
+
+const game = getGame(Astro.params.id!)!;
+const platform = getPlatform(game.platform)!;
+const year = yearOf(game.date);
+const d = parseDate(game.date);
+const genres = (game.genres ?? []).map(getGenre).filter((g) => !!g);
+const publishers = (game.publishers ?? []).map((n) => ({ name: n, maker: makerByName(n) }));
+const developers = (game.developers ?? []).map((n) => ({ name: n, maker: makerByName(n) }));
+const others = getOtherVersions(game);
+const sameDay = getSameDayGames(game, 12);
+const sameMaker = getSameMakerGames(game, 10).filter((g) => !others.some((o) => o.id === g.id));
+const { prev, next } = getNeighbors(game);
+
+// ビルドした日より後の日付なら「発売予定」（年だけ・年月だけの日付はその期間の終わりで判定）
+const buildDate = new Date().toISOString().slice(0, 10);
+const isUpcoming = dateSortKey(game.date) > buildDate;
+const dateText = game.dateNote ? `${game.dateNote}` : formatDate(game.date, '未定');
+const pubText = publishers.map((p) => p.name).join('・');
+
+// 本文の説明文（自動生成）
+let summary = '';
+if (!game.date) summary = `『${game.title}』は、${pubText ? `${pubText}から` : ''}発売予定の${platform.name}用ソフトです（発売日未定）。`;
+else if (isUpcoming) summary = `『${game.title}』は、${dateText}に${pubText ? `${pubText}から` : ''}${game.digitalOnly ? '配信' : '発売'}予定の${platform.name}用ソフトです。`;
+else summary = `『${game.title}』は、${dateText}に${pubText ? `${pubText}から` : ''}${game.digitalOnly ? '配信された' : '発売された'}${platform.name}用のゲームソフトです。`;
+if (genres.length) summary += `ジャンルは${genres.map((g) => g!.name).join('・')}。`;
+if (developers.length && developers.map((x) => x.name).join() !== publishers.map((x) => x.name).join()) summary += `開発は${developers.map((x) => x.name).join('・')}が担当しています。`;
+if (others.length) summary += `${[...new Set(others.map((o) => getPlatform(o.platform)?.shortName))].slice(0, 5).join('、')}${others.length > 5 ? 'など' : ''}でも同名のソフトが発売されています。`;
+
+const title = `${game.title}（${platform.shortName}）の発売日・ソフト情報`;
+const description = `${game.title}（${platform.name}）の発売日・発売元・ジャンルなどの情報。${game.date ? `${dateText}${isUpcoming ? '発売予定' : '発売'}` : '発売日未定'}${pubText ? `、${pubText}` : ''}。${genres.length ? `ジャンル: ${genres.map((g) => g!.name).join('・')}。` : ''}`.slice(0, 150);
+
+const retro = (year ?? 9999) < 2010;
+const shopKeyword = `${game.title} ${platform.shortName}`;
+const wikiUrl = game.wiki ? `https://ja.wikipedia.org/wiki/${encodeURIComponent(game.wiki.replace(/ /g, '_'))}` : null;
+const sourceUrl = game.source && game.source !== 'manual' ? `https://ja.wikipedia.org/wiki/${encodeURIComponent(game.source.replace(/ /g, '_'))}` : null;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoGame',
+  name: game.title,
+  url: new URL(gameUrl(game.id), Astro.site).href,
+  gamePlatform: platform.name,
+  inLanguage: 'ja',
+  ...(game.date ? { datePublished: game.date } : {}),
+  ...(publishers.length ? { publisher: publishers.map((p) => ({ '@type': 'Organization', name: p.name })) } : {}),
+  ...(developers.length ? { creator: developers.map((p) => ({ '@type': 'Organization', name: p.name })) } : {}),
+  ...(genres.length ? { genre: genres.map((g) => g!.name) } : {}),
+  ...(game.cero ? { contentRating: `CERO ${game.cero}` } : {}),
+  ...(wikiUrl || game.wikidata ? { sameAs: [wikiUrl, game.wikidata ? `https://www.wikidata.org/wiki/${game.wikidata}` : null].filter(Boolean) } : {}),
+};
+
+const badge = (g: Game) => getPlatform(g.platform);
+---
+<BaseLayout
+  title={title}
+  description={description}
+  ogType="article"
+  jsonLd={jsonLd}
+  breadcrumbs={[
+    { name: 'ハード一覧', href: url('/platforms/') },
+    { name: platform.name, href: platformUrl(platform.id) },
+    ...(year ? [{ name: `${year}年`, href: platformYearUrl(platform.id, year) }] : []),
+    { name: game.title },
+  ]}
+>
+  <div class="layout-2col">
+    <article>
+      <div class="page-head">
+        <p style="margin:0 0 6px">
+          <a class={`badge ${platformClass(platform)}`} href={platformUrl(platform.id)}>{platform.name}</a>
+          {game.digitalOnly && <span class="badge badge--dl">ダウンロード専用</span>}
+          {game.cero && <span class="badge badge--outline">CERO {game.cero}</span>}
+        </p>
+        <h1>{game.title}</h1>
+        <p class="lead">{summary}</p>
+      </div>
+
+      <section class="card" aria-label="基本情報">
+        <table class="info-table">
+          <tbody>
+            <tr><th scope="row">発売日</th><td>
+              {game.date && d?.month && d?.day ? <a href={calendarUrl(game.date.slice(5))}>{dateText}</a> : dateText}
+              {year && <> （<a href={yearUrl(year)}>{year}年のソフト</a>）</>}
+              {isUpcoming && game.date && <span class="badge badge--anniv" style="margin-left:6px">発売予定</span>}
+            </td></tr>
+            <tr><th scope="row">機種</th><td><a href={platformUrl(platform.id)}>{platform.name}</a></td></tr>
+            <tr><th scope="row">発売元</th><td>
+              {publishers.length ? publishers.map((p, i) => <>{i > 0 && '、'}{p.maker ? <a href={makerUrl(p.maker.id)}>{p.name}</a> : p.name}</>) : <span class="muted">不明</span>}
+            </td></tr>
+            {developers.length > 0 && (
+              <tr><th scope="row">開発元</th><td>
+                {developers.map((p, i) => <>{i > 0 && '、'}{p.maker ? <a href={makerUrl(p.maker.id)}>{p.name}</a> : p.name}</>)}
+              </td></tr>
+            )}
+            <tr><th scope="row">ジャンル</th><td>
+              {genres.length ? genres.map((g, i) => <>{i > 0 && '、'}<a href={genreUrl(g!.id)}>{g!.name}</a></>) : <span class="muted">{game.genreText ?? '情報なし'}</span>}
+            </td></tr>
+            <tr><th scope="row">販売形態</th><td>{game.digitalOnly ? 'ダウンロード専用' : 'パッケージ版あり'}</td></tr>
+            {game.format && <tr><th scope="row">規格・種類</th><td>{game.format}</td></tr>}
+            {game.cero && <tr><th scope="row">レーティング</th><td>CERO {game.cero}</td></tr>}
+            {game.price && <tr><th scope="row">価格</th><td>{game.price.toLocaleString('ja-JP')}円{game.priceText ? `（${game.priceText}）` : ''}</td></tr>}
+            {game.altTitles?.length && <tr><th scope="row">海外タイトル</th><td lang="en">{game.altTitles.join(' / ')}</td></tr>}
+            {game.note && <tr><th scope="row">備考</th><td>{game.note}</td></tr>}
+          </tbody>
+        </table>
+        {game.description && <div class="prose" style="margin-top:16px"><p>{game.description}</p></div>}
+      </section>
+
+      {game.missingFromSource && (
+        <div class="notice">このソフトは出典の一覧から削除されたため、情報を確認中です。内容に誤りがある可能性があります。</div>
+      )}
+
+      {game.digitalOnly ? (
+        <div class="notice">このソフトはダウンロード専用タイトルです。各ゲーム機のオンラインストア（ニンテンドーeショップ、PlayStation Storeなど）で購入できます。配信状況は公式サイトでご確認ください。</div>
+      ) : (
+        <ShopLinks keyword={shopKeyword} heading={`${game.title}を探す`} retro={retro} />
+      )}
+
+      {others.length > 0 && (
+        <section class="card">
+          <div class="card-title"><h2>他機種版・同名タイトル</h2></div>
+          <ul class="simple-list">
+            {others.slice(0, 20).map((o) => (
+              <li>
+                <a class={`badge ${platformClass(badge(o))}`} href={platformUrl(o.platform)}>{badge(o)?.abbr}</a>{' '}
+                <a href={gameUrl(o.id)}>{o.title}</a>
+                <span class="sub">{formatDate(o.date)}・{(o.publishers ?? []).join('、')}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <nav class="prev-next" aria-label={`${platform.shortName}の前後のソフト`}>
+        {prev ? <a class="prev" href={gameUrl(prev.id)}><small>← 前に発売（{platform.shortName}）</small>{prev.title}</a> : <span></span>}
+        {next ? <a class="next" href={gameUrl(next.id)}><small>次に発売（{platform.shortName}） →</small>{next.title}</a> : <span></span>}
+      </nav>
+
+      <p class="muted small">
+        {sourceUrl && <>出典: <a href={sourceUrl} target="_blank" rel="noopener">Wikipedia「{game.source}」</a>（CC BY-SA 4.0）</>}
+        {wikiUrl && <> ／ <a href={wikiUrl} target="_blank" rel="noopener">Wikipediaの記事</a></>}
+        {game.wikidata && <> ／ <a href={`https://www.wikidata.org/wiki/${game.wikidata}`} target="_blank" rel="noopener">Wikidata</a></>}
+      </p>
+    </article>
+
+    <aside>
+      {sameDay.length > 0 && (
+        <section class="card">
+          <div class="card-title"><h2>同じ日に発売されたソフト</h2></div>
+          <ul class="simple-list">
+            {sameDay.map((o) => (
+              <li>
+                <a class={`badge ${platformClass(badge(o))}`} href={platformUrl(o.platform)}>{badge(o)?.abbr}</a>{' '}
+                <a href={gameUrl(o.id)}>{o.title}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {sameMaker.length > 0 && publishers[0]?.maker && (
+        <section class="card">
+          <div class="card-title">
+            <h2>{publishers[0].name}のソフト</h2>
+            <a href={makerUrl(publishers[0].maker.id)}>すべて見る</a>
+          </div>
+          <ul class="simple-list">
+            {sameMaker.map((o) => (
+              <li>
+                <a href={gameUrl(o.id)}>{o.title}</a>
+                <span class="sub">{badge(o)?.shortName}・{formatDateShort(o.date)}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      <section class="card">
+        <div class="card-title"><h2>{platform.name}</h2></div>
+        <ul class="simple-list">
+          <li><a href={platformUrl(platform.id)}>{platform.shortName}のソフト一覧</a></li>
+          {year && <li><a href={platformYearUrl(platform.id, year)}>{year}年発売の{platform.shortName}ソフト</a></li>}
+          {genres[0] && <li><a href={url(`/genres/${genres[0].id}/${platform.id}/`)}>{platform.shortName}の{genres[0].name}ソフト</a></li>}
+        </ul>
+      </section>
+    </aside>
+  </div>
+</BaseLayout>

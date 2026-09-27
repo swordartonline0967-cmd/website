@@ -1,0 +1,54 @@
+# ============================================================
+#  ゲームデータを自動で更新する処理（毎週1回）
+# ============================================================
+#  Wikipedia の「ゲームタイトル一覧」と Wikidata から最新の情報を取り込み、
+#  変更があれば data フォルダを更新して保存（コミット）します。
+#  その後、サイトの公開処理を自動で呼び出します。
+#  止めたいときは、GitHub の Actions タブでこのワークフローを「Disable」にしてください。
+name: データを自動更新（Wikipedia / Wikidata）
+
+on:
+  schedule:
+    - cron: '0 18 * * 0' # 毎週日曜 18:00 UTC = 月曜 3:00 日本時間
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: update-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Wikipedia・Wikidata から取り込み
+        run: npm run data:import -- --refresh
+      - name: 変更があれば保存（コミット）
+        id: commit
+        run: |
+          if [ -z "$(git status --porcelain data)" ]; then
+            echo "データに変更はありませんでした"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          git commit -m "データ自動更新: Wikipedia / Wikidata から取り込み（$(date -u +%Y-%m-%d)）"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: サイトの公開処理を呼び出す
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-github-pages.yml --ref "${GITHUB_REF_NAME}"

@@ -1,0 +1,24 @@
+# プルリクエストのたびに、データとサイトが正しく作れるかを自動チェックします
+name: チェック
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run data:validate
+      - run: npm run check
+      - run: npm run build

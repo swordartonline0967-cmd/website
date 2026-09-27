@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+---
+<BaseLayout title="お問い合わせ" description={`${site.name}へのお問い合わせはこちらから。掲載情報の誤りのご指摘なども受け付けています。`} breadcrumbs={[{ name: 'お問い合わせ' }]}>
+  <article class="card prose">
+    <h1>お問い合わせ</h1>
+    <p>{site.name}へのご意見・ご要望、掲載情報の誤りのご指摘などは、下記のフォームからお送りください。内容によってはお返事できない場合や、お時間をいただく場合があります。</p>
+    {site.contactFormUrl ? (
+      <p><a class="btn" href={site.contactFormUrl} target="_blank" rel="noopener">お問い合わせフォームを開く</a></p>
+    ) : (
+      <p class="notice">お問い合わせフォームは現在準備中です。</p>
+    )}
+    <p class="small muted">掲載情報の修正をご依頼いただく場合は、ソフト名・機種・該当ページのURL・正しい情報（できれば出典）をお書き添えください。</p>
+  </article>
+</BaseLayout>

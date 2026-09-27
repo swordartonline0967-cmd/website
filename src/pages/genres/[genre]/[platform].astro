@@ -1,0 +1,53 @@
+---
+/**
+ * ジャンル×機種のソフト一覧  /genres/<ジャンルID>/<機種ID>/
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import GameTable from '../../../components/GameTable.astro';
+import ListFilter from '../../../components/ListFilter.astro';
+import { getGamesByGenre, getGenre, getGenres, getPlatform, getPlatforms } from '../../../lib/data';
+import { formatNumber, yearOf } from '../../../lib/format';
+import { genreUrl, platformUrl, url } from '../../../lib/url';
+
+export function getStaticPaths() {
+  const out = [];
+  for (const g of getGenres()) {
+    const games = getGamesByGenre(g.id);
+    for (const p of getPlatforms()) if (games.some((x) => x.platform === p.id)) out.push({ params: { genre: g.id, platform: p.id } });
+  }
+  return out;
+}
+
+const genre = getGenre(Astro.params.genre!)!;
+const p = getPlatform(Astro.params.platform!)!;
+const games = getGamesByGenre(genre.id).filter((g) => g.platform === p.id);
+const years = [...new Set(games.map((g) => yearOf(g.date)))];
+const siblings = getGenres().filter((g) => g.id !== genre.id && getGamesByGenre(g.id).some((x) => x.platform === p.id));
+---
+<BaseLayout
+  title={`${p.name}の${genre.name}ゲーム一覧（${formatNumber(games.length)}本）`}
+  description={`${p.name}（${p.shortName}）で発売された${genre.name}ゲーム${formatNumber(games.length)}本を発売日順に一覧で紹介します。`}
+  breadcrumbs={[{ name: 'ジャンル一覧', href: url('/genres/') }, { name: genre.name, href: genreUrl(genre.id) }, { name: p.name }]}
+>
+  <div class="page-head">
+    <h1>{p.name}の{genre.name}ゲーム</h1>
+    <p class="lead">{p.shortName}で発売された{genre.name}ソフト {formatNumber(games.length)}本の一覧です。<a href={platformUrl(p.id)}>{p.shortName}のすべてのソフト</a>もご覧ください。</p>
+  </div>
+  <section id="genre-games">
+    <ListFilter target="#genre-games" showPackageToggle={games.some((g) => g.digitalOnly)} />
+    {years.map((y) => (
+      <div data-filter-section>
+        <h2 class="month-heading">{y ? `${y}年` : '発売日未定'}</h2>
+        <GameTable games={games.filter((g) => yearOf(g.date) === y)} />
+      </div>
+    ))}
+  </section>
+  {siblings.length > 0 && (
+    <>
+      <h2 class="section-title">{p.shortName}のほかのジャンル</h2>
+      <ul class="chip-list">
+        {siblings.map((g) => <li><a class="chip" href={url(`/genres/${g.id}/${p.id}/`)}>{g.name}</a></li>)}
+      </ul>
+    </>
+  )}
+</BaseLayout>

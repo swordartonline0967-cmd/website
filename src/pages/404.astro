@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { url } from '../lib/url';
+---
+<BaseLayout title="ページが見つかりません" description="お探しのページは見つかりませんでした。" noindex>
+  <section class="card" style="text-align:center;padding:40px 20px">
+    <h1>ページが見つかりません（404）</h1>
+    <p class="muted">URLが変わったか、ページが削除された可能性があります。ソフト名で検索してみてください。</p>
+    <form class="search-form" action={url('/search/')} method="get" style="max-width:520px;margin:20px auto">
+      <input type="search" name="q" placeholder="ソフト名で検索" aria-label="ソフト名で検索" />
+      <button class="btn" type="submit">検索</button>
+    </form>
+    <p><a href={url('/')}>トップページへ戻る</a></p>
+  </section>
+</BaseLayout>

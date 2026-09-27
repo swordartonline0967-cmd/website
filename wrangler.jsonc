@@ -1,0 +1,16 @@
+// Cloudflare Workers（静的サイト配信）の設定ファイルです。
+// 「npm run build」で作られた dist フォルダの中身をそのまま公開します。
+// 詳しい公開手順は docs/01-公開手順.md を見てください。
+{
+  // Cloudflare上でのプロジェクト名（英数字とハイフンのみ）。
+  // Cloudflareの管理画面で付けた名前と同じにしてください。
+  "name": "game-database-site",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    // 存在しないURLにアクセスされたとき dist/404.html を表示します
+    "not_found_handling": "404-page",
+    // /games/fc-1 → /games/fc-1/ のように末尾スラッシュ付きに統一します
+    "html_handling": "force-trailing-slash"
+  }
+}

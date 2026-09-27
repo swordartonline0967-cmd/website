@@ -1,0 +1,50 @@
+---
+/**
+ * ページ内のソフト一覧を絞り込む入力欄（タイトル・メーカーの部分一致、パッケージ版のみ表示）
+ * target に指定した要素の中の .game-table の行が対象になります。
+ */
+interface Props {
+  target: string;
+  placeholder?: string;
+  showPackageToggle?: boolean;
+}
+const { target, placeholder = 'この一覧から絞り込み（タイトル・メーカー）', showPackageToggle = true } = Astro.props;
+---
+<div class="filter-bar" data-list-filter={target}>
+  <input type="search" placeholder={placeholder} aria-label="一覧を絞り込み" />
+  {showPackageToggle && <label><input type="checkbox" value="pkg" /> パッケージ版のみ</label>}
+  <span class="filter-count" aria-live="polite"></span>
+</div>
+<script>
+  const norm = (s: string) =>
+    s
+      .normalize('NFKC')
+      .toLowerCase()
+      .replace(/[ァ-ヶ]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0x60))
+      .replace(/[\s・:：\-‐−–—~〜～!！?？、。,.'"「」『』【】()（）]/g, '');
+  document.querySelectorAll<HTMLElement>('[data-list-filter]').forEach((bar) => {
+    const root = document.querySelector(bar.dataset.listFilter!);
+    if (!root) return;
+    const input = bar.querySelector<HTMLInputElement>('input[type=search]')!;
+    const pkg = bar.querySelector<HTMLInputElement>('input[type=checkbox]');
+    const count = bar.querySelector<HTMLElement>('.filter-count')!;
+    const rows = [...root.querySelectorAll<HTMLTableRowElement>('.game-table tbody tr')];
+    const texts = rows.map((r) => norm(r.textContent || ''));
+    const sections = [...root.querySelectorAll<HTMLElement>('[data-filter-section]')];
+    const apply = () => {
+      const q = norm(input.value);
+      const onlyPkg = pkg?.checked ?? false;
+      let shown = 0;
+      rows.forEach((r, i) => {
+        const ok = (!q || texts[i].includes(q)) && (!onlyPkg || !r.classList.contains('is-dl'));
+        r.hidden = !ok;
+        if (ok) shown++;
+      });
+      sections.forEach((s) => (s.hidden = !s.querySelector('tbody tr:not([hidden])')));
+      count.textContent = q || onlyPkg ? `${shown.toLocaleString()}件表示中` : `${rows.length.toLocaleString()}件`;
+    };
+    input.addEventListener('input', apply);
+    pkg?.addEventListener('change', apply);
+    apply();
+  });
+</script>

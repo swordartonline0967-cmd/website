@@ -1,0 +1,51 @@
+---
+/**
+ * ジャンル詳細  /genres/<ジャンルID>/
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import GameTable from '../../../components/GameTable.astro';
+import { getGamesByGenre, getGenre, getGenres, getPlatforms } from '../../../lib/data';
+import { formatNumber } from '../../../lib/format';
+import { platformClass } from '../../../lib/platform-style';
+import { genreUrl, url } from '../../../lib/url';
+
+export function getStaticPaths() {
+  return getGenres().map((g) => ({ params: { genre: g.id } }));
+}
+
+const genre = getGenre(Astro.params.genre!)!;
+const games = getGamesByGenre(genre.id);
+const counts = getPlatforms()
+  .map((p) => ({ p, n: games.filter((g) => g.platform === p.id).length }))
+  .filter((x) => x.n > 0);
+const today = new Date().toISOString().slice(0, 10);
+const recent = games.filter((g) => g.date && g.date.length === 10 && g.date <= today && !g.digitalOnly).slice(-40).reverse();
+const others = getGenres().filter((g) => g.id !== genre.id);
+---
+<BaseLayout
+  title={`${genre.name}ゲームのソフト一覧`}
+  description={`${genre.name}ジャンルの家庭用ゲームソフト${formatNumber(games.length)}本を機種別に紹介。${genre.description}`}
+  breadcrumbs={[{ name: 'ジャンル一覧', href: url('/genres/') }, { name: genre.name }]}
+>
+  <div class="page-head">
+    <h1>{genre.name}ゲーム</h1>
+    <p class="lead">{genre.description}当サイトでは{formatNumber(games.length)}本を{genre.name}に分類しています。</p>
+  </div>
+
+  <section class="card">
+    <div class="card-title"><h2>機種別の{genre.name}ソフト</h2></div>
+    <ul class="chip-list">
+      {counts.map(({ p, n }) => (
+        <li><a class="chip" href={url(`/genres/${genre.id}/${p.id}/`)}><span class={`badge ${platformClass(p)}`}>{p.abbr}</span>{p.shortName}<span class="count">{formatNumber(n)}</span></a></li>
+      ))}
+    </ul>
+  </section>
+
+  <h2 class="section-title">最近発売された{genre.name}ソフト（パッケージ版）</h2>
+  <GameTable games={recent} showPlatform />
+
+  <h2 class="section-title">ほかのジャンル</h2>
+  <ul class="chip-list">
+    {others.map((g) => <li><a class="chip" href={genreUrl(g.id)}>{g.name}</a></li>)}
+  </ul>
+</BaseLayout>

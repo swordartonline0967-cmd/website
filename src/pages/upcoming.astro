@@ -1,0 +1,41 @@
+---
+/**
+ * 発売予定のソフト  /upcoming/
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GameTable from '../components/GameTable.astro';
+import ListFilter from '../components/ListFilter.astro';
+import { dateSortKey, getGames } from '../lib/data';
+import { formatNumber, parseDate } from '../lib/format';
+
+const today = new Date().toISOString().slice(0, 10);
+const games = getGames()
+  .filter((g) => dateSortKey(g.date) >= today)
+  .sort((a, b) => (dateSortKey(a.date) < dateSortKey(b.date) ? -1 : dateSortKey(a.date) > dateSortKey(b.date) ? 1 : a.title.localeCompare(b.title, 'ja')));
+const groups = new Map<string, typeof games>();
+for (const g of games) {
+  const d = parseDate(g.date);
+  const key = !d ? '発売日未定' : d.month ? `${d.year}年${d.month}月` : `${d.year}年（時期未定）`;
+  if (!groups.has(key)) groups.set(key, []);
+  groups.get(key)!.push(g);
+}
+---
+<BaseLayout
+  title="発売予定のゲームソフト一覧"
+  description={`これから発売される家庭用ゲームソフト${formatNumber(games.length)}本の発売予定日を月ごとに一覧で紹介。Nintendo Switch 2・PS5などの新作情報をチェックできます。`}
+  breadcrumbs={[{ name: '発売予定' }]}
+>
+  <div class="page-head">
+    <h1>発売予定のゲームソフト</h1>
+    <p class="lead">発売日が決まっている（または発表済みの）ソフトを、発売予定日の順に掲載しています。発売日は変更になることがあります。最新情報は各公式サイトでご確認ください。</p>
+  </div>
+  <section id="upcoming-games">
+    <ListFilter target="#upcoming-games" />
+    {[...groups.entries()].map(([label, list]) => (
+      <div data-filter-section>
+        <h2 class="month-heading">{label}<span class="muted small">（{list.length}本）</span></h2>
+        <GameTable games={list} showPlatform />
+      </div>
+    ))}
+  </section>
+</BaseLayout>

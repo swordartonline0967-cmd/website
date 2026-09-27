@@ -1,0 +1,21 @@
+[
+{"id":"vb-1","title":"ギャラクティック・ピンボール","date":"1995-07-21","publishers":["任天堂"],"developers":["インテリジェントシステムズ"],"genres":["action"],"note":"ローンチタイトル","altTitles":["Galactic Pinball"],"wikidata":"Q3090756","source":"バーチャルボーイ"},
+{"id":"vb-2","title":"テレロボクサー","date":"1995-07-21","publishers":["任天堂"],"developers":["任天堂開発第一部"],"genres":["fighting"],"note":"ローンチタイトル","altTitles":["Teleroboxer"],"wiki":"テレロボクサー","wikidata":"Q3284969","source":"バーチャルボーイ"},
+{"id":"vb-3","title":"とびだせ!ぱにボン","date":"1995-07-21","publishers":["ハドソン"],"genres":["puzzle"],"note":"日本ではローンチタイトル","altTitles":["Panic Bomber"],"wiki":"とびだせ!ぱにボン","wikidata":"Q17222394","source":"バーチャルボーイ"},
+{"id":"vb-4","title":"マリオズテニス","date":"1995-07-21","publishers":["任天堂"],"developers":["任天堂開発第一部"],"genres":["sports"],"note":"ローンチタイトル","altTitles":["Mario's Tennis"],"wiki":"マリオズテニス","wikidata":"Q2698314","source":"バーチャルボーイ"},
+{"id":"vb-5","title":"レッドアラーム","date":"1995-07-21","publishers":["T&E SOFT"],"genres":["shooting"],"note":"ローンチタイトル","altTitles":["RED ALARM"],"wikidata":"Q3284225","source":"バーチャルボーイ"},
+{"id":"vb-6","title":"T&E ヴァーチャルゴルフ","date":"1995-08-11","publishers":["T&E SOFT"],"genres":["sports"],"altTitles":["GOLF"],"wikidata":"Q3110156","source":"バーチャルボーイ"},
+{"id":"vb-7","title":"バーチャルプロ野球'95","date":"1995-08-11","publishers":["ケムコ"],"developers":["ケムコ"],"genres":["sports"],"altTitles":["Virtual League Baseball"],"wiki":"バーチャルプロ野球'95","wikidata":"Q2741636","source":"バーチャルボーイ"},
+{"id":"vb-8","title":"バーティカルフォース","date":"1995-08-12","publishers":["ハドソン"],"developers":["ハドソン"],"genres":["shooting"],"altTitles":["VERTICAL FORCE"],"wikidata":"Q3285995","source":"バーチャルボーイ"},
+{"id":"vb-9","title":"V・テトリス","date":"1995-08-25","publishers":["BPS"],"developers":["ビーピーエス"],"genres":["puzzle"],"note":"Nintendo Classics版での邦題は、タイトルロゴの『V-TETRIS』になっている。 北米未発売だったが、Nintendo Classics版で英題がつけられている。","altTitles":["V-TETRIS"],"wikidata":"Q18663560","source":"バーチャルボーイ"},
+{"id":"vb-10","title":"スペーススカッシュ","date":"1995-09-28","publishers":["ココナッツジャパンエンターテイメント"],"developers":["トムキャットシステム"],"genres":["sports"],"wikidata":"Q764619","source":"バーチャルボーイ"},
+{"id":"vb-11","title":"マリオクラッシュ","date":"1995-09-28","publishers":["任天堂"],"developers":["任天堂開発第一部"],"genres":["action"],"altTitles":["Mario Clash"],"wiki":"マリオクラッシュ","wikidata":"Q2215664","source":"バーチャルボーイ"},
+{"id":"vb-12","title":"ジャック・ブラザースの迷路でヒーホー!","date":"1995-09-29","publishers":["アトラス"],"developers":["アトラス"],"genres":["action"],"note":"Nintendo Classics版での邦題は、タイトルロゴの部分も含んだ『JACK BROS. ジャック・ブラザースの迷路でヒーホー!』になっている。","altTitles":["Jack Bros."],"wiki":"ジャック・ブラザースの迷路でヒーホー!","wikidata":"Q903406","source":"バーチャルボーイ"},
+{"id":"vb-13","title":"バーチャルフィッシング","date":"1995-10-06","publishers":["パック・イン・ビデオ"],"developers":["パック・イン・ビデオ"],"genres":["sports"],"note":"Nintendo Classics版では日本版のみ配信","wikidata":"Q3281170","source":"バーチャルボーイ"},
+{"id":"vb-14","title":"インスマウスの館","date":"1995-10-13","publishers":["アイマックス"],"genres":["shooting","adventure"],"note":"北米では『House of Insmouse』の題で発売予定だった。Nintendo Classics版で新たに英題がつけられている。","altTitles":["The Mansion of Innsmouth"],"wikidata":"Q3151583","source":"バーチャルボーイ"},
+{"id":"vb-15","title":"スペースインベーダー バーチャルコレクション","date":"1995-12-01","publishers":["タイトー"],"genres":["shooting"],"note":"北米未発売だったが、Nintendo Classics版で英題がつけられている。","altTitles":["SPACE INVADERS VIRTUAL COLLECTION"],"wikidata":"Q10373619","source":"バーチャルボーイ"},
+{"id":"vb-16","title":"バーチャルボーイ ワリオランド アワゾンの秘宝","date":"1995-12-01","publishers":["任天堂"],"developers":["任天堂開発第一部"],"genres":["action"],"altTitles":["Virtual Boy Wario Land"],"wiki":"バーチャルボーイ ワリオランド アワゾンの秘宝","wikidata":"Q2212108","source":"バーチャルボーイ"},
+{"id":"vb-17","title":"バーチャルLAB","date":"1995-12-08","publishers":["J・ウイング"],"genres":["puzzle"],"wikidata":"Q2745920","source":"バーチャルボーイ"},
+{"id":"vb-18","title":"SDガンダム DIMENSION WAR","date":"1995-12-22","publishers":["バンダイ"],"developers":["バンダイ"],"genres":["rpg","simulation"],"wikidata":"Q3280765","source":"バーチャルボーイ"},
+{"id":"vb-19","title":"バーチャルボウリング","date":"1995-12-22","publishers":["アテナ"],"genres":["sports"],"note":"北米未発売だったが、Nintendo Classics版で英題がつけられている。","altTitles":["Virtual Bowling"],"wikidata":"Q3281358","source":"バーチャルボーイ"}
+]

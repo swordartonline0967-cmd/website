@@ -1,0 +1,32 @@
+---
+/**
+ * 発売年一覧  /years/
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getYears } from '../../lib/data';
+import { decadeOf, formatNumber } from '../../lib/format';
+import { yearUrl } from '../../lib/url';
+
+const years = getYears();
+const decades = [...new Set(years.map((y) => decadeOf(y.year)))];
+---
+<BaseLayout
+  title="発売年別ゲームソフト一覧"
+  description="1983年から現在まで、家庭用ゲームソフトを発売年ごとに一覧で見られます。各年に発売されたソフト数を機種別に確認できます。"
+  breadcrumbs={[{ name: '発売年別' }]}
+>
+  <div class="page-head">
+    <h1>発売年から探す</h1>
+    <p class="lead">年をクリックすると、その年に発売されたソフトを機種別に確認できます。</p>
+  </div>
+  {decades.map((d) => (
+    <section style="margin-bottom:22px">
+      <h2 class="section-title" id={`d${d}`}>{d}年代</h2>
+      <div class="year-grid">
+        {years.filter((y) => decadeOf(y.year) === d).map((y) => (
+          <a class="year-cell" href={yearUrl(y.year)}><strong>{y.year}</strong><span>{formatNumber(y.count)}本</span></a>
+        ))}
+      </div>
+    </section>
+  ))}
+</BaseLayout>

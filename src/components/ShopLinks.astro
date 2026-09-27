@@ -1,0 +1,37 @@
+---
+/**
+ * 「ショップで探す」ボタン（アフィリエイトリンク）
+ */
+import { shopLinks, affiliateEnabled } from '../lib/affiliate';
+
+interface Props {
+  /** ショップで検索するキーワード */
+  keyword: string;
+  /** 見出し */
+  heading?: string;
+  /** レトロゲーム（中古中心）なら true */
+  retro?: boolean;
+}
+const { keyword, heading = 'ショップで探す', retro = false } = Astro.props;
+const links = shopLinks(keyword, { retro });
+---
+<section class="shop-box" aria-label={heading}>
+  <div class="shop-box__head">
+    <h2 class="shop-box__title">{heading}</h2>
+    {affiliateEnabled && <span class="pr-label">PR</span>}
+  </div>
+  <div class="shop-buttons">
+    {links.map((l) => (
+      <a
+        class={`shop-btn shop-btn--${l.id}`}
+        href={l.url}
+        target="_blank"
+        rel={l.isAffiliate ? 'sponsored noopener' : 'noopener'}
+      >{l.label}で探す</a>
+    ))}
+  </div>
+  <p class="shop-box__note">
+    「{keyword}」で各ショップを検索します。価格・在庫・中古品の状態はリンク先でご確認ください。
+    {affiliateEnabled && '当サイトはアフィリエイトプログラムに参加しており、リンク先での購入により紹介料を受け取る場合があります。'}
+  </p>
+</section>

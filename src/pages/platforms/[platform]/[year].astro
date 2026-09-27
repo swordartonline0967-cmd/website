@@ -1,0 +1,68 @@
+---
+/**
+ * 機種×発売年のソフト一覧  /platforms/<機種ID>/<年>/
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import GameTable from '../../../components/GameTable.astro';
+import ListFilter from '../../../components/ListFilter.astro';
+import { getGamesByPlatformYear, getPlatform, getPlatformYears, getPlatforms } from '../../../lib/data';
+import { formatNumber, parseDate } from '../../../lib/format';
+import { platformUrl, platformYearUrl, url, yearUrl } from '../../../lib/url';
+
+export function getStaticPaths() {
+  return getPlatforms().flatMap((p) => getPlatformYears(p.id).map((y) => ({ params: { platform: p.id, year: String(y.year) } })));
+}
+
+const p = getPlatform(Astro.params.platform!)!;
+const year = Number(Astro.params.year);
+const games = getGamesByPlatformYear(p.id, year);
+const years = getPlatformYears(p.id);
+const idx = years.findIndex((y) => y.year === year);
+const prev = years[idx - 1];
+const next = years[idx + 1];
+const dl = games.filter((g) => g.digitalOnly).length;
+
+// 月ごとに分ける
+const months = new Map<number, typeof games>();
+for (const g of games) {
+  const m = parseDate(g.date)?.month ?? 0;
+  if (!months.has(m)) months.set(m, []);
+  months.get(m)!.push(g);
+}
+const monthList = [...months.entries()].sort((a, b) => (a[0] || 99) - (b[0] || 99));
+
+const title = `${year}年発売の${p.name}ソフト一覧（${formatNumber(games.length)}本）`;
+const description = `${year}年に発売された${p.name}（${p.shortName}）のゲームソフト${formatNumber(games.length)}本を発売日順に一覧で紹介。タイトル・発売日・発売元を確認できます。`;
+---
+<BaseLayout
+  title={title}
+  description={description}
+  breadcrumbs={[{ name: 'ハード一覧', href: url('/platforms/') }, { name: p.name, href: platformUrl(p.id) }, { name: `${year}年` }]}
+>
+  <div class="page-head">
+    <h1>{year}年発売の{p.name}ソフト</h1>
+    <p class="lead">
+      {year}年に発売（配信）された{p.shortName}のソフトは <strong>{formatNumber(games.length)}本</strong>
+      {dl > 0 && <>（うちダウンロード専用 {formatNumber(dl)}本）</>}です。
+      ほかの機種を含めた{year}年のソフトは<a href={yearUrl(year)}>{year}年のページ</a>へ。
+    </p>
+  </div>
+
+  <nav class="prev-next" aria-label="前後の年">
+    {prev ? <a class="prev" href={platformYearUrl(p.id, prev.year)}><small>← 前の年</small>{prev.year}年（{prev.count}本）</a> : <span></span>}
+    {next ? <a class="next" href={platformYearUrl(p.id, next.year)}><small>次の年 →</small>{next.year}年（{next.count}本）</a> : <span></span>}
+  </nav>
+
+  <section id="year-games">
+    <ListFilter target="#year-games" showPackageToggle={dl > 0} />
+    <p class="small muted">
+      {monthList.map(([m], i) => <>{i > 0 && ' ／ '}<a href={`#m${m}`}>{m ? `${m}月` : '月不明'}</a></>)}
+    </p>
+    {monthList.map(([m, list]) => (
+      <div data-filter-section>
+        <h2 class="month-heading" id={`m${m}`}>{m ? `${year}年${m}月` : `${year}年（月不明）`}<span class="muted small">（{list.length}本）</span></h2>
+        <GameTable games={list} />
+      </div>
+    ))}
+  </section>
+</BaseLayout>

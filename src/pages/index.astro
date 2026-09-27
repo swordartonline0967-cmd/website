@@ -1,0 +1,150 @@
+---
+/**
+ * トップページ
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PlatformCard from '../components/PlatformCard.astro';
+import GameTable from '../components/GameTable.astro';
+import { site } from '../config/site';
+import { dateSortKey, getGames, getGamesByGenre, getGamesByPlatform, getGenres, getMakers, getPlatforms, getStats, getYears } from '../lib/data';
+import { decadeOf, formatNumber } from '../lib/format';
+import { genreUrl, makerUrl, url } from '../lib/url';
+
+const stats = getStats();
+const platforms = getPlatforms();
+const groups = [...new Set(platforms.map((p) => p.makerGroup))];
+
+// 発売予定（パッケージ版、ビルド日から60日以内）
+const today = new Date().toISOString().slice(0, 10);
+const in60 = new Date(Date.now() + 60 * 86400000).toISOString().slice(0, 10);
+const upcoming = getGames()
+  .filter((g) => g.date && g.date.length === 10 && g.date >= today && g.date <= in60 && !g.digitalOnly)
+  .sort((a, b) => (dateSortKey(a.date) < dateSortKey(b.date) ? -1 : 1))
+  .slice(0, 25);
+
+const decades = new Map<number, number>();
+for (const y of getYears()) decades.set(decadeOf(y.year), (decades.get(decadeOf(y.year)) ?? 0) + y.count);
+const topMakers = getMakers().slice(0, 30);
+const genres = getGenres().map((g) => ({ ...g, count: getGamesByGenre(g.id).length }));
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: site.name,
+  url: new URL(url('/'), Astro.site).href,
+  description: site.description,
+  inLanguage: 'ja',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${new URL(url('/search/'), Astro.site).href}?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+};
+---
+<BaseLayout title={site.name} description={site.description} jsonLd={jsonLd} isHome>
+  <section class="search-hero">
+    <h1>家庭用ゲームソフトのデータベース</h1>
+    <p>ファミコンから最新機種まで、日本で発売されたゲームソフトの発売日・発売元・ジャンルを調べられます。</p>
+    <form class="search-form" action={url('/search/')} method="get" role="search">
+      <label class="visually-hidden" for="top-q">ソフト名</label>
+      <input id="top-q" type="search" name="q" placeholder="ソフト名を入力（ひらがな・カタカナどちらでもOK）" autocomplete="off" />
+      <button class="btn" type="submit">検索する</button>
+    </form>
+    <div class="stats">
+      <span><strong>{formatNumber(stats.games)}</strong>本のソフト</span>
+      <span><strong>{stats.platforms}</strong>機種</span>
+      <span><strong>{formatNumber(stats.makers)}</strong>メーカー</span>
+      <span><strong>{stats.firstYear}〜{stats.lastYear}</strong>年</span>
+    </div>
+  </section>
+
+  <section class="card" id="today" hidden>
+    <div class="card-title">
+      <h2 id="today-title">今日は何の日？</h2>
+      <a id="today-more" href={url('/calendar/')}>もっと見る</a>
+    </div>
+    <p class="muted small" style="margin-top:-6px">過去の今日発売されたゲームです。</p>
+    <div class="table-wrap">
+      <table class="game-table"><tbody id="today-rows"></tbody></table>
+    </div>
+  </section>
+
+  {upcoming.length > 0 && (
+    <section class="card">
+      <div class="card-title">
+        <h2>まもなく発売のソフト</h2>
+        <a href={url('/upcoming/')}>発売予定をすべて見る</a>
+      </div>
+      <GameTable games={upcoming} showPlatform />
+    </section>
+  )}
+
+  <h2 class="section-title">ハード（機種）から探す</h2>
+  {groups.map((grp) => (
+    <section style="margin-bottom:20px">
+      <h3 class="muted" style="font-size:0.95rem">{grp}</h3>
+      <div class="platform-grid">
+        {platforms.filter((p) => p.makerGroup === grp).map((p) => <PlatformCard platform={p} count={getGamesByPlatform(p.id).length} />)}
+      </div>
+    </section>
+  ))}
+
+  <h2 class="section-title">発売年代から探す</h2>
+  <ul class="chip-list">
+    {[...decades.entries()].map(([dec, n]) => (
+      <li><a class="chip" href={url(`/years/#d${dec}`)}>{dec}年代<span class="count">{formatNumber(n)}本</span></a></li>
+    ))}
+    <li><a class="chip" href={url('/years/')}>すべての年を見る →</a></li>
+  </ul>
+
+  <h2 class="section-title">ジャンルから探す</h2>
+  <ul class="chip-list">
+    {genres.map((g) => <li><a class="chip" href={genreUrl(g.id)}>{g.name}<span class="count">{formatNumber(g.count)}</span></a></li>)}
+  </ul>
+
+  <h2 class="section-title">ソフトが多いメーカー</h2>
+  <ul class="chip-list">
+    {topMakers.map((m) => <li><a class="chip" href={makerUrl(m.id)}>{m.name}<span class="count">{formatNumber(m.count)}</span></a></li>)}
+    <li><a class="chip" href={url('/makers/')}>メーカー一覧 →</a></li>
+  </ul>
+
+  <section class="card" style="margin-top:28px">
+    <h2>{site.name}について</h2>
+    <p>{site.description}</p>
+    <p class="small muted" style="margin:0"><a href={url('/about/')}>このサイトについて詳しく見る</a></p>
+  </section>
+
+  <script is:inline define:vars={{ base: import.meta.env.BASE_URL.replace(/\/+$/, ''), calendarBase: url('/calendar/') }}>
+    (function () {
+      var now = new Date();
+      var jst = new Date(now.getTime() + (now.getTimezoneOffset() + 540) * 60000);
+      var mm = String(jst.getMonth() + 1).padStart(2, '0');
+      var dd = String(jst.getDate()).padStart(2, '0');
+      var thisYear = jst.getFullYear();
+      fetch(base + '/data/calendar/' + mm + '-' + dd + '.json')
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+          if (!data || !data.games || !data.games.length) return;
+          var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+          var list = data.games.filter(function (g) { return g[3] < thisYear; });
+          // 10年・5年刻みの節目を優先し、古い順に
+          list.sort(function (a, b) {
+            var ka = (thisYear - a[3]) % 10 === 0 ? 0 : (thisYear - a[3]) % 5 === 0 ? 1 : 2;
+            var kb = (thisYear - b[3]) % 10 === 0 ? 0 : (thisYear - b[3]) % 5 === 0 ? 1 : 2;
+            return ka - kb || a[3] - b[3];
+          });
+          var html = '';
+          list.slice(0, 15).forEach(function (g) {
+            var p = data.platforms[g[2]];
+            html += '<tr><td class="d">' + g[3] + '年</td><td class="p"><span class="badge ' + p[1] + '">' + esc(p[0]) + '</span></td>' +
+              '<td class="t"><a href="' + base + '/games/' + g[0] + '/">' + esc(g[1]) + '</a><span class="an">' + (thisYear - g[3]) + '周年</span></td></tr>';
+          });
+          document.getElementById('today-rows').innerHTML = html;
+          document.getElementById('today-title').textContent = '今日は何の日？（' + (jst.getMonth() + 1) + '月' + jst.getDate() + '日発売のゲーム）';
+          document.getElementById('today-more').href = calendarBase + mm + '-' + dd + '/';
+          document.getElementById('today').hidden = false;
+        })
+        .catch(function () {});
+    })();
+  </script>
+</BaseLayout>

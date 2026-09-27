@@ -1,0 +1,28 @@
+---
+/**
+ * ソフト一覧の表
+ */
+import type { Game } from '../lib/types';
+import { renderGameRows, type RowOptions } from '../lib/render';
+
+interface Props extends RowOptions {
+  games: Game[];
+  caption?: string;
+}
+const { games, caption, showPlatform = false, showMaker = true, anniversaryYear } = Astro.props;
+const rows = renderGameRows(games, { showPlatform, showMaker, anniversaryYear });
+---
+<div class="table-wrap">
+  <table class="game-table">
+    {caption && <caption class="visually-hidden">{caption}</caption>}
+    <thead>
+      <tr>
+        <th scope="col">発売日</th>
+        {showPlatform && <th scope="col">機種</th>}
+        <th scope="col">タイトル</th>
+        {showMaker && <th scope="col">発売元</th>}
+      </tr>
+    </thead>
+    <tbody set:html={rows} />
+  </table>
+</div>

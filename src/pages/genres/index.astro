@@ -1,0 +1,30 @@
+---
+/**
+ * ジャンル一覧  /genres/
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getGamesByGenre, getGenres } from '../../lib/data';
+import { formatNumber } from '../../lib/format';
+import { genreUrl } from '../../lib/url';
+
+const genres = getGenres().map((g) => ({ ...g, count: getGamesByGenre(g.id).length }));
+---
+<BaseLayout
+  title="ジャンル別ゲームソフト一覧"
+  description="アクション・RPG・シューティング・アドベンチャー・シミュレーションなど、ジャンル別に家庭用ゲームソフトを探せます。"
+  breadcrumbs={[{ name: 'ジャンル一覧' }]}
+>
+  <div class="page-head">
+    <h1>ジャンルから探す</h1>
+    <p class="lead">ゲームソフトをジャンルごとに分類しています。ジャンル情報はWikidataの登録内容をもとにしているため、すべてのソフトに付いているわけではありません。</p>
+  </div>
+  <div class="platform-grid">
+    {genres.map((g) => (
+      <a class="platform-card" href={genreUrl(g.id)} style="--pc:var(--primary)">
+        <div class="platform-card__name">{g.name}</div>
+        <div class="platform-card__meta">{g.description}</div>
+        <div class="platform-card__count"><strong>{formatNumber(g.count)}</strong> 本</div>
+      </a>
+    ))}
+  </div>
+</BaseLayout>

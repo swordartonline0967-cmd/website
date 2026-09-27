@@ -1,0 +1,173 @@
+---
+/**
+ * ソフト検索  /search/?q=キーワード&p=機種ID
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPlatforms } from '../lib/data';
+import { url } from '../lib/url';
+
+const platforms = getPlatforms();
+---
+<BaseLayout
+  title="ゲームソフト検索"
+  description="ゲームソフトのタイトル・メーカー名から検索できます。ひらがな・カタカナ、全角・半角の違いは自動で吸収します。"
+  breadcrumbs={[{ name: 'ソフト検索' }]}
+>
+  <div class="page-head">
+    <h1>ゲームソフト検索</h1>
+    <p class="lead">タイトルやメーカー名の一部を入力してください。スペースで区切ると複数の言葉で絞り込めます（例:「マリオ カート」「カプコン ロックマン」）。</p>
+  </div>
+  <form class="search-form card" id="search-form" action={url('/search/')} method="get" role="search">
+    <label class="visually-hidden" for="q">キーワード</label>
+    <input id="q" name="q" type="search" placeholder="例: ドラゴンクエスト" autocomplete="off" />
+    <label class="visually-hidden" for="p">機種</label>
+    <select id="p" name="p">
+      <option value="">すべての機種</option>
+      {platforms.map((p) => <option value={p.id}>{p.name}</option>)}
+    </select>
+    <button class="btn" type="submit">検索</button>
+  </form>
+  <p id="status" class="muted small" aria-live="polite"></p>
+  <div class="table-wrap">
+    <table class="game-table" id="results" hidden>
+      <thead><tr><th>発売年</th><th>機種</th><th>タイトル</th><th>発売元</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p><button class="btn btn--ghost" id="more" type="button" hidden>さらに表示</button></p>
+
+  <script is:inline define:vars={{ indexUrl: url('/search-index.json'), gameBase: url('/games/'), platformBase: url('/platforms/') }}>
+    (function () {
+      var form = document.getElementById('search-form');
+      var qEl = document.getElementById('q');
+      var pEl = document.getElementById('p');
+      var status = document.getElementById('status');
+      var table = document.getElementById('results');
+      var tbody = table.querySelector('tbody');
+      var moreBtn = document.getElementById('more');
+      var PAGE = 100;
+      var data = null, hay = null, results = [], shown = 0;
+
+      var norm = function (s) {
+        return String(s).normalize('NFKC').toLowerCase()
+          // 「I・II」「I&II」などがつながって「III」と誤認されないように区切りを残す
+          .replace(/([ivx])\s*[・･&＆+＋]\s*(?=[ivx])/g, '$1_')
+          .replace(/[ァ-ヶ]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0x60); })
+          .replace(/[\s・･·:：\-‐−–—~〜～!！?？、。,.，．'"“”‘’「」『』【】()（）\[\]［］<>＜＞/／\\&＆+＋#＃☆★♪]/g, '');
+      };
+      var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+
+      // よく使われる略称 → 正式名（ひらがな・小文字で書く）
+      var SYN = {
+        'どらくえ': ['どらごんくえすと'], 'dq': ['どらごんくえすと'],
+        'ff': ['ふぁいなるふぁんたじー'], 'えふえふ': ['ふぁいなるふぁんたじー'],
+        'すまぶら': ['すまっしゅぶらざーず'], 'まりかー': ['まりおかーと'], 'まりぱ': ['まりおぱーてぃ'],
+        'もんはん': ['もんすたーはんたー'], 'mh': ['もんすたーはんたー'], 'ぽけもん': ['ぽけっともんすたー'],
+        'ぱわぷろ': ['ぱわふるぷろ野球'], 'ういいれ': ['ういにんぐいれぶん'],
+        'ばいお': ['ばいおはざーど'], 'あつもり': ['あつまれどうぶつの森'], 'どうもり': ['どうぶつの森'], 'ぶつもり': ['どうぶつの森'],
+        'すと': ['すとりーとふぁいたー'], 'きんはー': ['きんぐだむはーつ'], 'ときめも': ['ときめきめもりある'],
+        'すぱろぼ': ['すーぱーろぼっと大戦'], 'めがてん': ['女神転生'], 'だびすた': ['だーびーすたりおん'],
+        'ぶれわい': ['ぶれすおぶざわいるど'], 'てぃあきん': ['てぃあーずおぶざきんぐだむ'], 'ろまさが': ['ろまんしんぐさが'],
+        'くろとり': ['くろのとりがー'], 'みんごる': ['みんなのgolf'], 'めたぎあ': ['めたるぎあ'], 'gt': ['ぐらんつーりすも'],
+        'でびめい': ['でびるめいくらい'], 'ぜるでん': ['ぜるだの伝説'], 'すーまり': ['すーぱーまりお'],
+        'ぎるてぃ': ['ぎるてぃぎあ'], 'えぺ': ['apexlegends'], 'ももてつ': ['桃太郎電鉄']
+      };
+      var ROMAN = ['', 'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x', 'xi', 'xii', 'xiii', 'xiv', 'xv', 'xvi'];
+      // 検索語の言い換え候補（略称の展開、末尾の数字→ローマ数字）
+      function variants(tok) {
+        var out = [tok];
+        Object.keys(SYN).forEach(function (k) {
+          if (tok.indexOf(k) === 0) SYN[k].forEach(function (full) { out.push(full + tok.slice(k.length)); });
+        });
+        out.slice().forEach(function (t) {
+          var m = /^(.*?)(\d{1,2})$/.exec(t);
+          if (m && +m[2] > 0 && +m[2] < ROMAN.length) out.push(m[1] + ROMAN[+m[2]]);
+        });
+        return out;
+      }
+
+      function load() {
+        if (data) return Promise.resolve();
+        status.textContent = '検索データを読み込んでいます…';
+        return fetch(indexUrl).then(function (r) { return r.json(); }).then(function (d) {
+          data = d;
+          hay = d.g.map(function (g) { return norm(g[2]) + '|' + (g[5] ? norm(g[5]) : '') + '|' + (g[4] >= 0 ? norm(d.m[g[4]]) : ''); });
+        });
+      }
+
+      function search() {
+        var raw = qEl.value.trim();
+        var pid = pEl.value;
+        var params = new URLSearchParams();
+        if (raw) params.set('q', raw);
+        if (pid) params.set('p', pid);
+        history.replaceState(null, '', location.pathname + (params.toString() ? '?' + params : ''));
+        document.title = (raw ? '「' + raw + '」の検索結果' : 'ゲームソフト検索') + document.title.replace(/^.*?(｜.*)$/, '$1');
+        if (!raw && !pid) { status.textContent = ''; table.hidden = true; moreBtn.hidden = true; return; }
+        load().then(function () {
+          var tokens = raw.split(/[\s　]+/).map(norm).filter(Boolean).map(variants);
+          var pIdx = pid ? data.p.findIndex(function (p) { return p[0] === pid; }) : -1;
+          results = [];
+          for (var i = 0; i < data.g.length; i++) {
+            var g = data.g[i];
+            if (pIdx >= 0 && g[0] !== pIdx) continue;
+            var h = hay[i];
+            var title = h.slice(0, h.indexOf('|'));
+            var ok = true;
+            var score = tokens.length ? 0 : 3;
+            for (var t = 0; t < tokens.length && ok; t++) {
+              var best = 9;
+              for (var v = 0; v < tokens[t].length; v++) {
+                var w = tokens[t][v];
+                if (h.indexOf(w) < 0) continue;
+                var pos = title.indexOf(w);
+                var s2 = title === w ? 0 : pos === 0 ? 1 : pos > 0 ? 2 : 3;
+                // 「VII」で「VIII」も当たるときなど、続く文字が数字の一部なら少し順位を下げる
+                if (pos >= 0 && s2 > 0 && /[ivx0-9]/.test(title.charAt(pos + w.length)) && /[ivx0-9]$/.test(w)) s2 += 1;
+                if (s2 < best) best = s2;
+              }
+              if (best === 9) ok = false;
+              else score = Math.max(score, best);
+            }
+            if (!ok) continue;
+            results.push([score, i]);
+          }
+          results.sort(function (a, b) { return a[0] - b[0] || (data.g[a[1]][3] || 9999) - (data.g[b[1]][3] || 9999) || a[1] - b[1]; });
+          shown = 0;
+          tbody.innerHTML = '';
+          status.textContent = results.length ? results.length.toLocaleString() + '件見つかりました' : '見つかりませんでした。言葉を短くしたり、ひらがな・カタカナを変えたりして試してください。';
+          table.hidden = !results.length;
+          renderMore();
+        });
+      }
+
+      function renderMore() {
+        var html = '';
+        var end = Math.min(results.length, shown + PAGE);
+        for (var k = shown; k < end; k++) {
+          var g = data.g[results[k][1]];
+          var p = data.p[g[0]];
+          html += '<tr><td class="d">' + (g[3] ? g[3] + '年' : '未定') + '</td>' +
+            '<td class="p"><a class="badge ' + p[2] + '" href="' + platformBase + p[0] + '/">' + esc(p[1]) + '</a></td>' +
+            '<td class="t"><a href="' + gameBase + p[0] + '-' + g[1] + '/">' + esc(g[2]) + '</a>' + (g[5] ? '<span class="meta">' + esc(g[5]) + '</span>' : '') + '</td>' +
+            '<td class="m">' + (g[4] >= 0 ? esc(data.m[g[4]]) : '') + '</td></tr>';
+        }
+        tbody.insertAdjacentHTML('beforeend', html);
+        shown = end;
+        moreBtn.hidden = shown >= results.length;
+      }
+
+      form.addEventListener('submit', function (e) { e.preventDefault(); search(); });
+      var timer;
+      qEl.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(search, 250); });
+      pEl.addEventListener('change', search);
+      moreBtn.addEventListener('click', renderMore);
+
+      var params = new URLSearchParams(location.search);
+      qEl.value = params.get('q') || '';
+      pEl.value = params.get('p') || '';
+      if (qEl.value || pEl.value) search();
+      else qEl.focus();
+    })();
+  </script>
+</BaseLayout>

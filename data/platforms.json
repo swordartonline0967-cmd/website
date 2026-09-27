@@ -1,0 +1,989 @@
+[
+  {
+    "id": "fc",
+    "name": "ファミリーコンピュータ",
+    "shortName": "ファミコン",
+    "abbr": "FC",
+    "maker": "任天堂",
+    "makerGroup": "任天堂",
+    "type": "home",
+    "generation": 3,
+    "releaseDate": "1983-07-15",
+    "price": 14800,
+    "media": "ロムカセット",
+    "color": "#e4000f",
+    "order": 10,
+    "wikipedia": "ファミリーコンピュータ",
+    "wikidata": [
+      "Q172742"
+    ],
+    "sources": [
+      "ファミリーコンピュータのゲームタイトル一覧"
+    ],
+    "description": "任天堂が1983年に発売した家庭用ゲーム機。愛称は「ファミコン」。アーケードの人気作を家庭で遊べる手軽さと豊富なサードパーティー作品で社会現象となり、『スーパーマリオブラザーズ』や『ドラゴンクエスト』などの名作を生んだ、日本の家庭用ゲーム文化の原点ともいえるハードです。"
+  },
+  {
+    "id": "fds",
+    "name": "ファミリーコンピュータ ディスクシステム",
+    "shortName": "ディスクシステム",
+    "abbr": "FDS",
+    "maker": "任天堂",
+    "makerGroup": "任天堂",
+    "type": "addon",
+    "generation": 3,
+    "releaseDate": "1986-02-21",
+    "price": 15000,
+    "media": "ディスクカード",
+    "color": "#e4000f",
+    "order": 20,
+    "wikipedia": "ファミリーコンピュータ ディスクシステム",
+    "wikidata": [
+      "Q135321"
+    ],
+    "sources": [
+      "ファミリーコンピュータ ディスクシステムのゲームタイトル一覧"
+    ],
+    "description": "ファミコンに接続して使う周辺機器。磁気ディスク「ディスクカード」を媒体とし、セーブ機能や大容量を実現しました。店頭の「ディスクライター」で安価にゲームを書き換えられる仕組みも話題になり、『ゼルダの伝説』や『メトロイド』などがこの機種で登場しました。"
+  },
+  {
+    "id": "sfc",
+    "name": "スーパーファミコン",
+    "shortName": "スーファミ",
+    "abbr": "SFC",
+    "maker": "任天堂",
+    "makerGroup": "任天堂",
+    "type": "home",
+    "generation": 4,
+    "releaseDate": "1990-11-21",
+    "price": 25000,
+    "media": "ロムカセット",
+    "color": "#e4000f",
+    "order": 30,
+    "wikipedia": "スーパーファミコン",
+    "wikidata": [
+      "Q183259"
+    ],
+    "sources": [
+      "スーパーファミコンのゲームタイトル一覧"
+    ],
+    "description": "ファミコンの後継機として1990年に発売。拡大・縮小・回転機能や豊かなサウンドを備え、RPGやアクションの名作が数多く生まれました。『スーパーマリオワールド』『ファイナルファンタジーVI』『ドラゴンクエストV』など、16ビット時代を代表するタイトルがそろいます。"
+  },
+  {
+    "id": "vb",
+    "name": "バーチャルボーイ",
+    "shortName": "バーチャルボーイ",
+    "abbr": "VB",
+    "maker": "任天堂",
+    "makerGroup": "任天堂",
+    "type": "handheld",
+    "generation": 5,
+    "releaseDate": "1995-07-21",
+    "price": 15000,
+    "media": "ロムカセット",
+    "color": "#e4000f",
+    "order": 40,
+    "wikipedia": "バーチャルボーイ",
+    "wikidata": [
+      "Q164651"
+    ],
+    "sources": [
+      "バーチャルボーイ"
+    ],
+    "description": "赤色LEDによる立体映像を、スタンドに立てたゴーグル状の本体をのぞき込んで楽しむゲーム機。独特の3D表現が特徴でしたが、発売タイトルは少なく短命に終わった、任天堂のハードの中でも珍しい存在です。"
+  },
+  {
+    "id": "n64",
+    "name": "NINTENDO64",
+    "shortName": "ロクヨン",
+    "abbr": "N64",
+    "maker": "任天堂",
+    "makerGroup": "任天堂",
+    "type": "home",
+    "generation": 5,
+    "releaseDate": "1996-06-23",
+    "price": 25000,
+    "media": "ロムカセット",
+    "color": "#e4000f",
+    "order": 50,
+    "wikipedia": "NINTENDO 64",
+    "wikidata": [
+      "Q184839"
+    ],
+    "sources": [
+      "NINTENDO 64のゲームタイトル一覧"
+    ],
+    "description": "3Dグラフィックスとアナログスティック付きコントローラーを備えた任天堂の据え置き機。4人同時プレイを標準としたことで、『マリオカート64』『大乱闘スマッシュブラザーズ』『ゴールデンアイ 007』などの対戦・パーティー作品が大きな人気を集めました。"
+  },
+  {
+    "id": "gc",
+    "name": "ニンテンドー ゲームキューブ",
+    "shortName": "ゲームキューブ",
+    "abbr": "GC",
+    "maker": "任天堂",
+    "makerGroup": "任天堂",
+    "type": "home",
+    "generation": 6,
+    "releaseDate": "2001-09-14",
+    "price": 25000,
+    "media": "8cm光ディスク",
+    "color": "#e4000f",
+    "order": 60,
+    "wikipedia": "ニンテンドー ゲームキューブ",
+    "wikidata": [
+      "Q182172"
+    ],
+    "sources": [
+      "ニンテンドー ゲームキューブのゲームタイトル一覧"
+    ],
+    "description": "任天堂初の光ディスク採用機。コンパクトな立方体の本体とロード時間の短さが特徴です。『大乱闘スマッシュブラザーズDX』『どうぶつの森+』『ピクミン』などを輩出し、ゲームボーイプレーヤーでGBAソフトも遊べました。"
+  },
+  {
+    "id": "wii",
+    "name": "Wii",
+    "shortName": "Wii",
+    "abbr": "Wii",
+    "maker": "任天堂",
+    "makerGroup": "任天堂",
+    "type": "home",
+    "generation": 7,
+    "releaseDate": "2006-12-02",
+    "price": 25000,
+    "media": "12cm光ディスク",
+    "color": "#e4000f",
+    "order": 70,
+    "wikipedia": "Wii",
+    "wikidata": [
+      "Q8079",
+      "Q2014637"
+    ],
+    "sources": [
+      "Wiiのゲームタイトル一覧",
+      "Wiiウェアのゲームタイトル一覧"
+    ],
+    "description": "リモコン型コントローラーを振って直感的に遊べる据え置き機。『Wii Sports』『Wii Fit』などで家族やゲーム初心者にも遊びを広げ、世界的な大ヒットとなりました。ダウンロード専用ソフト「Wiiウェア」も展開されました。"
+  },
+  {
+    "id": "wiiu",
+    "name": "Wii U",
+    "shortName": "Wii U",
+    "abbr": "WiiU",
+    "maker": "任天堂",
+    "makerGroup": "任天堂",
+    "type": "home",
+    "generation": 8,
+    "releaseDate": "2012-12-08",
+    "price": 26250,
+    "priceNote": "ベーシックセット・税込（プレミアムセットは31,500円）",
+    "media": "12cm光ディスク",
+    "color": "#e4000f",
+    "order": 80,
+    "wikipedia": "Wii U",
+    "wikidata": [
+      "Q56942"
+    ],
+    "sources": [
+      "Wii Uのゲームタイトル一覧"
+    ],
+    "description": "画面付きの「Wii U GamePad」を備えた任天堂初のHD対応据え置き機。テレビとGamePadの2画面を活かした遊びを提案し、『スプラトゥーン』『スーパーマリオメーカー』などのシリーズがこの機種から誕生しました。"
+  },
+  {
+    "id": "switch",
+    "name": "Nintendo Switch",
+    "shortName": "Switch",
+    "abbr": "Switch",
+    "maker": "任天堂",
+    "makerGroup": "任天堂",
+    "type": "hybrid",
+    "generation": 8,
+    "releaseDate": "2017-03-03",
+    "price": 29980,
+    "priceNote": "税別",
+    "media": "ゲームカード／ダウンロード",
+    "color": "#e4000f",
+    "order": 90,
+    "wikipedia": "Nintendo Switch",
+    "wikidata": [
+      "Q19610114"
+    ],
+    "sources": [
+      "Nintendo Switchのゲームタイトル一覧 (2017年)",
+      "Nintendo Switchのゲームタイトル一覧 (2018年)",
+      "Nintendo Switchのゲームタイトル一覧 (2019年)",
+      "Nintendo Switchのゲームタイトル一覧 (2020年)",
+      "Nintendo Switchのゲームタイトル一覧 (2021年)",
+      "Nintendo Switchのゲームタイトル一覧 (2022年)",
+      "Nintendo Switchのゲームタイトル一覧 (2023年)",
+      "Nintendo Switchのゲームタイトル一覧 (2024年)",
+      "Nintendo Switchのゲームタイトル一覧 (2025年)",
+      "Nintendo Switchのゲームタイトル一覧"
+    ],
+    "description": "テレビにつないでも、持ち出して携帯機としても遊べるハイブリッド型のゲーム機。着脱式のJoy-Conによる手軽な2人プレイも特徴です。『あつまれ どうぶつの森』『スプラトゥーン』シリーズなどが大ヒットし、インディーゲームも数多く配信されています。"
+  },
+  {
+    "id": "switch2",
+    "name": "Nintendo Switch 2",
+    "shortName": "Switch 2",
+    "abbr": "Switch2",
+    "maker": "任天堂",
+    "makerGroup": "任天堂",
+    "type": "hybrid",
+    "generation": 9,
+    "releaseDate": "2025-06-05",
+    "price": 49980,
+    "priceNote": "日本語・国内専用モデル・税込",
+    "media": "ゲームカード／ダウンロード",
+    "color": "#e4000f",
+    "order": 100,
+    "wikipedia": "Nintendo Switch 2",
+    "wikidata": [
+      "Q122761124"
+    ],
+    "sources": [
+      "Nintendo Switch 2のゲームタイトル一覧"
+    ],
+    "description": "Nintendo Switchの後継機として2025年に発売。大型化した画面と性能向上に加え、マウスのように使えるJoy-Con 2やボイスチャット機能「ゲームチャット」を搭載しています。多くのSwitchソフトとの互換性も備えています。"
+  },
+  {
+    "id": "gb",
+    "name": "ゲームボーイ",
+    "shortName": "ゲームボーイ",
+    "abbr": "GB",
+    "maker": "任天堂",
+    "makerGroup": "任天堂",
+    "type": "handheld",
+    "generation": 4,
+    "releaseDate": "1989-04-21",
+    "price": 12500,
+    "media": "ロムカセット",
+    "color": "#e4000f",
+    "order": 110,
+    "wikipedia": "ゲームボーイ",
+    "wikidata": [
+      "Q186437"
+    ],
+    "sources": [
+      "ゲームボーイのゲームタイトル一覧"
+    ],
+    "description": "任天堂が1989年に発売した携帯ゲーム機。モノクロ画面ながら電池の持ちの良さと手頃な価格で大ヒットし、『テトリス』『ポケットモンスター 赤・緑』などの社会現象となるタイトルを生み出しました。"
+  },
+  {
+    "id": "gbc",
+    "name": "ゲームボーイカラー",
+    "shortName": "GBカラー",
+    "abbr": "GBC",
+    "maker": "任天堂",
+    "makerGroup": "任天堂",
+    "type": "handheld",
+    "generation": 5,
+    "releaseDate": "1998-10-21",
+    "price": 8900,
+    "media": "ロムカセット",
+    "color": "#e4000f",
+    "order": 120,
+    "wikipedia": "ゲームボーイカラー",
+    "wikidata": [
+      "Q203992"
+    ],
+    "sources": [
+      "ゲームボーイカラーのゲームタイトル一覧"
+    ],
+    "description": "ゲームボーイをカラー表示に対応させた携帯ゲーム機。従来のゲームボーイソフトも遊べる互換性を持ち、『ポケットモンスター 金・銀』などのヒット作で人気を博しました。"
+  },
+  {
+    "id": "gba",
+    "name": "ゲームボーイアドバンス",
+    "shortName": "GBA",
+    "abbr": "GBA",
+    "maker": "任天堂",
+    "makerGroup": "任天堂",
+    "type": "handheld",
+    "generation": 6,
+    "releaseDate": "2001-03-21",
+    "price": 9800,
+    "media": "ロムカセット",
+    "color": "#e4000f",
+    "order": 130,
+    "wikipedia": "ゲームボーイアドバンス",
+    "wikidata": [
+      "Q188642"
+    ],
+    "sources": [
+      "ゲームボーイアドバンスのゲームタイトル一覧"
+    ],
+    "description": "横長の本体に32ビットCPUを搭載した携帯ゲーム機。スーパーファミコン並みの表現力を持ち、名作の移植や『ポケットモンスター ルビー・サファイア』などの新作が数多く発売されました。"
+  },
+  {
+    "id": "ds",
+    "name": "ニンテンドーDS",
+    "shortName": "DS",
+    "abbr": "DS",
+    "maker": "任天堂",
+    "makerGroup": "任天堂",
+    "type": "handheld",
+    "generation": 7,
+    "releaseDate": "2004-12-02",
+    "price": 15000,
+    "media": "DSカード",
+    "color": "#e4000f",
+    "order": 140,
+    "wikipedia": "ニンテンドーDS",
+    "wikidata": [
+      "Q170323",
+      "Q637178",
+      "Q1898891"
+    ],
+    "sources": [
+      "ニンテンドーDSのゲームタイトル一覧 (2004年-2005年)",
+      "ニンテンドーDSのゲームタイトル一覧 (2006年)",
+      "ニンテンドーDSのゲームタイトル一覧 (2007年)",
+      "ニンテンドーDSのゲームタイトル一覧 (2008年)",
+      "ニンテンドーDSのゲームタイトル一覧 (2009年)",
+      "ニンテンドーDSのゲームタイトル一覧 (2010年)",
+      "ニンテンドーDSのゲームタイトル一覧 (2011年-2012年)",
+      "ニンテンドーDSのゲームタイトル一覧",
+      "ニンテンドーDSiウェアのタイトル一覧"
+    ],
+    "description": "2画面とタッチペン操作を特徴とする携帯ゲーム機。『脳を鍛える大人のDSトレーニング』『おいでよ どうぶつの森』などで幅広い世代に普及し、日本で最も売れたゲーム機のひとつとなりました。"
+  },
+  {
+    "id": "3ds",
+    "name": "ニンテンドー3DS",
+    "shortName": "3DS",
+    "abbr": "3DS",
+    "maker": "任天堂",
+    "makerGroup": "任天堂",
+    "type": "handheld",
+    "generation": 8,
+    "releaseDate": "2011-02-26",
+    "price": 25000,
+    "media": "3DSカード／ダウンロード",
+    "color": "#e4000f",
+    "order": 150,
+    "wikipedia": "ニンテンドー3DS",
+    "wikidata": [
+      "Q203597"
+    ],
+    "sources": [
+      "ニンテンドー3DSのゲームタイトル一覧"
+    ],
+    "description": "専用メガネなしで立体視ができる携帯ゲーム機。すれちがい通信などの機能も話題となり、『モンスターハンター』シリーズや『妖怪ウォッチ』などが大ヒットしました。DSソフトとの互換性も備えています。"
+  },
+  {
+    "id": "ps",
+    "name": "PlayStation",
+    "shortName": "プレイステーション",
+    "abbr": "PS",
+    "maker": "ソニー・コンピュータエンタテインメント",
+    "makerGroup": "ソニー",
+    "type": "home",
+    "generation": 5,
+    "releaseDate": "1994-12-03",
+    "price": 39800,
+    "media": "CD-ROM",
+    "color": "#0050d0",
+    "order": 160,
+    "wikipedia": "PlayStation (ゲーム機)",
+    "wikidata": [
+      "Q10677"
+    ],
+    "sources": [
+      "PlayStationのゲームタイトル一覧 (1994年-1995年)",
+      "PlayStationのゲームタイトル一覧 (1996年)",
+      "PlayStationのゲームタイトル一覧 (1997年)",
+      "PlayStationのゲームタイトル一覧 (1998年)",
+      "PlayStationのゲームタイトル一覧 (1999年)",
+      "PlayStationのゲームタイトル一覧 (2000年)",
+      "PlayStationのゲームタイトル一覧 (2001年)",
+      "PlayStationのゲームタイトル一覧 (2002年)",
+      "PlayStationのゲームタイトル一覧 (2003年-2004年)"
+    ],
+    "description": "ソニーが1994年に発売した家庭用ゲーム機。CD-ROMによる大容量と3DCGを武器に、『ファイナルファンタジーVII』『バイオハザード』など数多くのヒット作を生み、ゲーム市場の主役を大きく塗り替えました。"
+  },
+  {
+    "id": "ps2",
+    "name": "PlayStation 2",
+    "shortName": "PS2",
+    "abbr": "PS2",
+    "maker": "ソニー・コンピュータエンタテインメント",
+    "makerGroup": "ソニー",
+    "type": "home",
+    "generation": 6,
+    "releaseDate": "2000-03-04",
+    "price": 39800,
+    "media": "DVD-ROM／CD-ROM",
+    "color": "#0050d0",
+    "order": 170,
+    "wikipedia": "PlayStation 2",
+    "wikidata": [
+      "Q10680"
+    ],
+    "sources": [
+      "PlayStation 2のゲームタイトル一覧 (2000年-2001年)",
+      "PlayStation 2のゲームタイトル一覧 (2002年)",
+      "PlayStation 2のゲームタイトル一覧 (2003年)",
+      "PlayStation 2のゲームタイトル一覧 (2004年)",
+      "PlayStation 2のゲームタイトル一覧 (2005年)",
+      "PlayStation 2のゲームタイトル一覧 (2006年)",
+      "PlayStation 2のゲームタイトル一覧 (2007年)",
+      "PlayStation 2のゲームタイトル一覧"
+    ],
+    "description": "DVD再生機能を備え、初代PlayStationとの互換性も持つソニーの据え置き機。世界中で爆発的に普及し、『ドラゴンクエストVIII』『キングダム ハーツ』『モンスターハンター』など膨大なソフトが発売されました。"
+  },
+  {
+    "id": "ps3",
+    "name": "PlayStation 3",
+    "shortName": "PS3",
+    "abbr": "PS3",
+    "maker": "ソニー・コンピュータエンタテインメント",
+    "makerGroup": "ソニー",
+    "type": "home",
+    "generation": 7,
+    "releaseDate": "2006-11-11",
+    "price": 49980,
+    "priceNote": "20GBモデル・税込（60GBモデルはオープン価格）",
+    "media": "Blu-ray Disc／ダウンロード",
+    "color": "#0050d0",
+    "order": 180,
+    "wikipedia": "PlayStation 3",
+    "wikidata": [
+      "Q10683"
+    ],
+    "sources": [
+      "PlayStation 3のゲームタイトル一覧"
+    ],
+    "description": "Blu-ray Discと高性能プロセッサ「Cell」を搭載したHD世代の据え置き機。オンラインサービス「PlayStation Network」を本格展開し、ダウンロード販売も広く普及させました。"
+  },
+  {
+    "id": "ps4",
+    "name": "PlayStation 4",
+    "shortName": "PS4",
+    "abbr": "PS4",
+    "maker": "ソニー・コンピュータエンタテインメント",
+    "makerGroup": "ソニー",
+    "type": "home",
+    "generation": 8,
+    "releaseDate": "2014-02-22",
+    "price": 39980,
+    "priceNote": "税別",
+    "media": "Blu-ray Disc／ダウンロード",
+    "color": "#0050d0",
+    "order": 190,
+    "wikipedia": "PlayStation 4",
+    "wikidata": [
+      "Q5014725"
+    ],
+    "sources": [
+      "PlayStation 4のゲームタイトル一覧 (2014年-2015年)",
+      "PlayStation 4のゲームタイトル一覧 (2016年)",
+      "PlayStation 4のゲームタイトル一覧 (2017年)",
+      "PlayStation 4のゲームタイトル一覧 (2018年)",
+      "PlayStation 4のゲームタイトル一覧 (2019年)",
+      "PlayStation 4のゲームタイトル一覧 (2020年)",
+      "PlayStation 4のゲームタイトル一覧 (2021年)",
+      "PlayStation 4のゲームタイトル一覧"
+    ],
+    "description": "シェア機能付きのコントローラー「DUALSHOCK 4」を備えたソニーの据え置き機。世界的に大ヒットし、『モンスターハンター：ワールド』『ファイナルファンタジーVII リメイク』などが発売されました。VR機器「PlayStation VR」にも対応しています。"
+  },
+  {
+    "id": "ps5",
+    "name": "PlayStation 5",
+    "shortName": "PS5",
+    "abbr": "PS5",
+    "maker": "ソニー・インタラクティブエンタテインメント",
+    "makerGroup": "ソニー",
+    "type": "home",
+    "generation": 9,
+    "releaseDate": "2020-11-12",
+    "price": 49980,
+    "priceNote": "通常版・税別（デジタル・エディションは39,980円）",
+    "media": "Ultra HD Blu-ray／ダウンロード",
+    "color": "#0050d0",
+    "order": 200,
+    "wikipedia": "PlayStation 5",
+    "wikidata": [
+      "Q63184502"
+    ],
+    "sources": [
+      "PlayStation 5のゲームタイトル一覧 (2020年-2021年)",
+      "PlayStation 5のゲームタイトル一覧 (2022年)",
+      "PlayStation 5のゲームタイトル一覧 (2023年)",
+      "PlayStation 5のゲームタイトル一覧"
+    ],
+    "description": "高速SSDによるロード時間の短縮や、ハプティックフィードバックを備えたコントローラー「DualSense」が特徴のソニーの据え置き機。多くのPS4ソフトとの互換性も備えています。"
+  },
+  {
+    "id": "psp",
+    "name": "PlayStation Portable",
+    "shortName": "PSP",
+    "abbr": "PSP",
+    "maker": "ソニー・コンピュータエンタテインメント",
+    "makerGroup": "ソニー",
+    "type": "handheld",
+    "generation": 7,
+    "releaseDate": "2004-12-12",
+    "price": 19800,
+    "priceNote": "税別",
+    "media": "UMD／ダウンロード",
+    "color": "#0050d0",
+    "order": 210,
+    "wikipedia": "PlayStation Portable",
+    "wikidata": [
+      "Q170325"
+    ],
+    "sources": [
+      "PlayStation Portableのゲームタイトル一覧"
+    ],
+    "description": "光ディスク「UMD」を採用したソニー初の携帯ゲーム機。ワイド液晶による高品質な映像が特徴で、『モンスターハンターポータブル』シリーズによる協力プレイブームを巻き起こしました。"
+  },
+  {
+    "id": "vita",
+    "name": "PlayStation Vita",
+    "shortName": "PS Vita",
+    "abbr": "Vita",
+    "maker": "ソニー・コンピュータエンタテインメント",
+    "makerGroup": "ソニー",
+    "type": "handheld",
+    "generation": 8,
+    "releaseDate": "2011-12-17",
+    "price": 24980,
+    "priceNote": "Wi-Fiモデル・税込（3G/Wi-Fiモデルは29,980円）",
+    "media": "PS Vitaカード／ダウンロード",
+    "color": "#0050d0",
+    "order": 220,
+    "wikipedia": "PlayStation Vita",
+    "wikidata": [
+      "Q188808"
+    ],
+    "sources": [
+      "PlayStation Vitaのゲームタイトル一覧 (2011年-2012年)",
+      "PlayStation Vitaのゲームタイトル一覧 (2013年)",
+      "PlayStation Vitaのゲームタイトル一覧 (2014年)",
+      "PlayStation Vitaのゲームタイトル一覧 (2015年)",
+      "PlayStation Vitaのゲームタイトル一覧"
+    ],
+    "description": "有機ELディスプレイ（初期型）や前面・背面タッチパネルを搭載したソニーの携帯ゲーム機。PS4のリモートプレイにも対応し、アドベンチャーやRPGなどのタイトルが充実しています。"
+  },
+  {
+    "id": "sg1000",
+    "name": "SG-1000",
+    "shortName": "SG-1000",
+    "abbr": "SG",
+    "maker": "セガ",
+    "makerGroup": "セガ",
+    "type": "home",
+    "generation": 3,
+    "releaseDate": "1983-07-15",
+    "price": 15000,
+    "media": "ロムカセット／マイカード",
+    "color": "#1a74c9",
+    "order": 230,
+    "wikipedia": "SG-1000",
+    "wikidata": [
+      "Q1136956"
+    ],
+    "sources": [
+      "SG-1000のゲームタイトル一覧"
+    ],
+    "description": "セガ初の家庭用ゲーム機で、ファミコンと同じ1983年7月15日に発売されました。自社のアーケード作品の移植を中心に展開し、後継機SG-1000IIやセガ・マークIIIへと続いていきます。"
+  },
+  {
+    "id": "mk3",
+    "name": "セガ・マークIII",
+    "shortName": "マークIII",
+    "abbr": "MkIII",
+    "maker": "セガ",
+    "makerGroup": "セガ",
+    "type": "home",
+    "generation": 3,
+    "releaseDate": "1985-10-20",
+    "price": 15000,
+    "media": "ロムカートリッジ／マイカード",
+    "color": "#1a74c9",
+    "order": 240,
+    "wikipedia": "セガ・マークIII",
+    "wikidata": [
+      "Q1192432",
+      "Q209868"
+    ],
+    "sources": [
+      "セガ・マークIIIのゲームタイトル一覧"
+    ],
+    "description": "SG-1000シリーズの流れをくむセガの8ビット機。海外では「マスターシステム」として展開され、日本でも同名の上位機が発売されました。『ファンタジーゾーン』『ファンタシースター』などが登場しています。"
+  },
+  {
+    "id": "md",
+    "name": "メガドライブ",
+    "shortName": "メガドラ",
+    "abbr": "MD",
+    "maker": "セガ",
+    "makerGroup": "セガ",
+    "type": "home",
+    "generation": 4,
+    "releaseDate": "1988-10-29",
+    "price": 21000,
+    "media": "ロムカートリッジ",
+    "color": "#1a74c9",
+    "order": 250,
+    "wikipedia": "メガドライブ",
+    "wikidata": [
+      "Q10676"
+    ],
+    "sources": [
+      "メガドライブのゲームタイトル一覧"
+    ],
+    "description": "セガの16ビット家庭用ゲーム機。高速な処理能力を活かしたアクションやシューティングに強く、『ソニック・ザ・ヘッジホッグ』は海外で大ヒット。北米では「GENESIS」の名前で販売されました。"
+  },
+  {
+    "id": "mcd",
+    "name": "メガCD",
+    "shortName": "メガCD",
+    "abbr": "MCD",
+    "maker": "セガ",
+    "makerGroup": "セガ",
+    "type": "addon",
+    "generation": 4,
+    "releaseDate": "1991-12-12",
+    "price": 49800,
+    "media": "CD-ROM",
+    "color": "#1a74c9",
+    "order": 260,
+    "wikipedia": "メガCD",
+    "wikidata": [
+      "Q1047516"
+    ],
+    "sources": [
+      "メガCDのゲームタイトル一覧"
+    ],
+    "description": "メガドライブに接続して使うCD-ROMドライブ。大容量を活かしたアニメーションや音声を取り入れた作品が多く、『シルフィード』や『夢見館の物語』などが発売されました。"
+  },
+  {
+    "id": "32x",
+    "name": "スーパー32X",
+    "shortName": "32X",
+    "abbr": "32X",
+    "maker": "セガ",
+    "makerGroup": "セガ",
+    "type": "addon",
+    "generation": 5,
+    "releaseDate": "1994-12-03",
+    "price": 16800,
+    "media": "ロムカートリッジ",
+    "color": "#1a74c9",
+    "order": 270,
+    "wikipedia": "スーパー32X",
+    "wikidata": [
+      "Q1063978"
+    ],
+    "sources": [
+      "スーパー32Xのゲームタイトル一覧"
+    ],
+    "description": "メガドライブのカートリッジスロットに差し込み、32ビット機相当の性能に拡張する周辺機器。『バーチャレーシング デラックス』などが発売されましたが、セガサターンの登場もあり短命に終わりました。"
+  },
+  {
+    "id": "ss",
+    "name": "セガサターン",
+    "shortName": "サターン",
+    "abbr": "SS",
+    "maker": "セガ",
+    "makerGroup": "セガ",
+    "type": "home",
+    "generation": 5,
+    "releaseDate": "1994-11-22",
+    "price": 44800,
+    "media": "CD-ROM",
+    "color": "#1a74c9",
+    "order": 280,
+    "wikipedia": "セガサターン",
+    "wikidata": [
+      "Q200912"
+    ],
+    "sources": [
+      "セガサターンのゲームタイトル一覧"
+    ],
+    "description": "セガの32ビット家庭用ゲーム機。2D表現に優れ、『バーチャファイター』シリーズや『サクラ大戦』などのヒット作に加え、アーケードからの移植作品も豊富にそろっています。"
+  },
+  {
+    "id": "dc",
+    "name": "ドリームキャスト",
+    "shortName": "ドリキャス",
+    "abbr": "DC",
+    "maker": "セガ",
+    "makerGroup": "セガ",
+    "type": "home",
+    "generation": 6,
+    "releaseDate": "1998-11-27",
+    "price": 29800,
+    "media": "GD-ROM",
+    "color": "#1a74c9",
+    "order": 290,
+    "wikipedia": "ドリームキャスト",
+    "wikidata": [
+      "Q184198"
+    ],
+    "sources": [
+      "ドリームキャストのゲームタイトル一覧"
+    ],
+    "description": "モデムを標準搭載し、家庭用ゲーム機でのネット対戦・通信を先駆けたセガ最後の家庭用ゲーム機。『シェンムー』『ソウルキャリバー』『ファンタシースターオンライン』などの意欲作が発売されました。"
+  },
+  {
+    "id": "gg",
+    "name": "ゲームギア",
+    "shortName": "ゲームギア",
+    "abbr": "GG",
+    "maker": "セガ",
+    "makerGroup": "セガ",
+    "type": "handheld",
+    "generation": 4,
+    "releaseDate": "1990-10-06",
+    "price": 19800,
+    "media": "ロムカートリッジ",
+    "color": "#1a74c9",
+    "order": 300,
+    "wikipedia": "ゲームギア",
+    "wikidata": [
+      "Q751719"
+    ],
+    "sources": [
+      "ゲームギアのゲームタイトル一覧"
+    ],
+    "description": "カラー液晶を搭載したセガの携帯ゲーム機。別売りのTVチューナーでテレビも見られるなど多機能で、『ぷよぷよ』や『ソニック』シリーズなどが発売されました。"
+  },
+  {
+    "id": "pce",
+    "name": "PCエンジン",
+    "shortName": "PCエンジン",
+    "abbr": "PCE",
+    "maker": "日本電気ホームエレクトロニクス",
+    "makerGroup": "NEC",
+    "type": "home",
+    "generation": 4,
+    "releaseDate": "1987-10-30",
+    "price": 24800,
+    "media": "HuCARD／CD-ROM²",
+    "color": "#e8740c",
+    "order": 310,
+    "wikipedia": "PCエンジン",
+    "wikidata": [
+      "Q1057377"
+    ],
+    "sources": [
+      "PCエンジンのゲームタイトル一覧"
+    ],
+    "description": "NECホームエレクトロニクスとハドソンが共同開発した家庭用ゲーム機。カード型の「HuCARD」と、世界初のCD-ROM対応ゲーム機としての展開が特徴で、『イース I・II』『天外魔境II 卍MARU』などが人気を集めました。"
+  },
+  {
+    "id": "pcfx",
+    "name": "PC-FX",
+    "shortName": "PC-FX",
+    "abbr": "PC-FX",
+    "maker": "日本電気ホームエレクトロニクス",
+    "makerGroup": "NEC",
+    "type": "home",
+    "generation": 5,
+    "releaseDate": "1994-12-23",
+    "price": 49800,
+    "media": "CD-ROM",
+    "color": "#e8740c",
+    "order": 320,
+    "wikipedia": "PC-FX",
+    "wikidata": [
+      "Q1136902"
+    ],
+    "sources": [
+      "PC-FXのゲームタイトル一覧"
+    ],
+    "description": "PCエンジンの後継として発売されたNECホームエレクトロニクスの32ビット機。動画再生能力に優れ、アニメ調のアドベンチャーゲームを中心としたラインナップが特徴です。"
+  },
+  {
+    "id": "neogeo",
+    "name": "ネオジオ",
+    "shortName": "ネオジオ",
+    "abbr": "NEOGEO",
+    "maker": "SNK",
+    "makerGroup": "SNK",
+    "type": "home",
+    "generation": 4,
+    "releaseDate": "1990-07-01",
+    "price": 58000,
+    "priceNote": "1990年はレンタル向け、一般販売は1991年から",
+    "media": "ロムカセット",
+    "color": "#3b4652",
+    "order": 330,
+    "wikipedia": "ネオジオ",
+    "wikidata": [
+      "Q1054350",
+      "Q64428080",
+      "Q3338058",
+      "Q2703883"
+    ],
+    "sources": [
+      "ネオジオのゲームタイトル一覧"
+    ],
+    "description": "SNKのアーケード基板「MVS」とほぼ同じ性能を家庭で楽しめるゲーム機。大容量のロムカセットで『餓狼伝説』『サムライスピリッツ』『ザ・キング・オブ・ファイターズ』などの格闘ゲームを完全再現しました。"
+  },
+  {
+    "id": "ngp",
+    "name": "ネオジオポケット",
+    "shortName": "ネオジオポケット",
+    "abbr": "NGP",
+    "maker": "SNK",
+    "makerGroup": "SNK",
+    "type": "handheld",
+    "generation": 5,
+    "releaseDate": "1998-10-28",
+    "price": 7800,
+    "media": "ロムカートリッジ",
+    "color": "#3b4652",
+    "order": 340,
+    "wikipedia": "ネオジオポケット",
+    "wikidata": [
+      "Q939881"
+    ],
+    "sources": [
+      "ネオジオポケットのゲームタイトル一覧"
+    ],
+    "description": "SNKが発売した携帯ゲーム機。翌年にはカラー液晶の「ネオジオポケットカラー」が登場しました。操作性の良いスティックが特徴で、SNKの格闘ゲームを携帯機向けにアレンジした作品などが発売されました。"
+  },
+  {
+    "id": "ws",
+    "name": "ワンダースワン",
+    "shortName": "ワンダースワン",
+    "abbr": "WS",
+    "maker": "バンダイ",
+    "makerGroup": "バンダイ",
+    "type": "handheld",
+    "generation": 5,
+    "releaseDate": "1999-03-04",
+    "price": 4800,
+    "media": "ロムカートリッジ",
+    "color": "#8a2be2",
+    "order": 350,
+    "wikipedia": "ワンダースワン",
+    "wikidata": [
+      "Q1065792"
+    ],
+    "sources": [
+      "ワンダースワンのゲームタイトル一覧"
+    ],
+    "description": "バンダイが発売した低価格・省電力の携帯ゲーム機。縦持ち・横持ちの両方に対応するユニークな設計で、後にカラー版の「ワンダースワンカラー」「スワンクリスタル」も登場しました。"
+  },
+  {
+    "id": "xbox",
+    "name": "Xbox",
+    "shortName": "Xbox",
+    "abbr": "Xbox",
+    "maker": "マイクロソフト",
+    "makerGroup": "マイクロソフト",
+    "type": "home",
+    "generation": 6,
+    "releaseDate": "2002-02-22",
+    "price": 34800,
+    "media": "DVD-ROM",
+    "color": "#107c10",
+    "order": 360,
+    "wikipedia": "Xbox (ゲーム機)",
+    "wikidata": [
+      "Q132020"
+    ],
+    "sources": [
+      "Xboxのゲームタイトル一覧"
+    ],
+    "description": "マイクロソフトが初めて発売した家庭用ゲーム機。ハードディスクを標準搭載し、オンラインサービス「Xbox Live」を展開しました。『Halo』シリーズの第1作はこの機種で登場しています。"
+  },
+  {
+    "id": "x360",
+    "name": "Xbox 360",
+    "shortName": "Xbox 360",
+    "abbr": "X360",
+    "maker": "マイクロソフト",
+    "makerGroup": "マイクロソフト",
+    "type": "home",
+    "generation": 7,
+    "releaseDate": "2005-12-10",
+    "price": 39795,
+    "priceNote": "税込",
+    "media": "DVD-ROM／ダウンロード",
+    "color": "#107c10",
+    "order": 370,
+    "wikipedia": "Xbox 360",
+    "wikidata": [
+      "Q48263"
+    ],
+    "sources": [
+      "Xbox 360のゲームタイトル一覧"
+    ],
+    "description": "マイクロソフトの第2世代機。日本では『ブルードラゴン』『アイドルマスター』などの独自タイトルやシューティングゲームの移植でも話題になりました。実績（アチーブメント）システムを定着させた機種でもあります。"
+  },
+  {
+    "id": "xone",
+    "name": "Xbox One",
+    "shortName": "Xbox One",
+    "abbr": "XONE",
+    "maker": "マイクロソフト",
+    "makerGroup": "マイクロソフト",
+    "type": "home",
+    "generation": 8,
+    "releaseDate": "2014-09-04",
+    "price": 39980,
+    "priceNote": "Kinect非同梱・税別",
+    "media": "Blu-ray Disc／ダウンロード",
+    "color": "#107c10",
+    "order": 380,
+    "wikipedia": "Xbox One",
+    "wikidata": [
+      "Q13361286"
+    ],
+    "sources": [
+      "Xbox Oneのゲームタイトル一覧"
+    ],
+    "description": "マイクロソフトの第3世代機。テレビ視聴機能や後方互換機能、定額制サービス「Xbox Game Pass」の開始など、ゲーム以外のサービス面でも進化を遂げました。"
+  },
+  {
+    "id": "xsx",
+    "name": "Xbox Series X|S",
+    "shortName": "Xbox Series X|S",
+    "abbr": "XSX",
+    "maker": "マイクロソフト",
+    "makerGroup": "マイクロソフト",
+    "type": "home",
+    "generation": 9,
+    "releaseDate": "2020-11-10",
+    "price": 49980,
+    "priceNote": "Series X・税別（Series Sは29,980円）",
+    "media": "Ultra HD Blu-ray／ダウンロード",
+    "color": "#107c10",
+    "order": 390,
+    "wikipedia": "Xbox Series X/S",
+    "wikidata": [
+      "Q98973368"
+    ],
+    "sources": [
+      "Xbox Series X/Sのゲームタイトル一覧"
+    ],
+    "description": "高性能なSeries Xと、ディスクドライブ非搭載で小型・低価格なSeries Sの2モデル構成で登場したマイクロソフトの据え置き機。Xbox Game Passを中心に展開しています。"
+  },
+  {
+    "id": "3do",
+    "name": "3DO",
+    "shortName": "3DO",
+    "abbr": "3DO",
+    "maker": "松下電器産業（パナソニック）ほか",
+    "makerGroup": "その他",
+    "type": "home",
+    "generation": 5,
+    "releaseDate": "1994-03-20",
+    "price": 54800,
+    "priceNote": "松下電器「3DO REAL」",
+    "media": "CD-ROM",
+    "color": "#6d4c41",
+    "order": 400,
+    "wikipedia": "3DO",
+    "wikidata": [
+      "Q229429"
+    ],
+    "sources": [
+      "3DOのゲームタイトル一覧"
+    ],
+    "description": "米3DO社が規格を策定し、複数の家電メーカーが本体を製造した32ビット機。日本では松下電器（現パナソニック）の「3DO REAL」などが発売され、『Dの食卓』などの意欲作が登場しました。"
+  }
+]

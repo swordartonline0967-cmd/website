@@ -1,0 +1,31 @@
+{
+  "name": "game-database-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "家庭用ゲームソフトのデータベースサイト（Astro製の静的サイト）",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/postbuild-check.mjs",
+    "preview": "astro preview",
+    "check": "astro check",
+    "data:import": "node scripts/import/import-all.mjs",
+    "data:validate": "node scripts/validate-data.mjs",
+    "deploy": "npm run build && wrangler deploy",
+    "data:wikipedia": "node scripts/import/import-wikipedia.mjs",
+    "data:wikidata": "node scripts/import/enrich-wikidata.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "node-html-parser": "^9.0.4",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.141.0"
+  }
+}

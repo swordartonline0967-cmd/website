@@ -1,0 +1,54 @@
+---
+/**
+ * ハード一覧  /platforms/
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PlatformCard from '../../components/PlatformCard.astro';
+import { getGamesByPlatform, getPlatforms } from '../../lib/data';
+import { formatDate, formatNumber, formatPrice } from '../../lib/format';
+import { PLATFORM_TYPE_LABEL } from '../../lib/platform-style';
+import { platformUrl } from '../../lib/url';
+
+const platforms = getPlatforms();
+const groups = [...new Set(platforms.map((p) => p.makerGroup))];
+const byDate = [...platforms].sort((a, b) => (a.releaseDate < b.releaseDate ? -1 : 1));
+---
+<BaseLayout
+  title="ハード（ゲーム機）一覧"
+  description="ファミコン、スーパーファミコン、PlayStation、セガサターンからNintendo Switch 2、PS5まで、日本で発売された家庭用ゲーム機の一覧。発売日・発売時の価格・ソフト数を比較できます。"
+  breadcrumbs={[{ name: 'ハード一覧' }]}
+>
+  <div class="page-head">
+    <h1>ハード（ゲーム機）一覧</h1>
+    <p class="lead">日本で発売された家庭用ゲーム機・携帯ゲーム機 {platforms.length}機種を、メーカーごとに掲載しています。</p>
+  </div>
+
+  {groups.map((grp) => (
+    <section style="margin-bottom:24px">
+      <h2 class="section-title">{grp}</h2>
+      <div class="platform-grid">
+        {platforms.filter((p) => p.makerGroup === grp).map((p) => <PlatformCard platform={p} count={getGamesByPlatform(p.id).length} />)}
+      </div>
+    </section>
+  ))}
+
+  <h2 class="section-title">発売日順の一覧表</h2>
+  <div class="card table-wrap" style="padding:0">
+    <table class="game-table">
+      <thead><tr><th>発売日</th><th>機種名</th><th>メーカー</th><th>種類</th><th>発売時の価格</th><th>ソフト数</th></tr></thead>
+      <tbody>
+        {byDate.map((p) => (
+          <tr>
+            <td class="d">{formatDate(p.releaseDate)}</td>
+            <td class="t"><a href={platformUrl(p.id)}>{p.name}</a></td>
+            <td class="m">{p.maker}</td>
+            <td class="m">{PLATFORM_TYPE_LABEL[p.type]}・第{p.generation}世代</td>
+            <td class="m">{p.price ? formatPrice(p.price) : '—'}</td>
+            <td class="m">{formatNumber(getGamesByPlatform(p.id).length)}本</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="muted small">※価格は日本での発売時のメーカー希望小売価格です（税込・税別は機種の発売当時の表記に準じます。詳細は各機種のページをご覧ください）。</p>
+</BaseLayout>

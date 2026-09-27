@@ -1,0 +1,16 @@
+---
+import type { Platform } from '../lib/types';
+import { platformUrl } from '../lib/url';
+import { formatNumber, yearOf } from '../lib/format';
+
+interface Props {
+  platform: Platform;
+  count: number;
+}
+const { platform: p, count } = Astro.props;
+---
+<a class="platform-card" href={platformUrl(p.id)} style={`--pc:${p.color}`}>
+  <div class="platform-card__name">{p.name}</div>
+  <div class="platform-card__meta">{p.maker.replace(/（.*?）/g, '')}・{yearOf(p.releaseDate)}年</div>
+  <div class="platform-card__count">ソフト <strong>{formatNumber(count)}</strong> 本</div>
+</a>

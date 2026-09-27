@@ -1,0 +1,85 @@
+---
+/**
+ * 発売年のページ  /years/<年>/
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getGamesByYear, getPlatforms, getYears } from '../../lib/data';
+import { formatDate, formatNumber, parseDate } from '../../lib/format';
+import { platformClass } from '../../lib/platform-style';
+import { platformUrl, platformYearUrl, url, yearUrl } from '../../lib/url';
+
+export function getStaticPaths() {
+  return getYears().map((y) => ({ params: { year: String(y.year) } }));
+}
+
+const year = Number(Astro.params.year);
+const years = getYears();
+const idx = years.findIndex((y) => y.year === year);
+const info = years[idx];
+const prev = years[idx - 1];
+const next = years[idx + 1];
+const games = getGamesByYear(year);
+const rows = getPlatforms()
+  .filter((p) => info.platformCounts[p.id])
+  .map((p) => {
+    const list = games.filter((g) => g.platform === p.id);
+    return { p, total: list.length, dl: list.filter((g) => g.digitalOnly).length };
+  })
+  .sort((a, b) => b.total - a.total);
+const maxCount = Math.max(1, ...rows.map((r) => r.total));
+const monthCounts = Array.from({ length: 12 }, (_, i) => games.filter((g) => parseDate(g.date)?.month === i + 1).length);
+const maxMonth = Math.max(1, ...monthCounts);
+const newHardware = getPlatforms().filter((p) => p.releaseDate.startsWith(String(year)));
+---
+<BaseLayout
+  title={`${year}年に発売されたゲームソフト（${formatNumber(games.length)}本）`}
+  description={`${year}年に発売された家庭用ゲームソフト${formatNumber(games.length)}本を機種別に紹介。${rows.slice(0, 4).map((r) => `${r.p.shortName}${r.total}本`).join('、')}など。`}
+  breadcrumbs={[{ name: '発売年別', href: url('/years/') }, { name: `${year}年` }]}
+>
+  <div class="page-head">
+    <h1>{year}年に発売されたゲームソフト</h1>
+    <p class="lead">{year}年に発売（配信）されたソフトは、{rows.length}機種で合計 <strong>{formatNumber(games.length)}本</strong> です。</p>
+  </div>
+
+  <nav class="prev-next" aria-label="前後の年">
+    {prev ? <a class="prev" href={yearUrl(prev.year)}><small>← 前の年</small>{prev.year}年（{formatNumber(prev.count)}本）</a> : <span></span>}
+    {next ? <a class="next" href={yearUrl(next.year)}><small>次の年 →</small>{next.year}年（{formatNumber(next.count)}本）</a> : <span></span>}
+  </nav>
+
+  {newHardware.length > 0 && (
+    <section class="card">
+      <div class="card-title"><h2>{year}年に発売されたハード</h2></div>
+      <ul class="simple-list">
+        {newHardware.map((p) => <li><a href={platformUrl(p.id)}>{p.name}</a><span class="sub">{formatDate(p.releaseDate)}・{p.maker}</span></li>)}
+      </ul>
+    </section>
+  )}
+
+  <section class="card">
+    <div class="card-title"><h2>機種別のソフト数</h2></div>
+    <div class="table-wrap">
+      <table class="game-table">
+        <thead><tr><th>機種</th><th>ソフト数</th><th style="width:40%"></th><th>一覧</th></tr></thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr>
+              <td class="t"><span class={`badge ${platformClass(r.p)}`}>{r.p.abbr}</span> {r.p.name}</td>
+              <td class="m">{formatNumber(r.total)}本{r.dl > 0 && <span class="small">（DL専用 {formatNumber(r.dl)}）</span>}</td>
+              <td><span style={`display:block;height:10px;border-radius:5px;background:${r.p.color};width:${Math.max(2, Math.round((r.total / maxCount) * 100))}%`}></span></td>
+              <td><a href={platformYearUrl(r.p.id, year)}>見る →</a></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-title"><h2>月別のソフト数</h2></div>
+    <ul class="bar-list">
+      {monthCounts.map((n, i) => (
+        <li><span>{i + 1}月</span><span class="bar" style={`width:${Math.max(n ? 2 : 0, Math.round((n / maxMonth) * 100))}%`}></span><span class="num">{formatNumber(n)}本</span></li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

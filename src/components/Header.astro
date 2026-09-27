@@ -1,0 +1,41 @@
+---
+import { site } from '../config/site';
+import { url } from '../lib/url';
+
+const nav = [
+  { href: url('/platforms/'), label: 'ハード一覧', match: '/platforms/' },
+  { href: url('/years/'), label: '発売年別', match: '/years/' },
+  { href: url('/makers/'), label: 'メーカー', match: '/makers/' },
+  { href: url('/genres/'), label: 'ジャンル', match: '/genres/' },
+  { href: url('/upcoming/'), label: '発売予定', match: '/upcoming/' },
+  { href: url('/calendar/'), label: '今日は何の日', match: '/calendar/' },
+  { href: url('/search/'), label: 'ソフト検索', match: '/search/' },
+];
+const path = Astro.url.pathname;
+---
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="logo" href={url('/')}>
+      <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="3" y="2" width="26" height="28" rx="4" fill="#e9ecf1"></rect>
+        <rect x="7" y="6" width="18" height="11" rx="2" fill="#d9143a"></rect>
+        <rect x="9" y="23" width="3" height="5" fill="#8d95a3"></rect>
+        <rect x="14.5" y="23" width="3" height="5" fill="#8d95a3"></rect>
+        <rect x="20" y="23" width="3" height="5" fill="#8d95a3"></rect>
+      </svg>
+      <span>{site.name}<span class="logo__tagline">{site.tagline}</span></span>
+    </a>
+    <form class="header-search" action={url('/search/')} method="get" role="search">
+      <label class="visually-hidden" for="header-q">ソフト名で検索</label>
+      <input id="header-q" type="search" name="q" placeholder="ソフト名で検索（例: マリオ）" autocomplete="off" />
+      <button type="submit">検索</button>
+    </form>
+  </div>
+  <nav class="global-nav" aria-label="メインメニュー">
+    <ul>
+      {nav.map((n) => (
+        <li><a href={n.href} aria-current={path.includes(n.match) ? 'page' : undefined}>{n.label}</a></li>
+      ))}
+    </ul>
+  </nav>
+</header>
