@@ -51,4 +51,5 @@ jobs:
         if: steps.commit.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run deploy-github-pages.yml --ref "${GITHUB_REF_NAME}"
+        # GitHub Pages を使っていない（Cloudflare で公開している）場合は、呼び出しに失敗しても問題ありません
+        run: gh workflow run deploy-github-pages.yml --ref "${GITHUB_REF_NAME}" || echo "GitHub Pages の公開処理は呼び出しませんでした（Cloudflare で公開している場合は、データ保存時に自動で公開されます）"
