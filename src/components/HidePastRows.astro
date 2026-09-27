@@ -1,0 +1,23 @@
+---
+/**
+ * 発売予定の一覧から、発売日（今日・日本時間）を過ぎた行をブラウザ側で隠す。
+ * サイトを作り直すまでの間に古い情報が「予定」として残らないようにするため。
+ * target: 対象の一覧を囲む要素のCSSセレクタ
+ */
+interface Props {
+  target: string;
+}
+const { target } = Astro.props;
+---
+<script is:inline define:vars={{ target }}>
+  (function () {
+    var now = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10).replace(/-/g, '/');
+    var root = document.querySelector(target);
+    if (!root) return;
+    root.querySelectorAll('tbody tr').forEach(function (tr) {
+      var d = tr.querySelector('td.d');
+      var t = d ? d.textContent.trim() : '';
+      if (/^\d{4}\/\d{2}\/\d{2}$/.test(t) && t < now) tr.classList.add('is-past');
+    });
+  })();
+</script>

@@ -933,3 +933,8 @@ main {
   .game-table td.p { display: inline-block; width: auto; }
   .game-table td.m { width: auto; font-size: 0.82rem; }
 }
+
+/* 発売予定の一覧で、発売日を過ぎた行を隠す（ブラウザ側で判定） */
+.is-past {
+  display: none !important;
+}

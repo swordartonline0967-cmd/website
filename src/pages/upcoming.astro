@@ -5,6 +5,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GameTable from '../components/GameTable.astro';
 import ListFilter from '../components/ListFilter.astro';
+import HidePastRows from '../components/HidePastRows.astro';
 import { dateSortKey, getGames } from '../lib/data';
 import { formatNumber, parseDate } from '../lib/format';
 
@@ -38,4 +39,5 @@ for (const g of games) {
       </div>
     ))}
   </section>
+  <HidePastRows target="#upcoming-games" />
 </BaseLayout>

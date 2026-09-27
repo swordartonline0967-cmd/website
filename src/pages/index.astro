@@ -5,6 +5,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PlatformCard from '../components/PlatformCard.astro';
 import GameTable from '../components/GameTable.astro';
+import HidePastRows from '../components/HidePastRows.astro';
 import { site } from '../config/site';
 import { dateSortKey, getGames, getGamesByGenre, getGamesByPlatform, getGenres, getMakers, getPlatforms, getStats, getYears } from '../lib/data';
 import { decadeOf, formatNumber } from '../lib/format';
@@ -70,12 +71,13 @@ const jsonLd = {
   </section>
 
   {upcoming.length > 0 && (
-    <section class="card">
+    <section class="card" id="coming-soon">
       <div class="card-title">
         <h2>まもなく発売のソフト</h2>
         <a href={url('/upcoming/')}>発売予定をすべて見る</a>
       </div>
       <GameTable games={upcoming} showPlatform />
+      <HidePastRows target="#coming-soon" />
     </section>
   )}
 
