@@ -8,6 +8,11 @@ on:
 permissions:
   contents: read
 
+# 同じプルリクエストで新しい変更が来たら、古いチェックは中止する
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     runs-on: ubuntu-latest

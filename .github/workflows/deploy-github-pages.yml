@@ -6,6 +6,7 @@
 #  ・GitHub の「Actions」タブから手動で実行することもできます
 #  初回だけ、リポジトリの Settings → Pages → Source を「GitHub Actions」にしてください。
 #  詳しくは docs/01-公開手順.md を見てください。
+#  ※ Cloudflare で公開する場合は、このワークフローを Actions 画面で「Disable workflow」にしてください。
 name: サイトを公開（GitHub Pages）
 
 on:
