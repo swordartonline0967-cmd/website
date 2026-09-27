@@ -938,3 +938,19 @@ main {
 .is-past {
   display: none !important;
 }
+
+/* もしもアフィリエイトの表示回数計測用の画像（見た目には表示しない） */
+.shop-box {
+  position: relative;
+}
+.shop-imp {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+.shop-imp img {
+  border: none;
+}

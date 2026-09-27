@@ -14,6 +14,7 @@ interface Props {
 }
 const { keyword, heading = 'ショップで探す', retro = false } = Astro.props;
 const links = shopLinks(keyword, { retro });
+const impressions = links.filter((l) => l.impressionUrl);
 ---
 <section class="shop-box" aria-label={heading}>
   <div class="shop-box__head">
@@ -21,15 +22,31 @@ const links = shopLinks(keyword, { retro });
     {affiliateEnabled && <span class="pr-label">PR</span>}
   </div>
   <div class="shop-buttons">
-    {links.map((l) => (
-      <a
-        class={`shop-btn shop-btn--${l.id}`}
-        href={l.url}
-        target="_blank"
-        rel={l.isAffiliate ? 'sponsored noopener' : 'noopener'}
-      >{l.label}で探す</a>
-    ))}
+    {links.map((l) =>
+      l.viaMoshimo ? (
+        <a
+          class={`shop-btn shop-btn--${l.id}`}
+          href={l.url}
+          target="_blank"
+          rel="sponsored nofollow noopener"
+          referrerpolicy="no-referrer-when-downgrade"
+          attributionsrc
+        >{l.label}で探す</a>
+      ) : (
+        <a
+          class={`shop-btn shop-btn--${l.id}`}
+          href={l.url}
+          target="_blank"
+          rel={l.isAffiliate ? 'sponsored noopener' : 'noopener'}
+        >{l.label}で探す</a>
+      )
+    )}
   </div>
+  {impressions.length > 0 && (
+    <div class="shop-imp" aria-hidden="true">
+      {impressions.map((l) => <img src={l.impressionUrl} width="1" height="1" alt="" loading="lazy" />)}
+    </div>
+  )}
   <p class="shop-box__note">
     「{keyword}」で各ショップを検索します。価格・在庫・中古品の状態はリンク先でご確認ください。
     {affiliateEnabled && '当サイトはアフィリエイトプログラムに参加しており、リンク先での購入により紹介料を受け取る場合があります。'}

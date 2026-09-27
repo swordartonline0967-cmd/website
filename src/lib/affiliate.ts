@@ -12,14 +12,26 @@ export interface ShopLink {
   url: string;
   /** アフィリエイトリンクなら true（広告表記・rel="sponsored" を付ける） */
   isAffiliate: boolean;
+  /** もしもアフィリエイト経由のリンクなら true（もしも公式のリンク形式に合わせた属性を付ける） */
+  viaMoshimo?: boolean;
+  /** もしもアフィリエイトの表示回数計測用の画像URL */
+  impressionUrl?: string;
 }
 
 const enc = encodeURIComponent;
 const filled = (s: string) => typeof s === 'string' && s.trim() !== '';
 
-/** もしもアフィリエイト経由のリンク */
-function moshimo(aid: string, p: { p: number; pc: number; pl: number }, url: string) {
-  return `https://af.moshimo.com/af/c/click?a_id=${enc(aid)}&p_id=${p.p}&pc_id=${p.pc}&pl_id=${p.pl}&url=${enc(url)}`;
+/** もしもアフィリエイト経由のリンク（公式の「どこでもリンク」と同じ形式） */
+function moshimo(id: ShopId, label: string, aid: string, p: { p: number; pc: number; pl: number }, url: string): ShopLink {
+  const q = `a_id=${enc(aid)}&p_id=${p.p}&pc_id=${p.pc}&pl_id=${p.pl}`;
+  return {
+    id,
+    label,
+    url: `https://af.moshimo.com/af/c/click?${q}&url=${enc(url)}`,
+    isAffiliate: true,
+    viaMoshimo: true,
+    impressionUrl: `https://i.moshimo.com/af/i/impression?${q}`,
+  };
 }
 const MOSHIMO = {
   amazon: { p: 170, pc: 185, pl: 4062 },
@@ -31,7 +43,7 @@ function amazon(keyword: string): ShopLink {
   const base = `https://www.amazon.co.jp/s?k=${enc(keyword)}`;
   const { trackingId } = affiliate.amazon;
   if (filled(trackingId)) return { id: 'amazon', label: 'Amazon', url: `${base}&tag=${enc(trackingId.trim())}`, isAffiliate: true };
-  if (filled(affiliate.moshimo.amazonAid)) return { id: 'amazon', label: 'Amazon', url: moshimo(affiliate.moshimo.amazonAid.trim(), MOSHIMO.amazon, base), isAffiliate: true };
+  if (filled(affiliate.moshimo.amazonAid)) return moshimo('amazon', 'Amazon', affiliate.moshimo.amazonAid.trim(), MOSHIMO.amazon, base);
   return { id: 'amazon', label: 'Amazon', url: base, isAffiliate: false };
 }
 
@@ -41,7 +53,7 @@ function rakuten(keyword: string): ShopLink {
   if (filled(affiliateId)) {
     return { id: 'rakuten', label: '楽天市場', url: `https://hb.afl.rakuten.co.jp/hgc/${affiliateId.trim()}/?pc=${enc(base)}&m=${enc(base)}`, isAffiliate: true };
   }
-  if (filled(affiliate.moshimo.rakutenAid)) return { id: 'rakuten', label: '楽天市場', url: moshimo(affiliate.moshimo.rakutenAid.trim(), MOSHIMO.rakuten, base), isAffiliate: true };
+  if (filled(affiliate.moshimo.rakutenAid)) return moshimo('rakuten', '楽天市場', affiliate.moshimo.rakutenAid.trim(), MOSHIMO.rakuten, base);
   return { id: 'rakuten', label: '楽天市場', url: base, isAffiliate: false };
 }
 
@@ -51,7 +63,7 @@ function yahoo(keyword: string): ShopLink {
   if (filled(sid) && filled(pid)) {
     return { id: 'yahoo', label: 'Yahoo!ショッピング', url: `https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=${enc(sid.trim())}&pid=${enc(pid.trim())}&vc_url=${enc(base)}`, isAffiliate: true };
   }
-  if (filled(affiliate.moshimo.yahooAid)) return { id: 'yahoo', label: 'Yahoo!ショッピング', url: moshimo(affiliate.moshimo.yahooAid.trim(), MOSHIMO.yahoo, base), isAffiliate: true };
+  if (filled(affiliate.moshimo.yahooAid)) return moshimo('yahoo', 'Yahoo!ショッピング', affiliate.moshimo.yahooAid.trim(), MOSHIMO.yahoo, base);
   return { id: 'yahoo', label: 'Yahoo!ショッピング', url: base, isAffiliate: false };
 }
 
