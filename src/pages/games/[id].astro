@@ -12,6 +12,10 @@ import { platformClass } from '../../lib/platform-style';
 import { calendarUrl, gameUrl, genreUrl, makerUrl, platformUrl, platformYearUrl, url, yearUrl } from '../../lib/url';
 import type { Game } from '../../lib/types';
 import PlayRecord from '../../components/PlayRecord.astro';
+import ClearRecord from '../../components/ClearRecord.astro';
+import ClearGuide from '../../components/ClearGuide.astro';
+import YouTubeScript from '../../components/YouTubeScript.astro';
+import { getClear } from '../../lib/clears';
 import { getPlayRecord } from '../../lib/playlog';
 import { playlog } from '../../config/playlog';
 
@@ -45,7 +49,11 @@ else summary = `『${game.title}』は、${dateText}に${pubText ? `${pubText}�
 if (genres.length) summary += `ジャンルは${genres.map((g) => g!.name).join('・')}。`;
 if (developers.length && developers.map((x) => x.name).join() !== publishers.map((x) => x.name).join()) summary += `開発は${developers.map((x) => x.name).join('・')}が担当しています。`;
 const playRec = getPlayRecord(game.id);
-if (playRec && playRec.status !== 'extra') summary += `当サイトの「${playlog.name}」でプレイした記録${playRec.videos.length ? 'と動画' : ''}があります。`;
+const clear = getClear(game.id);
+const cleared = !!clear || playRec?.status === 'clear';
+const hasVideo = !!clear?.video || !!playRec?.videos.some((v) => v.yt);
+if (clear) summary += `当サイトの「${playlog.name}」でクリアした記録${clear.video ? '・プレイ動画' : ''}${clear.guideHtml.trim() ? '・攻略情報' : ''}を掲載しています。`;
+else if (playRec && playRec.status !== 'extra') summary += `当サイトの「${playlog.name}」でプレイした記録${playRec.videos.length ? 'と動画' : ''}があります。`;
 if (others.length) summary += `${[...new Set(others.map((o) => getPlatform(o.platform)?.shortName))].slice(0, 5).join('、')}${others.length > 5 ? 'など' : ''}でも同名のソフトが発売されています。`;
 
 const title = `${game.title}（${platform.shortName}）の発売日・ソフト情報`;
@@ -92,6 +100,7 @@ const badge = (g: Game) => getPlatform(g.platform);
           <a class={`badge ${platformClass(platform)}`} href={platformUrl(platform.id)}>{platform.name}</a>
           {game.digitalOnly && <span class="badge badge--dl">ダウンロード専用</span>}
           {game.cero && <span class="badge badge--outline">CERO {game.cero}</span>}
+          {cleared && <a class="pl pl-clear" href={clear ? '#clear' : '#playlog'} title={`${playlog.name}でクリア済み`}>クリア済み</a>}
         </p>
         <h1>{game.title}</h1>
         <p class="lead">{summary}</p>
@@ -128,7 +137,9 @@ const badge = (g: Game) => getPlatform(g.platform);
         {game.description && <div class="prose" style="margin-top:16px"><p>{game.description}</p></div>}
       </section>
 
-      <PlayRecord game={game} />
+      <ClearRecord game={game} />
+
+      <PlayRecord game={game} hideVideo={!!clear?.video} />
 
       {game.missingFromSource && (
         <div class="notice">このソフトは出典の一覧から削除されたため、情報を確認中です。内容に誤りがある可能性があります。</div>
@@ -139,6 +150,8 @@ const badge = (g: Game) => getPlatform(g.platform);
       ) : (
         <ShopLinks keyword={shopKeyword} heading={`${game.title}を探す`} retro={retro} />
       )}
+
+      <ClearGuide game={game} />
 
       {others.length > 0 && (
         <section class="card">
@@ -165,6 +178,7 @@ const badge = (g: Game) => getPlatform(g.platform);
         {wikiUrl && <> ／ <a href={wikiUrl} target="_blank" rel="noopener">Wikipediaの記事</a></>}
         {game.wikidata && <> ／ <a href={`https://www.wikidata.org/wiki/${game.wikidata}`} target="_blank" rel="noopener">Wikidata</a></>}
       </p>
+      {hasVideo && <YouTubeScript />}
     </article>
 
     <aside>

@@ -1,0 +1,44 @@
+---
+/**
+ * YouTube 動画の操作（ページに1回だけ置く）
+ * - 再生ボタンを押すと、YouTube のプレーヤーを読み込む
+ * - data-seek="秒" を持つボタン（チャプター）を押すと、動画のその秒から再生する
+ */
+---
+<script is:inline>
+  (function () {
+    function load(box, start) {
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + box.getAttribute('data-yt') + '?autoplay=1&enablejsapi=1&playsinline=1' + (start ? '&start=' + start : '') + '&origin=' + encodeURIComponent(location.origin);
+      f.title = box.getAttribute('data-title') || 'YouTube動画';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      f.allowFullscreen = true;
+      f.referrerPolicy = 'strict-origin-when-cross-origin';
+      box.replaceChildren(f);
+    }
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest) return;
+      var play = e.target.closest('.yt__play');
+      if (play) {
+        load(play.parentElement, 0);
+        return;
+      }
+      var seek = e.target.closest('[data-seek]');
+      if (!seek) return;
+      var box = document.querySelector('.yt[data-main]') || document.querySelector('.yt');
+      if (!box) return;
+      var sec = Math.max(0, Math.floor(Number(seek.getAttribute('data-seek')) || 0));
+      var f = box.querySelector('iframe');
+      if (f) {
+        var send = function (func, args) {
+          f.contentWindow.postMessage(JSON.stringify({ event: 'command', func: func, args: args }), '*');
+        };
+        send('seekTo', [sec, true]);
+        send('playVideo', []);
+      } else {
+        load(box, sec);
+      }
+      box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  })();
+</script>

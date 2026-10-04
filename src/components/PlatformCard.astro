@@ -2,15 +2,20 @@
 import type { Platform } from '../lib/types';
 import { platformUrl } from '../lib/url';
 import { formatNumber, yearOf } from '../lib/format';
+import { getPlatformProgress, percentText } from '../lib/playlog';
 
 interface Props {
   platform: Platform;
   count: number;
 }
 const { platform: p, count } = Astro.props;
+const prog = getPlatformProgress(p.id);
 ---
 <a class="platform-card" href={platformUrl(p.id)} style={`--pc:${p.color}`}>
   <div class="platform-card__name">{p.name}</div>
   <div class="platform-card__meta">{p.maker.replace(/（.*?）/g, '')}・{yearOf(p.releaseDate)}年</div>
   <div class="platform-card__count">ソフト <strong>{formatNumber(count)}</strong> 本</div>
+  {prog && prog.clear > 0 && (
+    <div class="platform-card__clear"><span class="pl pl-clear">クリア</span> {formatNumber(prog.clear)}本（{percentText(prog.clear, prog.targets)}%）</div>
+  )}
 </a>

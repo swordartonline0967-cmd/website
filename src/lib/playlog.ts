@@ -7,6 +7,7 @@ import path from 'node:path';
 import { playlog as config } from '../config/playlog';
 import type { Game } from './types';
 import { dateSortKey, getGame, getGamesByPlatform, getPlatforms } from './data';
+import { getAllClears } from './clears';
 import { jstDate } from './format';
 
 export type PlayStatus = 'clear' | 'playing' | 'hold' | 'extra';
@@ -60,7 +61,25 @@ function load() {
   const file: PlaylogFile = fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : { records: [], issues: [], videoTitles: {} };
   // ソフトのデータにない記録（IDの変更など）は表示しない
   file.records = file.records.filter((r) => getGame(r.id));
-  cache = { file, byId: new Map(file.records.map((r) => [r.id, r])) };
+  const byId = new Map(file.records.map((r) => [r.id, r]));
+  // クリア記録（data/clears/）があるソフトは「クリア」にする（動画もまとめる）
+  for (const c of getAllClears()) {
+    const day = /^(\d{4})\D(\d{1,2})\D(\d{1,2})/.exec(String(c.record.cleared_on ?? ''));
+    const clearedAt = day ? `${day[1]}-${day[2].padStart(2, '0')}-${day[3].padStart(2, '0')}` : undefined;
+    const video = c.video ? [{ yt: c.video.youtube_id }] : [];
+    if (c.video?.title && !file.videoTitles[c.video.youtube_id]) file.videoTitles[c.video.youtube_id] = c.video.title;
+    const r = byId.get(c.slug);
+    if (r) {
+      r.status = 'clear';
+      r.clearedAt ??= clearedAt;
+      for (const v of video) if (!r.videos.some((x) => x.yt === v.yt)) r.videos.unshift(v);
+    } else {
+      const rec: PlayRecord = { id: c.slug, status: 'clear', clearedAt, videos: video };
+      file.records.push(rec);
+      byId.set(c.slug, rec);
+    }
+  }
+  cache = { file, byId };
   return cache;
 }
 
@@ -137,6 +156,12 @@ export function getPlatformProgress(pid: string): PlatformProgress | null {
   };
   progressCache.set(pid, progress);
   return progress;
+}
+
+/** 達成率（％）の表示用の文字。10％未満は小数1桁 */
+export function percentText(clear: number, targets: number): string {
+  const pct = targets ? (clear / targets) * 100 : 0;
+  return pct > 0 && pct < 10 ? pct.toFixed(1) : String(Math.round(pct));
 }
 
 /** 企画の記録がある機種の進み具合（ハード一覧の順） */

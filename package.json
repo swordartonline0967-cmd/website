@@ -16,13 +16,15 @@
     "data:validate": "node scripts/validate-data.mjs",
     "data:check-changes": "node scripts/check-data-changes.mjs",
     "playlog:import": "node scripts/playlog/import-sheet.mjs",
+    "clears:check": "node scripts/clears/check.mjs",
     "deploy": "npm run build && wrangler deploy",
     "data:wikipedia": "node scripts/import/import-wikipedia.mjs",
     "data:wikidata": "node scripts/import/enrich-wikidata.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
-    "astro": "^7.3.5"
+    "astro": "^7.3.5",
+    "marked": "^18.0.14"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",

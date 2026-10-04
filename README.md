@@ -9,6 +9,7 @@
 - スマホ対応・検索エンジン対策（構造化データ、サイトマップ）済み
 - データは Wikipedia / Wikidata から**毎週自動で更新**
 - **発売日順クリア企画**の記録とYouTubeのプレイ動画を、ソフト・ハードのページに表示（記録はGoogleスプレッドシートから1時間ごとに自動反映）
+- **クリア記録・攻略記事**：`data/clears/<ソフトID>/` に置いて push すると、そのソフトのページに動画（チャプター付き）・記録の表・攻略記事を表示（決まりは [data/clears/README.md](data/clears/README.md)）
 
 > サイト名「ゲームソフト大全」は仮の名前です。`src/config/site.ts` で変更できます。
 
@@ -60,6 +61,7 @@ data/                  ← サイトのデータ（ここを直すと内容が�
   makers.json          ← メーカー一覧（メーカーページのID）
   genres.json          ← ジャンルの一覧と説明
   playlog.json         ← 発売日順クリア企画の記録（スプレッドシートから自動で作られる）
+  clears/              ← クリア記録と攻略記事（1本1フォルダ。クリア側が置く）
 src/
   config/site.ts       ← サイト名・URL・お問い合わせ・Google設定
   config/affiliate.ts  ← アフィリエイトID（ここにIDを貼る）

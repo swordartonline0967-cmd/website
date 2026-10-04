@@ -1,0 +1,73 @@
+---
+/**
+ * ソフトのページに表示する「クリア記録」（動画・チャプター・記録の表）
+ * データは data/clears/<ソフトID>/site.json から読み込みます（src/lib/clears.ts）。見た目はこの部品だけで変えられます。
+ */
+import YouTubeVideo from './YouTubeVideo.astro';
+import type { Game } from '../lib/types';
+import { getClear } from '../lib/clears';
+import { formatDate } from '../lib/format';
+
+interface Props {
+  game: Game;
+}
+const { game } = Astro.props;
+const clear = getClear(game.id);
+const r = clear?.record ?? {};
+
+// 配列の項目（文字、または {time, title} のような組）を1行の文字にする
+const line = (item: unknown): string => {
+  if (item == null) return '';
+  if (typeof item !== 'object') return String(item);
+  const o = item as Record<string, unknown>;
+  const range = o.start != null && o.end != null ? `${o.start}〜${o.end}` : '';
+  const rest = Object.entries(o)
+    .filter(([k]) => !(range && (k === 'start' || k === 'end')) && !/seconds$/.test(k))
+    .map(([, v]) => (typeof v === 'object' ? '' : String(v)))
+    .filter(Boolean);
+  return [range, ...rest].filter(Boolean).join(' ');
+};
+const list = (v: unknown) => (Array.isArray(v) ? v.map(line).filter(Boolean) : []);
+const losses = list(r.losses);
+const fastForward = list(r.fast_forward);
+const rows: [string, string][] = (
+  [
+    ['クリア条件', r.criterion],
+    ['結果', r.result],
+    ['クリア日', r.cleared_on ? formatDate(r.cleared_on, String(r.cleared_on)) : ''],
+    ['プレイ時間', r.play_time],
+    ['動画の長さ', r.video_time],
+    ['ミスの回数', r.deaths != null && String(r.deaths) !== '' ? `${r.deaths}回` : ''],
+  ] as [string, unknown][]
+)
+  .filter(([, v]) => v != null && v !== '')
+  .map(([k, v]) => [k, String(v)]);
+---
+{clear && (
+  <section class="card clear-box" id="clear" aria-labelledby="clear-title">
+    <div class="card-title">
+      <h2 id="clear-title">クリア記録</h2>
+      <span class="pl pl-clear">クリア済み</span>
+    </div>
+    {clear.video && <YouTubeVideo yt={clear.video.youtube_id} title={clear.video.title ?? `${game.title}のプレイ動画`} main />}
+    {clear.chapters.length > 0 && (
+      <details class="chapters" open>
+        <summary>チャプター（押すと動画のその場面から再生します）</summary>
+        <ol>
+          {clear.chapters.map((c) => (
+            <li><button type="button" class="seek" data-seek={c.seconds}><span class="chapters__time">{c.time}</span>{c.title}</button></li>
+          ))}
+        </ol>
+      </details>
+    )}
+    {(rows.length > 0 || losses.length > 0 || fastForward.length > 0) && (
+      <table class="info-table record-table">
+        <tbody>
+          {rows.map(([k, v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}
+          {losses.length > 0 && <tr><th scope="row">ミスした場面</th><td><ul>{losses.map((x) => <li>{x}</li>)}</ul></td></tr>}
+          {fastForward.length > 0 && <tr><th scope="row">動画で早送りした区間</th><td><ul>{fastForward.map((x) => <li>{x}</li>)}</ul></td></tr>}
+        </tbody>
+      </table>
+    )}
+  </section>
+)}

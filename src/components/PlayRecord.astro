@@ -12,8 +12,10 @@ import { gameUrl, platformUrl, url } from '../lib/url';
 
 interface Props {
   game: Game;
+  /** クリア記録の欄で動画を表示しているときは true（動画を重ねて出さない） */
+  hideVideo?: boolean;
 }
-const { game } = Astro.props;
+const { game, hideVideo = false } = Astro.props;
 const rec = getPlayRecord(game.id);
 const platform = getPlatform(game.platform)!;
 const inProject = rec && rec.status !== 'extra';
@@ -38,7 +40,7 @@ const label = (v: { yt?: string; url?: string }, i: number) => (v.yt ? videoTitl
       <p class="muted small">「{config.name}」とは別に、このソフトを遊んだときの動画です。</p>
     )}
     {rec.comment && <p class="playlog-box__comment">{rec.comment}</p>}
-    {first?.yt && <YouTubeVideo yt={first.yt} title={videoTitle(first.yt) ?? `${game.title}のプレイ動画`} />}
+    {first?.yt && !hideVideo && <YouTubeVideo yt={first.yt} title={videoTitle(first.yt) ?? `${game.title}のプレイ動画`} main />}
     {rec.videos.length > 0 && (
       <ol class="playlog-box__videos">
         {rec.videos.map((v, i) => (
@@ -55,21 +57,4 @@ const label = (v: { yt?: string; url?: string }, i: number) => (v.yt ? videoTitl
       </p>
     )}
   </section>
-)}
-{first?.yt && (
-  <script is:inline>
-    // 再生ボタンを押したときに、YouTube のプレーヤーに入れ替える
-    document.addEventListener('click', function (e) {
-      var btn = e.target.closest && e.target.closest('.yt__play');
-      if (!btn) return;
-      var box = btn.parentElement;
-      var f = document.createElement('iframe');
-      f.src = 'https://www.youtube-nocookie.com/embed/' + box.getAttribute('data-yt') + '?autoplay=1';
-      f.title = box.getAttribute('data-title') || 'YouTube動画';
-      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-      f.allowFullscreen = true;
-      f.referrerPolicy = 'strict-origin-when-cross-origin';
-      box.replaceChildren(f);
-    });
-  </script>
 )}

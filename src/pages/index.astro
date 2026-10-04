@@ -11,7 +11,7 @@ import { dateSortKey, getGames, getGamesByGenre, getGamesByPlatform, getGenres, 
 import { decadeOf, formatNumber, jstDate } from '../lib/format';
 import { gameUrl, genreUrl, makerUrl, platformUrl, url } from '../lib/url';
 import { playlog } from '../config/playlog';
-import { getAllProgress } from '../lib/playlog';
+import { getAllProgress, percentText } from '../lib/playlog';
 
 const stats = getStats();
 const platforms = getPlatforms();
@@ -33,6 +33,7 @@ const genres = getGenres().map((g) => ({ ...g, count: getGamesByGenre(g.id).leng
 // 発売日順クリア企画：クリアした本数が多い機種から6つ
 const progress = getAllProgress();
 const playlogClear = progress.reduce((n, p) => n + p.clear, 0);
+const playlogTargets = progress.reduce((n, p) => n + p.targets, 0);
 const playlogTop = [...progress].sort((a, b) => b.clear - a.clear).slice(0, 6);
 
 const jsonLd = {
@@ -76,13 +77,14 @@ const jsonLd = {
       <div class="pl-stats">
         <span><strong>{formatNumber(playlogClear)}</strong>本クリア</span>
         <span><strong>{progress.length}</strong>機種</span>
+        <span class="muted">遊んだ機種の対象 {formatNumber(playlogTargets)}本のうち {percentText(playlogClear, playlogTargets)}%</span>
       </div>
       <ul class="simple-list">
         {playlogTop.map((p) => (
           <li>
             <a href={`${platformUrl(p.platformId)}#playlog`}>{getPlatform(p.platformId)?.shortName}</a>：
             {p.latest && <a href={gameUrl(p.latest.game.id)}>{p.latest.game.title}</a>}
-            <span class="sub">まで{p.clear}本クリア</span>
+            <span class="sub">まで{p.clear}本クリア（{percentText(p.clear, p.targets)}%）</span>
           </li>
         ))}
       </ul>

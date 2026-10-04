@@ -25,5 +25,6 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run data:validate
+      - run: npm run clears:check
       - run: npm run check
       - run: npm run build

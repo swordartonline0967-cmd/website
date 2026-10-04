@@ -1059,3 +1059,49 @@ td > .pl:first-child { margin-left: 0; }
 .playlog-hero .btn { background: #c4302b; }
 .playlog-hero .btn:hover { background: #a3241f; }
 .playlog-card .pl-stats { margin-bottom: 8px; }
+
+/* ============================================================
+   クリア記録（data/clears/）と攻略情報
+   ============================================================ */
+.platform-card__clear { margin-top: 4px; font-size: 0.8rem; color: var(--text-muted); }
+.platform-card__clear .pl { margin-left: 0; }
+.page-head a.pl { text-decoration: none; vertical-align: middle; }
+
+.chapters { margin: 12px 0 0; }
+.chapters summary { cursor: pointer; font-weight: 700; font-size: 0.9rem; }
+.chapters ol { list-style: none; margin: 8px 0 0; padding: 0; max-height: 320px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; }
+.chapters li + li { border-top: 1px solid var(--border); }
+.seek {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  font: inherit;
+  color: var(--link);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+.chapters .seek { display: flex; width: 100%; padding: 8px 12px; }
+.chapters .seek:hover,
+.chapters .seek:focus-visible { background: var(--surface-2); }
+.chapters__time { flex: none; min-width: 4.5em; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.chart-step .seek { margin-left: 8px; font-size: 0.8rem; font-weight: 700; padding: 1px 8px; border: 1px solid var(--border); border-radius: 999px; }
+.record-table { margin-top: 14px; }
+.record-table ul { margin: 0; padding-left: 1.2em; }
+
+.guide-toc { margin: 0 0 16px; padding: 10px 16px; background: var(--surface-2); border-radius: 8px; font-size: 0.9rem; }
+.guide-toc ol { margin: 0; padding-left: 1.4em; columns: 2; column-gap: 24px; }
+.guide-body h3 { font-size: 1.15rem; border-left: 4px solid var(--primary); padding-left: 10px; margin: 1.8em 0 0.6em; }
+.guide-body h3:first-child { margin-top: 0; }
+.guide-body h4 { font-size: 1rem; margin: 1.4em 0 0.4em; }
+.guide-body img { display: block; max-width: 100%; height: auto; margin: 10px 0; }
+.guide-body img.px { image-rendering: pixelated; }
+.guide-body table { border-collapse: collapse; margin: 10px 0; font-size: 0.9rem; display: block; overflow-x: auto; }
+.guide-body th,
+.guide-body td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+.guide-body th { background: var(--surface-2); }
+@media (max-width: 600px) {
+  .guide-toc ol { columns: 1; }
+}

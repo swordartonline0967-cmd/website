@@ -1,0 +1,24 @@
+---
+/**
+ * ソフトのページに表示する「攻略情報」（クリア記録の記事）
+ * 記事は data/clears/<ソフトID>/site.json の guide_md（Markdown）から作ります（src/lib/clears.ts）。
+ */
+import type { Game } from '../lib/types';
+import { getClear } from '../lib/clears';
+
+interface Props {
+  game: Game;
+}
+const clear = getClear(Astro.props.game.id);
+---
+{clear && clear.guideHtml.trim() && (
+  <article class="card guide" id="guide" aria-labelledby="guide-title">
+    <div class="card-title"><h2 id="guide-title">攻略情報</h2></div>
+    {clear.toc.length > 1 && (
+      <nav class="guide-toc" aria-label="攻略情報の目次">
+        <ol>{clear.toc.map((t) => <li><a href={`#${t.id}`}>{t.text}</a></li>)}</ol>
+      </nav>
+    )}
+    <div class="guide-body prose" set:html={clear.guideHtml} />
+  </article>
+)}

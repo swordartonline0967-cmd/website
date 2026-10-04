@@ -40,6 +40,8 @@ jobs:
       - run: npm ci
       - name: データのチェック
         run: npm run data:validate
+      - name: クリア記録のチェック（問題のあるソフトは表示されないだけで、公開は続けます）
+        run: npm run clears:check || echo "::warning::クリア記録に問題があります（上の ✗ の行）。該当するソフトは表示されません"
       - name: サイトを作る（ビルド）
         run: npm run build
         env:
