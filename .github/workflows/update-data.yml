@@ -4,6 +4,7 @@
 #  Wikipedia の「ゲームタイトル一覧」と Wikidata から最新の情報を取り込み、
 #  変更があれば data フォルダを更新して保存（コミット）します。
 #  その後、サイトの公開処理を自動で呼び出します。
+#  変更が多すぎるとき（Wikipedia の荒らしなど）は、保存せずにエラーで止まります（安全装置）。
 #  止めたいときは、GitHub の Actions タブでこのワークフローを「Disable」にしてください。
 name: データを自動更新（Wikipedia / Wikidata）
 
@@ -11,6 +12,11 @@ on:
   schedule:
     - cron: '0 18 * * 0' # 毎週日曜 18:00 UTC = 月曜 3:00 日本時間
   workflow_dispatch:
+    inputs:
+      force:
+        description: '安全装置を無視して保存する（大量の変更が正しいと確認できた場合だけ）'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -33,6 +39,9 @@ jobs:
       - run: npm ci
       - name: Wikipedia・Wikidata から取り込み
         run: npm run data:import -- --refresh
+      - name: 変更が多すぎないか確認（安全装置）
+        if: ${{ !inputs.force }}
+        run: node scripts/check-data-changes.mjs
       - name: 変更があれば保存（コミット）
         id: commit
         run: |
