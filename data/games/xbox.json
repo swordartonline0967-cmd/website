@@ -134,7 +134,7 @@
 {"id":"xbox-133","title":"天空 -Tenku- 2","date":"2004-02-26","publishers":["マイクロソフト"],"developers":["インディー・ビルト"],"genres":["sports"],"altTitles":["Amped 2"],"wikidata":"Q2844154","source":"Xboxのゲームタイトル一覧"},
 {"id":"xbox-134","title":"NINJA GAIDEN","date":"2004-03-11","publishers":["テクモ"],"developers":["Team NINJA"],"genres":["action","adventure"],"wiki":"NINJA GAIDEN","wikidata":"Q976995","source":"Xboxのゲームタイトル一覧"},
 {"id":"xbox-135","title":"ゴーストリコン アイランドサンダー","date":"2004-03-11","publishers":["マイクロソフト"],"developers":["レッドストームエンターテイメント"],"genres":["shooting"],"altTitles":["Tom Clancy's Ghost Recon: Island Thunder"],"wiki":"ゴーストリコン アイランドサンダー","wikidata":"Q1826994","source":"Xboxのゲームタイトル一覧"},
-{"id":"xbox-136","title":"カウンターストライク","date":"2004-03-25","publishers":["マイクロソフト"],"genres":["shooting"],"note":"同名PCゲームの移植版 日本では「Xboxワールドコレクション」として発売","wiki":"カウンターストライク","source":"Xboxのゲームタイトル一覧"},
+{"id":"xbox-136","title":"カウンターストライク","date":"2004-03-25","publishers":["マイクロソフト"],"developers":["ヴァルヴ・コーポレーション"],"genres":["shooting"],"note":"同名PCゲームの移植版 日本では「Xboxワールドコレクション」として発売","wiki":"カウンターストライク","wikidata":"Q163628","source":"Xboxのゲームタイトル一覧"},
 {"id":"xbox-137","title":"ドクタースースー キャット イン ザ ハット","date":"2004-03-25","publishers":["マイクロソフト"],"note":"映画『キャットしてハット』のゲーム化 日本では「Xboxワールドコレクション」として発売","source":"Xboxのゲームタイトル一覧"},
 {"id":"xbox-138","title":"リンクス2004","date":"2004-03-25","publishers":["マイクロソフト"],"note":"同名PCゲームの移植版 日本では「Xboxワールドコレクション」として発売","source":"Xboxのゲームタイトル一覧"},
 {"id":"xbox-139","title":"式神の城II","date":"2004-04-15","publishers":["キッズステーション"],"genres":["action"],"wiki":"式神の城","source":"Xboxのゲームタイトル一覧"},
