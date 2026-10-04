@@ -15,6 +15,7 @@
     "data:import": "node scripts/import/import-all.mjs",
     "data:validate": "node scripts/validate-data.mjs",
     "data:check-changes": "node scripts/check-data-changes.mjs",
+    "playlog:import": "node scripts/playlog/import-sheet.mjs",
     "deploy": "npm run build && wrangler deploy",
     "data:wikipedia": "node scripts/import/import-wikipedia.mjs",
     "data:wikidata": "node scripts/import/enrich-wikidata.mjs"

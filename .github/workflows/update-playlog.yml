@@ -1,0 +1,59 @@
+# ============================================================
+#  発売日順クリア企画の記録を、Google スプレッドシートから取り込む処理（1時間ごと）
+# ============================================================
+#  src/config/playlog.ts の sheetCsvUrl に書いたスプレッドシートを読み込み、
+#  記録に変更があれば data/playlog.json を保存（コミット）して、サイトの公開処理を呼び出します。
+#  sheetCsvUrl が空欄のあいだは、何もせずに終わります。
+#  すぐに反映したいときは、Actions タブでこのワークフローを選び「Run workflow」を押してください。
+name: プレイ記録を取り込む（スプレッドシート）
+
+on:
+  schedule:
+    - cron: '23 * * * *' # 毎時23分
+  workflow_dispatch:
+    inputs:
+      force:
+        description: '記録が大きく減っていても保存する（スプレッドシートの行を消した場合だけ）'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: update-playlog
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: スプレッドシートから取り込み
+        run: node scripts/playlog/import-sheet.mjs ${{ inputs.force && '--force' || '' }}
+      - name: 変更があれば保存（コミット）
+        id: commit
+        run: |
+          if [ -z "$(git status --porcelain data/playlog.json)" ]; then
+            echo "記録に変更はありませんでした"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/playlog.json
+          git commit -m "プレイ記録を更新（スプレッドシートから取り込み）"
+          git pull --rebase --quiet
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: サイトの公開処理を呼び出す
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        # GitHub Pages を使っていない（Cloudflare で公開している）場合は、呼び出しに失敗しても問題ありません
+        run: gh workflow run deploy-github-pages.yml --ref "${GITHUB_REF_NAME}" || echo "GitHub Pages の公開処理は呼び出しませんでした"

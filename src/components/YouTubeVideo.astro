@@ -1,0 +1,18 @@
+---
+/**
+ * YouTube 動画（押したときだけプレーヤーを読み込む）
+ * ページを軽く保ち、再生ボタンを押すまで YouTube の Cookie を使わないため、最初はサムネイル画像だけを表示します。
+ * 押したときの処理は PlayRecord.astro の <script> にあります。
+ */
+interface Props {
+  yt: string;
+  title: string;
+}
+const { yt, title } = Astro.props;
+---
+<div class="yt" data-yt={yt} data-title={title}>
+  <button type="button" class="yt__play" aria-label={`動画を再生：${title}`}>
+    <img src={`https://i.ytimg.com/vi/${yt}/hqdefault.jpg`} alt="" width="480" height="360" loading="lazy" decoding="async" />
+    <span class="yt__icon" aria-hidden="true"></span>
+  </button>
+</div>

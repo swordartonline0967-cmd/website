@@ -6,6 +6,8 @@ import type { Game } from './types';
 import { esc } from './html';
 import { formatDateShort, yearOf } from './format';
 import { getPlatform } from './data';
+import { getPlayRecord, STATUS_LABEL } from './playlog';
+import { playlog } from '../config/playlog';
 import { platformClass } from './platform-style';
 import { gameUrl, platformUrl } from './url';
 
@@ -23,6 +25,11 @@ export function renderGameRows(games: Game[], opt: RowOptions = {}): string {
     const date = g.dateNote ? esc(g.dateNote) : formatDateShort(g.date);
     let title = `<a href="${gameUrl(g.id)}">${esc(g.title)}</a>`;
     if (g.digitalOnly) title += '<span class="dl" title="ダウンロード専用">DL</span>';
+    const rec = getPlayRecord(g.id);
+    if (rec) {
+      const label = rec.status === 'extra' ? '動画' : STATUS_LABEL[rec.status];
+      title += `<span class="pl pl-${rec.status}" title="${rec.status === 'extra' ? 'プレイ動画あり' : `${playlog.name}：${label}`}">${label}</span>`;
+    }
     if (anniversaryYear) {
       const y = yearOf(g.date);
       if (y && anniversaryYear - y > 0) title += `<span class="an">${anniversaryYear - y}周年</span>`;

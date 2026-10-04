@@ -21,8 +21,8 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      // 検索ページと404ページはサイトマップに載せない（/makers/404/ のようなページは載せる）
-      filter: (page) => !['search/', '404/'].includes(new URL(page).pathname.replace(baseDir, '')),
+      // 検索ページ・404ページ・照合結果ページはサイトマップに載せない（/makers/404/ のようなページは載せる）
+      filter: (page) => !['search/', '404/', 'playlog/check/'].includes(new URL(page).pathname.replace(baseDir, '')),
     }),
   ],
 });

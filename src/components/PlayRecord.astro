@@ -1,0 +1,75 @@
+---
+/**
+ * ソフトのページに表示する「発売日順クリア企画」の記録とプレイ動画
+ */
+import YouTubeVideo from './YouTubeVideo.astro';
+import { playlog as config } from '../config/playlog';
+import type { Game } from '../lib/types';
+import { getPlatform } from '../lib/data';
+import { formatDate } from '../lib/format';
+import { STATUS_LABEL, getPlayNeighbors, getPlatformProgress, getPlayRecord, videoTitle, youtubeWatchUrl } from '../lib/playlog';
+import { gameUrl, platformUrl, url } from '../lib/url';
+
+interface Props {
+  game: Game;
+}
+const { game } = Astro.props;
+const rec = getPlayRecord(game.id);
+const platform = getPlatform(game.platform)!;
+const inProject = rec && rec.status !== 'extra';
+const nb = inProject ? getPlayNeighbors(game) : {};
+const upNext = inProject && !nb.next ? getPlatformProgress(game.platform)?.next : undefined;
+const first = rec?.videos.find((v) => v.yt);
+const label = (v: { yt?: string; url?: string }, i: number) => (v.yt ? videoTitle(v.yt) ?? `動画${i + 1}` : v.url!);
+---
+{rec && (
+  <section class="card playlog-box" id="playlog" aria-labelledby="playlog-title">
+    <div class="card-title">
+      <h2 id="playlog-title">{inProject ? `${config.name}の記録` : 'プレイ動画'}</h2>
+      <a href={url('/playlog/')}>この企画について</a>
+    </div>
+    {inProject ? (
+      <p class="playlog-box__status">
+        <span class={`pl pl-${rec.status}`}>{STATUS_LABEL[rec.status]}</span>
+        <span>{platform.shortName}{rec.num ? ` #${rec.num}` : ''}</span>
+        {rec.clearedAt && <span class="muted">（{formatDate(rec.clearedAt)}にクリア）</span>}
+      </p>
+    ) : (
+      <p class="muted small">「{config.name}」とは別に、このソフトを遊んだときの動画です。</p>
+    )}
+    {rec.comment && <p class="playlog-box__comment">{rec.comment}</p>}
+    {first?.yt && <YouTubeVideo yt={first.yt} title={videoTitle(first.yt) ?? `${game.title}のプレイ動画`} />}
+    {rec.videos.length > 0 && (
+      <ol class="playlog-box__videos">
+        {rec.videos.map((v, i) => (
+          <li><a href={v.yt ? youtubeWatchUrl(v.yt) : v.url} target="_blank" rel="noopener">{label(v, i)}</a></li>
+        ))}
+      </ol>
+    )}
+    {inProject && (
+      <p class="playlog-box__nav small">
+        {nb.prev && <a href={gameUrl(nb.prev.id)}>← 前に遊んだソフト：{nb.prev.title}</a>}
+        {nb.next && <a href={gameUrl(nb.next.id)}>次に遊んだソフト：{nb.next.title} →</a>}
+        {upNext && <a href={gameUrl(upNext.id)}>次に遊ぶ予定：{upNext.title} →</a>}
+        <a href={`${platformUrl(game.platform)}#playlog`}>{platform.shortName}の進み具合を見る</a>
+      </p>
+    )}
+  </section>
+)}
+{first?.yt && (
+  <script is:inline>
+    // 再生ボタンを押したときに、YouTube のプレーヤーに入れ替える
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest && e.target.closest('.yt__play');
+      if (!btn) return;
+      var box = btn.parentElement;
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + box.getAttribute('data-yt') + '?autoplay=1';
+      f.title = box.getAttribute('data-title') || 'YouTube動画';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      f.allowFullscreen = true;
+      f.referrerPolicy = 'strict-origin-when-cross-origin';
+      box.replaceChildren(f);
+    });
+  </script>
+)}

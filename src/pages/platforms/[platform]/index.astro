@@ -6,6 +6,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import GameTable from '../../../components/GameTable.astro';
 import ListFilter from '../../../components/ListFilter.astro';
 import ShopLinks from '../../../components/ShopLinks.astro';
+import PlatformProgress from '../../../components/PlatformProgress.astro';
 import { getGamesByPlatform, getGenres, getPlatform, getPlatformYears, getPlatforms, getUndatedGames, makerByName } from '../../../lib/data';
 import { formatDate, formatNumber, formatPrice, jstDate, yearOf } from '../../../lib/format';
 import { PLATFORM_TYPE_LABEL } from '../../../lib/platform-style';
@@ -66,6 +67,8 @@ const sourceLinks = (p.sources ?? []).map((s) => ({ name: s, href: `https://ja.w
           </tbody>
         </table>
       </section>
+
+      <PlatformProgress platformId={p.id} />
 
       <ShopLinks keyword={`${p.name} 本体`} heading={`${p.shortName}の本体を探す`} retro={Number(p.releaseDate.slice(0, 4)) < 2010} />
     </div>

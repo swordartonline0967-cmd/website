@@ -11,6 +11,9 @@ import { formatDate, formatDateShort, jstDate, parseDate, yearOf } from '../../l
 import { platformClass } from '../../lib/platform-style';
 import { calendarUrl, gameUrl, genreUrl, makerUrl, platformUrl, platformYearUrl, url, yearUrl } from '../../lib/url';
 import type { Game } from '../../lib/types';
+import PlayRecord from '../../components/PlayRecord.astro';
+import { getPlayRecord } from '../../lib/playlog';
+import { playlog } from '../../config/playlog';
 
 export function getStaticPaths() {
   return getGames().map((g) => ({ params: { id: g.id } }));
@@ -41,6 +44,8 @@ else if (isUpcoming) summary = `『${game.title}』は、${dateText}に${pubText
 else summary = `『${game.title}』は、${dateText}に${pubText ? `${pubText}から` : ''}${game.digitalOnly ? '配信された' : '発売された'}${platform.name}用のゲームソフトです。`;
 if (genres.length) summary += `ジャンルは${genres.map((g) => g!.name).join('・')}。`;
 if (developers.length && developers.map((x) => x.name).join() !== publishers.map((x) => x.name).join()) summary += `開発は${developers.map((x) => x.name).join('・')}が担当しています。`;
+const playRec = getPlayRecord(game.id);
+if (playRec && playRec.status !== 'extra') summary += `当サイトの「${playlog.name}」でプレイした記録${playRec.videos.length ? 'と動画' : ''}があります。`;
 if (others.length) summary += `${[...new Set(others.map((o) => getPlatform(o.platform)?.shortName))].slice(0, 5).join('、')}${others.length > 5 ? 'など' : ''}でも同名のソフトが発売されています。`;
 
 const title = `${game.title}（${platform.shortName}）の発売日・ソフト情報`;
@@ -122,6 +127,8 @@ const badge = (g: Game) => getPlatform(g.platform);
         </table>
         {game.description && <div class="prose" style="margin-top:16px"><p>{game.description}</p></div>}
       </section>
+
+      <PlayRecord game={game} />
 
       {game.missingFromSource && (
         <div class="notice">このソフトは出典の一覧から削除されたため、情報を確認中です。内容に誤りがある可能性があります。</div>

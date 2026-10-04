@@ -7,9 +7,11 @@ import PlatformCard from '../components/PlatformCard.astro';
 import GameTable from '../components/GameTable.astro';
 import HidePastRows from '../components/HidePastRows.astro';
 import { site } from '../config/site';
-import { dateSortKey, getGames, getGamesByGenre, getGamesByPlatform, getGenres, getMakers, getPlatforms, getStats, getYears } from '../lib/data';
+import { dateSortKey, getGames, getGamesByGenre, getGamesByPlatform, getGenres, getMakers, getPlatform, getPlatforms, getStats, getYears } from '../lib/data';
 import { decadeOf, formatNumber, jstDate } from '../lib/format';
-import { genreUrl, makerUrl, url } from '../lib/url';
+import { gameUrl, genreUrl, makerUrl, platformUrl, url } from '../lib/url';
+import { playlog } from '../config/playlog';
+import { getAllProgress } from '../lib/playlog';
 
 const stats = getStats();
 const platforms = getPlatforms();
@@ -27,6 +29,11 @@ const decades = new Map<number, number>();
 for (const y of getYears()) decades.set(decadeOf(y.year), (decades.get(decadeOf(y.year)) ?? 0) + y.count);
 const topMakers = getMakers().slice(0, 30);
 const genres = getGenres().map((g) => ({ ...g, count: getGamesByGenre(g.id).length }));
+
+// 発売日順クリア企画：クリアした本数が多い機種から6つ
+const progress = getAllProgress();
+const playlogClear = progress.reduce((n, p) => n + p.clear, 0);
+const playlogTop = [...progress].sort((a, b) => b.clear - a.clear).slice(0, 6);
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -58,6 +65,29 @@ const jsonLd = {
       <span><strong>{stats.firstYear}〜{stats.lastYear}</strong>年</span>
     </div>
   </section>
+
+  {progress.length > 0 && (
+    <section class="card playlog-card">
+      <div class="card-title">
+        <h2>{playlog.name}</h2>
+        <a href={url('/playlog/')}>企画のページへ</a>
+      </div>
+      <p class="small muted">家庭用ゲーム機のソフトを、機種ごとに発売日順でクリアしていく企画です。</p>
+      <div class="pl-stats">
+        <span><strong>{formatNumber(playlogClear)}</strong>本クリア</span>
+        <span><strong>{progress.length}</strong>機種</span>
+      </div>
+      <ul class="simple-list">
+        {playlogTop.map((p) => (
+          <li>
+            <a href={`${platformUrl(p.platformId)}#playlog`}>{getPlatform(p.platformId)?.shortName}</a>：
+            {p.latest && <a href={gameUrl(p.latest.game.id)}>{p.latest.game.title}</a>}
+            <span class="sub">まで{p.clear}本クリア</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 
   <section class="card" id="today" hidden>
     <div class="card-title">

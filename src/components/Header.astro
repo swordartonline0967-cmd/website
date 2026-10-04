@@ -1,9 +1,12 @@
 ---
 import { site } from '../config/site';
 import { url } from '../lib/url';
+import { playlog } from '../config/playlog';
+import { playlogEnabled } from '../lib/playlog';
 
 const nav = [
   { href: url('/platforms/'), label: 'ハード一覧', match: '/platforms/' },
+  ...(playlogEnabled() ? [{ href: url('/playlog/'), label: playlog.navLabel, match: '/playlog/' }] : []),
   { href: url('/years/'), label: '発売年別', match: '/years/' },
   { href: url('/makers/'), label: 'メーカー', match: '/makers/' },
   { href: url('/genres/'), label: 'ジャンル', match: '/genres/' },

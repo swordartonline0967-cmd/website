@@ -1,0 +1,76 @@
+---
+/**
+ * スプレッドシートの記録の照合結果  /playlog/check/
+ * 運営者が確認するためのページです（検索エンジンには表示しません）。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { playlog as config } from '../../config/playlog';
+import { getPlaylogIssues, getPlaylogUpdatedAt } from '../../lib/playlog';
+import { gameUrl, url } from '../../lib/url';
+
+const issues = getPlaylogIssues();
+const updatedAt = getPlaylogUpdatedAt();
+const KIND_LABEL: Record<string, string> = {
+  notfound: '見つからない',
+  ambiguous: '同名ソフトあり',
+  guess: '推定で照合',
+  platform: '機種が不明',
+  title: 'タイトルなし',
+  id: 'IDの誤り',
+  status: '状態が不明',
+  date: '日付が不明',
+};
+---
+<BaseLayout
+  title="プレイ記録の照合結果"
+  description={`${config.name}のスプレッドシートの記録のうち、確認が必要な行の一覧です。`}
+  breadcrumbs={[{ name: config.name, href: url('/playlog/') }, { name: '照合結果' }]}
+  noindex
+>
+  <div class="page-head">
+    <h1>プレイ記録の照合結果</h1>
+    <p class="lead">
+      スプレッドシートの記録のうち、確認が必要な行の一覧です（運営者向けのページで、検索エンジンには表示されません）。
+      {updatedAt && <>最終取り込み：{updatedAt.slice(0, 16).replace('T', ' ')}</>}
+    </p>
+  </div>
+
+  <section class="card">
+    {issues.length === 0 ? (
+      <p>確認が必要な行はありません。すべての記録がソフトと結び付いています。</p>
+    ) : (
+      <div class="table-scroll">
+        <table class="pl-table">
+          <thead>
+            <tr><th scope="col" class="num">行</th><th scope="col">機種</th><th scope="col">タイトル</th><th scope="col">内容</th><th scope="col">候補（ID）</th></tr>
+          </thead>
+          <tbody>
+            {issues.map((x) => (
+              <tr>
+                <td class="num">{x.row}</td>
+                <td>{x.platform}</td>
+                <td>{x.title}{x.id && <div class="small"><a href={gameUrl(x.id)}>{x.id}</a></div>}</td>
+                <td><strong>{KIND_LABEL[x.kind] ?? x.kind}</strong><div class="small">{x.message}</div></td>
+                <td class="small">
+                  {(x.candidates ?? []).map((c) => (
+                    <div><a href={gameUrl(c.id)}>{c.id}</a> {c.title}（{c.date ?? '未定'}）</div>
+                  ))}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
+  </section>
+
+  <section class="card prose">
+    <h2>直し方</h2>
+    <ol>
+      <li>スプレッドシートの、表の「行」番号の行を開きます</li>
+      <li>「ID」の列に、正しいソフトのIDを入力します。IDは、このサイトのソフトのページのURLで <code>/games/</code> の後ろにある部分です（例：<code>/games/fc-66/</code> なら <code>fc-66</code>）</li>
+      <li>次の取り込み（1時間ごと）のあとで、このページから行が消えていれば完了です</li>
+    </ol>
+    <p>「推定で照合」の行は、表示されているソフトが正しければ直さなくてもかまいません。</p>
+  </section>
+</BaseLayout>

@@ -1,0 +1,66 @@
+---
+/**
+ * ハードのページに表示する「発売日順クリア企画」の進み具合
+ */
+import { playlog as config } from '../config/playlog';
+import { formatDate, formatNumber } from '../lib/format';
+import { STATUS_LABEL, getPlatformProgress } from '../lib/playlog';
+import { gameUrl, url } from '../lib/url';
+
+interface Props {
+  platformId: string;
+}
+const { platformId } = Astro.props;
+const prog = getPlatformProgress(platformId);
+const pct = prog && prog.targets ? Math.min(100, (prog.clear / prog.targets) * 100) : 0;
+const recent = prog ? prog.recent.slice(0, 5) : [];
+const dlNote = config.digitalOnlyPlatforms.includes(platformId)
+  ? 'この機種はダウンロード専用ソフトも企画の対象です。'
+  : 'ダウンロード専用ソフトは企画の対象外です。';
+---
+{prog && (
+  <section class="card playlog-progress" id="playlog" aria-labelledby="playlog-progress-title">
+    <div class="card-title">
+      <h2 id="playlog-progress-title">{config.name}の進み具合</h2>
+      <a href={url('/playlog/')}>この企画について</a>
+    </div>
+    <div class="pl-stats">
+      <span><strong>{formatNumber(prog.clear)}</strong>本クリア</span>
+      {prog.playing > 0 && <span><strong>{prog.playing}</strong>本挑戦中</span>}
+      {prog.hold > 0 && <span><strong>{prog.hold}</strong>本保留</span>}
+      <span class="muted">対象 {formatNumber(prog.targets)}本のうち {pct < 10 ? pct.toFixed(1) : Math.round(pct)}%</span>
+    </div>
+    <div class="pl-bar" aria-hidden="true"><span style={`width:${pct.toFixed(2)}%`}></span></div>
+    <dl class="pl-facts">
+      {prog.latest && (
+        <>
+          <dt>現在地</dt>
+          <dd><a href={gameUrl(prog.latest.game.id)}>{prog.latest.game.title}</a>（{formatDate(prog.latest.game.date)}発売{prog.latest.record.num ? `・#${prog.latest.record.num}` : ''}）まで</dd>
+        </>
+      )}
+      {prog.current.map((c) => (
+        <>
+          <dt>挑戦中</dt>
+          <dd><a href={gameUrl(c.game.id)}>{c.game.title}</a>（{formatDate(c.game.date)}発売）</dd>
+        </>
+      ))}
+      {prog.next && (
+        <>
+          <dt>次に遊ぶソフト</dt>
+          <dd>{prog.nextNum ? `#${prog.nextNum} ` : ''}<a href={gameUrl(prog.next.id)}>{prog.next.title}</a>（{formatDate(prog.next.date)}発売）</dd>
+        </>
+      )}
+    </dl>
+    <h3 class="pl-recent-title">最近の記録</h3>
+    <ul class="simple-list">
+      {recent.map(({ game, record }) => (
+        <li>
+          <span class={`pl pl-${record.status}`}>{STATUS_LABEL[record.status]}</span>{' '}
+          {record.num && <span class="muted">#{record.num} </span>}<a href={gameUrl(game.id)}>{game.title}</a>
+          <span class="sub">{formatDate(game.date)}発売</span>
+        </li>
+      ))}
+    </ul>
+    <p class="small muted">{dlNote}下の一覧では、企画で遊んだソフトに印を付けています。</p>
+  </section>
+)}

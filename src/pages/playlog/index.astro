@@ -1,0 +1,121 @@
+---
+/**
+ * 発売日順クリア企画のページ  /playlog/
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { playlog as config } from '../../config/playlog';
+import { getPlatform } from '../../lib/data';
+import { formatDate, formatNumber } from '../../lib/format';
+import { STATUS_LABEL, getAllProgress, getRecentClears } from '../../lib/playlog';
+import { gameUrl, platformUrl } from '../../lib/url';
+
+const all = getAllProgress();
+const sum = (f: (p: (typeof all)[number]) => number) => all.reduce((n, p) => n + f(p), 0);
+const totalClear = sum((p) => p.clear);
+const totalPlaying = sum((p) => p.playing);
+const totalHold = sum((p) => p.hold);
+const recent = getRecentClears(10);
+const pctText = (clear: number, targets: number) => {
+  const pct = targets ? (clear / targets) * 100 : 0;
+  return { pct, text: pct < 10 ? pct.toFixed(1) : String(Math.round(pct)) };
+};
+const exceptions = config.digitalOnlyPlatforms.map((id) => getPlatform(id)?.shortName).filter(Boolean);
+const description = `${config.name}の記録。家庭用ゲーム機のソフトを機種ごとに日本での発売日順に遊んでクリアしていく企画で、これまでに${formatNumber(totalClear)}本をクリア（${all.length}機種）。プレイ動画はYouTubeで公開しています。`;
+---
+<BaseLayout title={config.name} description={description} breadcrumbs={[{ name: config.name }]}>
+  <div class="page-head">
+    <h1>{config.name}</h1>
+    <p class="lead">{config.intro}</p>
+  </div>
+
+  <section class="card playlog-hero">
+    <div class="pl-stats">
+      <span><strong>{formatNumber(totalClear)}</strong>本クリア</span>
+      <span><strong>{all.length}</strong>機種</span>
+      {totalPlaying > 0 && <span><strong>{totalPlaying}</strong>本挑戦中</span>}
+      {totalHold > 0 && <span><strong>{totalHold}</strong>本保留</span>}
+    </div>
+    {config.youtubeUrl && (
+      <a class="btn" href={config.youtubeUrl} target="_blank" rel="noopener">YouTubeチャンネル「{config.youtubeName}」を見る</a>
+    )}
+  </section>
+
+  <section class="card">
+    <div class="card-title"><h2>機種ごとの進み具合</h2></div>
+    <div class="table-scroll">
+      <table class="pl-table">
+        <thead>
+          <tr><th scope="col">機種</th><th scope="col" class="num">クリア</th><th scope="col">現在地（発売日順でここまで）</th><th scope="col">次に遊ぶソフト</th></tr>
+        </thead>
+        <tbody>
+          {all.map((p) => {
+            const pf = getPlatform(p.platformId)!;
+            const { pct, text } = pctText(p.clear, p.targets);
+            return (
+              <tr>
+                <td>
+                  <a href={`${platformUrl(pf.id)}#playlog`}>{pf.shortName}</a>
+                  <div class="pl-bar" aria-hidden="true"><span style={`width:${Math.min(100, pct).toFixed(2)}%`}></span></div>
+                  <div class="small muted">対象 {formatNumber(p.targets)}本の {text}%</div>
+                </td>
+                <td class="num">
+                  <strong>{formatNumber(p.clear)}</strong>本
+                  {p.playing > 0 && <div class="small">挑戦中 {p.playing}</div>}
+                  {p.hold > 0 && <div class="small muted">保留 {p.hold}</div>}
+                </td>
+                <td>
+                  {p.latest && (
+                    <>
+                      {p.latest.record.num && <span class="muted">#{p.latest.record.num} </span>}
+                      <a href={gameUrl(p.latest.game.id)}>{p.latest.game.title}</a>
+                      <div class="small muted">{formatDate(p.latest.game.date)}発売</div>
+                    </>
+                  )}
+                </td>
+                <td>
+                  {p.next ? (
+                    <>
+                      <a href={gameUrl(p.next.id)}>{p.next.title}</a>
+                      <div class="small muted">{formatDate(p.next.date)}発売</div>
+                    </>
+                  ) : <span class="muted">—</span>}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {recent.length > 0 && (
+    <section class="card">
+      <div class="card-title"><h2>最近クリアしたソフト</h2></div>
+      <ul class="simple-list">
+        {recent.map(({ game, record }) => (
+          <li>
+            <a href={gameUrl(game.id)}>{game.title}</a>
+            <span class="sub">{getPlatform(game.platform)?.shortName}・{formatDate(record.clearedAt)}にクリア</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <section class="card prose">
+    <h2>企画のルール</h2>
+    <ul>
+      <li>日本国内の発売日の順に、機種ごとに遊んでいきます</li>
+      <li>据置機も携帯機も対象です</li>
+      <li>ダウンロード専用のソフトは対象外です{exceptions.length > 0 && <>（{exceptions.join('・')}は例外として対象）</>}</li>
+    </ul>
+    <h3>記録の見方</h3>
+    <ul>
+      <li><span class="pl pl-clear">{STATUS_LABEL.clear}</span> クリアしたソフト</li>
+      <li><span class="pl pl-playing">{STATUS_LABEL.playing}</span> いま遊んでいるソフト</li>
+      <li><span class="pl pl-hold">{STATUS_LABEL.hold}</span> 途中で止めているソフト</li>
+      <li><span class="pl pl-extra">動画</span> 企画とは別に遊んだ動画があるソフト</li>
+    </ul>
+    <p>各機種のソフト一覧でも、企画で遊んだソフトにこの印が付きます。ソフトのページでは、そのソフトのプレイ動画を見られます。</p>
+  </section>
+</BaseLayout>
