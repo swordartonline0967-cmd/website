@@ -28,9 +28,11 @@ interface Props {
   noindex?: boolean;
   /** トップページ用：タイトルにサイト名を重ねない */
   isHome?: boolean;
+  /** ページ内に大きな検索窓がある場合、ヘッダーの検索窓を隠す */
+  hideHeaderSearch?: boolean;
 }
 
-const { title, description, breadcrumbs = [], jsonLd, ogType = 'website', noindex = false, isHome = false } = Astro.props;
+const { title, description, breadcrumbs = [], jsonLd, ogType = 'website', noindex = false, isHome = false, hideHeaderSearch = false } = Astro.props;
 const fullTitle = isHome ? `${site.name}｜${site.tagline}` : `${title}｜${site.name}`;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL(url('/og-image.png'), Astro.site).href;
@@ -88,7 +90,7 @@ if (jsonLd) ld.push(...(Array.isArray(jsonLd) ? jsonLd : [jsonLd]));
     )}
   </head>
   <body>
-    <Header />
+    <Header hideSearch={hideHeaderSearch} />
     {affiliateEnabled && <div class="pr-notice">本ページはプロモーション（アフィリエイト広告）を含みます</div>}
     <main>
       <div class="container">

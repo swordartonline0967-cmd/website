@@ -8,7 +8,7 @@ import GameTable from '../components/GameTable.astro';
 import HidePastRows from '../components/HidePastRows.astro';
 import { site } from '../config/site';
 import { dateSortKey, getGames, getGamesByGenre, getGamesByPlatform, getGenres, getMakers, getPlatforms, getStats, getYears } from '../lib/data';
-import { decadeOf, formatNumber } from '../lib/format';
+import { decadeOf, formatNumber, jstDate } from '../lib/format';
 import { genreUrl, makerUrl, url } from '../lib/url';
 
 const stats = getStats();
@@ -16,8 +16,8 @@ const platforms = getPlatforms();
 const groups = [...new Set(platforms.map((p) => p.makerGroup))];
 
 // 発売予定（パッケージ版、ビルド日から60日以内）
-const today = new Date().toISOString().slice(0, 10);
-const in60 = new Date(Date.now() + 60 * 86400000).toISOString().slice(0, 10);
+const today = jstDate();
+const in60 = jstDate(60);
 const upcoming = getGames()
   .filter((g) => g.date && g.date.length === 10 && g.date >= today && g.date <= in60 && !g.digitalOnly)
   .sort((a, b) => (dateSortKey(a.date) < dateSortKey(b.date) ? -1 : 1))
@@ -42,7 +42,7 @@ const jsonLd = {
   },
 };
 ---
-<BaseLayout title={site.name} description={site.description} jsonLd={jsonLd} isHome>
+<BaseLayout title={site.name} description={site.description} jsonLd={jsonLd} isHome hideHeaderSearch>
   <section class="search-hero">
     <h1>家庭用ゲームソフトのデータベース</h1>
     <p>ファミコンから最新機種まで、日本で発売されたゲームソフトの発売日・発売元・ジャンルを調べられます。</p>

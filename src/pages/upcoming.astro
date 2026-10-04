@@ -7,9 +7,9 @@ import GameTable from '../components/GameTable.astro';
 import ListFilter from '../components/ListFilter.astro';
 import HidePastRows from '../components/HidePastRows.astro';
 import { dateSortKey, getGames } from '../lib/data';
-import { formatNumber, parseDate } from '../lib/format';
+import { formatNumber, jstDate, parseDate } from '../lib/format';
 
-const today = new Date().toISOString().slice(0, 10);
+const today = jstDate();
 const games = getGames()
   .filter((g) => dateSortKey(g.date) >= today)
   .sort((a, b) => (dateSortKey(a.date) < dateSortKey(b.date) ? -1 : dateSortKey(a.date) > dateSortKey(b.date) ? 1 : a.title.localeCompare(b.title, 'ja')));

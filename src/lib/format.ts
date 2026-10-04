@@ -76,3 +76,8 @@ export function normalizeForSearch(s: string): string {
     .replace(/[ァ-ヶ]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0x60))
     .replace(/[\s・･·:：\-‐−–—~〜～!！?？、。,.，．'"“”‘’「」『』【】()（）［］\[\]<>＜＞〈〉《》/／\\&＆+＋#＃☆★♪]/g, '');
 }
+
+/** 日本時間の日付 'YYYY-MM-DD'（offsetDays 日後）。ビルドは世界標準時で動くため、日付の判定はこれを使う */
+export function jstDate(offsetDays = 0): string {
+  return new Date(Date.now() + 9 * 3600 * 1000 + offsetDays * 86400000).toISOString().slice(0, 10);
+}

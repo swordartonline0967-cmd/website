@@ -12,6 +12,12 @@ const nav = [
   { href: url('/search/'), label: 'ソフト検索', match: '/search/' },
 ];
 const path = Astro.url.pathname;
+
+interface Props {
+  /** ページ内に大きな検索窓があるページ（トップ・検索）ではヘッダーの検索窓を出さない */
+  hideSearch?: boolean;
+}
+const { hideSearch = false } = Astro.props;
 ---
 <header class="site-header">
   <div class="container site-header__inner">
@@ -25,11 +31,13 @@ const path = Astro.url.pathname;
       </svg>
       <span>{site.name}<span class="logo__tagline">{site.tagline}</span></span>
     </a>
-    <form class="header-search" action={url('/search/')} method="get" role="search">
-      <label class="visually-hidden" for="header-q">ソフト名で検索</label>
-      <input id="header-q" type="search" name="q" placeholder="ソフト名で検索（例: マリオ）" autocomplete="off" />
-      <button type="submit">検索</button>
-    </form>
+    {!hideSearch && (
+      <form class="header-search" action={url('/search/')} method="get" role="search">
+        <label class="visually-hidden" for="header-q">ソフト名で検索</label>
+        <input id="header-q" type="search" name="q" placeholder="ソフト名で検索（例: マリオ）" autocomplete="off" />
+        <button type="submit">検索</button>
+      </form>
+    )}
   </div>
   <nav class="global-nav" aria-label="メインメニュー">
     <ul>

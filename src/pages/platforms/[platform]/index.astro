@@ -7,7 +7,7 @@ import GameTable from '../../../components/GameTable.astro';
 import ListFilter from '../../../components/ListFilter.astro';
 import ShopLinks from '../../../components/ShopLinks.astro';
 import { getGamesByPlatform, getGenres, getPlatform, getPlatformYears, getPlatforms, getUndatedGames, makerByName } from '../../../lib/data';
-import { formatDate, formatNumber, formatPrice, yearOf } from '../../../lib/format';
+import { formatDate, formatNumber, formatPrice, jstDate, yearOf } from '../../../lib/format';
 import { PLATFORM_TYPE_LABEL } from '../../../lib/platform-style';
 import { makerUrl, platformYearUrl, url } from '../../../lib/url';
 
@@ -23,7 +23,7 @@ const undated = getUndatedGames(p.id);
 const dlCount = games.filter((g) => g.digitalOnly).length;
 const FULL_LIST_LIMIT = 1500;
 const showFull = games.length <= FULL_LIST_LIMIT;
-const today = new Date().toISOString().slice(0, 10);
+const today = jstDate();
 const recent = games.filter((g) => g.date && g.date.length === 10 && g.date <= today).slice(-30).reverse();
 
 // ジャンル別・発売元別の本数
@@ -140,6 +140,6 @@ const sourceLinks = (p.sources ?? []).map((s) => ({ name: s, href: `https://ja.w
   )}
 
   <p class="muted small" style="margin-top:24px">
-    ソフト一覧の出典: {sourceLinks.map((s, i) => <>{i > 0 && '、'}<a href={s.href} target="_blank" rel="noopener">Wikipedia「{s.name}」</a></>)}（CC BY-SA 4.0）
+    ソフト一覧の出典: {sourceLinks.map((s, i) => <>{i > 0 && '、'}<a href={s.href} target="_blank" rel="noopener">Wikipedia「{s.name}」</a></>)}（<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="license noopener">CC BY-SA 4.0</a>、表記を一部改変）
   </p>
 </BaseLayout>

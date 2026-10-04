@@ -7,7 +7,7 @@ import ShopLinks from '../../components/ShopLinks.astro';
 import {
   dateSortKey, getGame, getGames, getGenre, getNeighbors, getOtherVersions, getPlatform, getSameDayGames, getSameMakerGames, makerByName,
 } from '../../lib/data';
-import { formatDate, formatDateShort, parseDate, yearOf } from '../../lib/format';
+import { formatDate, formatDateShort, jstDate, parseDate, yearOf } from '../../lib/format';
 import { platformClass } from '../../lib/platform-style';
 import { calendarUrl, gameUrl, genreUrl, makerUrl, platformUrl, platformYearUrl, url, yearUrl } from '../../lib/url';
 import type { Game } from '../../lib/types';
@@ -29,7 +29,7 @@ const sameMaker = getSameMakerGames(game, 10).filter((g) => !others.some((o) => 
 const { prev, next } = getNeighbors(game);
 
 // ビルドした日より後の日付なら「発売予定」（年だけ・年月だけの日付はその期間の終わりで判定）
-const buildDate = new Date().toISOString().slice(0, 10);
+const buildDate = jstDate();
 const isUpcoming = dateSortKey(game.date) > buildDate;
 const dateText = game.dateNote ? `${game.dateNote}` : formatDate(game.date, '未定');
 const pubText = publishers.map((p) => p.name).join('・');
@@ -154,7 +154,7 @@ const badge = (g: Game) => getPlatform(g.platform);
       </nav>
 
       <p class="muted small">
-        {sourceUrl && <>出典: <a href={sourceUrl} target="_blank" rel="noopener">Wikipedia「{game.source}」</a>（CC BY-SA 4.0）</>}
+        {sourceUrl && <>出典: <a href={sourceUrl} target="_blank" rel="noopener">Wikipedia「{game.source}」</a>（<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="license noopener">CC BY-SA 4.0</a>、表記を一部改変）</>}
         {wikiUrl && <> ／ <a href={wikiUrl} target="_blank" rel="noopener">Wikipediaの記事</a></>}
         {game.wikidata && <> ／ <a href={`https://www.wikidata.org/wiki/${game.wikidata}`} target="_blank" rel="noopener">Wikidata</a></>}
       </p>

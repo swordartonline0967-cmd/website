@@ -6,6 +6,7 @@ import { site } from './src/config/site';
 const siteUrl = (process.env.SITE_URL || site.url).replace(/\/+$/, '');
 // サブディレクトリで公開する場合（GitHub Pages など）は BASE_PATH=/リポジトリ名 を指定
 const base = process.env.BASE_PATH || '/';
+const baseDir = base.endsWith('/') ? base : `${base}/`;
 
 export default defineConfig({
   site: siteUrl,
@@ -20,8 +21,8 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      // 検索ページや404はサイトマップに載せない
-      filter: (page) => !/\/(search|404)\/?$/.test(page),
+      // 検索ページと404ページはサイトマップに載せない（/makers/404/ のようなページは載せる）
+      filter: (page) => !['search/', '404/'].includes(new URL(page).pathname.replace(baseDir, '')),
     }),
   ],
 });

@@ -5,7 +5,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import GameTable from '../../../components/GameTable.astro';
 import { getGamesByGenre, getGenre, getGenres, getPlatforms } from '../../../lib/data';
-import { formatNumber } from '../../../lib/format';
+import { formatNumber, jstDate } from '../../../lib/format';
 import { platformClass } from '../../../lib/platform-style';
 import { genreUrl, url } from '../../../lib/url';
 
@@ -18,7 +18,7 @@ const games = getGamesByGenre(genre.id);
 const counts = getPlatforms()
   .map((p) => ({ p, n: games.filter((g) => g.platform === p.id).length }))
   .filter((x) => x.n > 0);
-const today = new Date().toISOString().slice(0, 10);
+const today = jstDate();
 const recent = games.filter((g) => g.date && g.date.length === 10 && g.date <= today && !g.digitalOnly).slice(-40).reverse();
 const others = getGenres().filter((g) => g.id !== genre.id);
 ---
