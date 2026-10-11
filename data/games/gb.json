@@ -692,7 +692,7 @@
 {"id":"gb-691","title":"ポケットボンバーマン","date":"1997-12-12","publishers":["ハドソン"],"developers":["ハドソン"],"genres":["action"],"note":"ボンバーマンシリーズ初の横スクロールアクションゲーム","wiki":"ポケットボンバーマン","wikidata":"Q625278","source":"ゲームボーイのゲームタイトル一覧"},
 {"id":"gb-692","title":"超魔神英雄伝ワタル まぜっこモンスター","date":"1997-12-12","publishers":["バンプレスト"],"wiki":"超魔神英雄伝ワタル","source":"ゲームボーイのゲームタイトル一覧"},
 {"id":"gb-693","title":"カラムー町の大事件","date":"1997-12-19","publishers":["スターフィッシュ"],"wiki":"カラムーチョ","source":"ゲームボーイのゲームタイトル一覧"},
-{"id":"gb-694","title":"スタースイープ","date":"1997-12-19","publishers":["アクセラ"],"source":"ゲームボーイのゲームタイトル一覧"},
+{"id":"gb-694","title":"スタースイープ","date":"1997-12-19","publishers":["アクセラ"],"genres":["puzzle"],"wikidata":"Q7602458","source":"ゲームボーイのゲームタイトル一覧"},
 {"id":"gb-695","title":"バッグス・バニーコレクション","date":"1997-12-19","publishers":["KEMCO"],"genres":["puzzle"],"wiki":"ロジャー・ラビット (コンピュータゲーム)","source":"ゲームボーイのゲームタイトル一覧"},
 {"id":"gb-696","title":"牧場物語GB","date":"1997-12-19","publishers":["パック・イン・ソフト"],"developers":["Victor Interactive Software"],"genres":["simulation"],"altTitles":["Harvest Moon GB"],"wiki":"牧場物語GB","wikidata":"Q2758069","source":"ゲームボーイのゲームタイトル一覧"},
 {"id":"gb-697","title":"ポケット漢字郎","date":"1998-01-10","publishers":["新学社"],"source":"ゲームボーイのゲームタイトル一覧"},
