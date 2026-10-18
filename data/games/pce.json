@@ -196,7 +196,7 @@
 {"id":"pce-195","title":"アフターバーナーII","date":"1990-09-28","publishers":["NECアベニュー"],"genres":["shooting"],"format":"HC","note":"同名アーケードゲームの移植版","wiki":"アフターバーナー (ゲーム)","source":"PCエンジンのゲームタイトル一覧"},
 {"id":"pce-196","title":"ウルトラボックス 第2号","date":"1990-09-28","publishers":["ビクター音楽産業"],"format":"CR","wiki":"ウルトラボックス","source":"PCエンジンのゲームタイトル一覧"},
 {"id":"pce-197","title":"ゴモラスピード","date":"1990-09-28","publishers":["UPL"],"genres":["shooting"],"format":"HC","wiki":"ゴモラスピード","wikidata":"Q11303662","source":"PCエンジンのゲームタイトル一覧"},
-{"id":"pce-198","title":"ダイハード","date":"1990-09-28","publishers":["パック・イン・ビデオ"],"format":"HC","note":"同名映画のゲーム化","wiki":"ダイハード","source":"PCエンジンのゲームタイトル一覧"},
+{"id":"pce-198","title":"ダイハード","date":"1990-09-28","publishers":["パック・イン・ビデオ"],"developers":["パック・イン・ビデオ"],"genres":["action"],"format":"HC","note":"同名映画のゲーム化","wiki":"ダイハード","wikidata":"Q1531134","source":"PCエンジンのゲームタイトル一覧"},
 {"id":"pce-199","title":"ダブルリング","date":"1990-09-28","publishers":["ナグザット"],"format":"HC","source":"PCエンジンのゲームタイトル一覧"},
 {"id":"pce-200","title":"ファイナルブラスター","date":"1990-09-28","publishers":["ナムコ"],"genres":["shooting"],"format":"HC","note":"ボスコニアンシリーズ第3弾","wiki":"ボスコニアン","source":"PCエンジンのゲームタイトル一覧"},
 {"id":"pce-201","title":"ザ・プロ野球","date":"1990-10-05","publishers":["インテック"],"format":"CR","note":"12球団公認作品で、選手や監督が実名で登場する","source":"PCエンジンのゲームタイトル一覧"},

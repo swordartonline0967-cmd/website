@@ -156,7 +156,7 @@
 {"id":"n64-155","title":"ぷよぷよ〜んパーティー","date":"1999-12-03","publishers":["コンパイル"],"developers":["コンパイル"],"genres":["puzzle"],"wiki":"ぷよぷよ〜ん","wikidata":"Q3411120","source":"NINTENDO 64のゲームタイトル一覧"},
 {"id":"n64-156","title":"爆ボンバーマン2","date":"1999-12-03","publishers":["ハドソン"],"developers":["ハドソン"],"genres":["action","simulation"],"altTitles":["Bomberman 64: The Second Attack!"],"wiki":"爆ボンバーマン2","wikidata":"Q2705639","source":"NINTENDO 64のゲームタイトル一覧"},
 {"id":"n64-157","title":"カスタムロボ","date":"1999-12-08","publishers":["任天堂"],"genres":["action","rpg"],"wiki":"カスタムロボ","source":"NINTENDO 64のゲームタイトル一覧"},
-{"id":"n64-158","title":"ドンキーコング64","date":"1999-12-10","publishers":["任天堂"],"developers":["レア"],"genres":["adventure","action"],"note":"メモリー拡張パック同梱","wiki":"ドンキーコング64","wikidata":"Q774773","source":"NINTENDO 64のゲームタイトル一覧"},
+{"id":"n64-158","title":"ドンキーコング64","date":"1999-12-10","publishers":["任天堂"],"developers":["レア"],"genres":["action","adventure"],"note":"メモリー拡張パック同梱","wiki":"ドンキーコング64","wikidata":"Q774773","source":"NINTENDO 64のゲームタイトル一覧"},
 {"id":"n64-159","title":"マリオアーティスト ペイントスタジオ","date":"1999-12-11","publishers":["ランドネットDD"],"note":"NINTENDO 64マウス同梱","wiki":"マリオアーティストシリーズ","source":"NINTENDO 64のゲームタイトル一覧"},
 {"id":"n64-160","title":"巨人のドシン1","date":"1999-12-11","publishers":["ランドネットDD"],"developers":["Param"],"genres":["simulation"],"wiki":"巨人のドシン","wikidata":"Q2748216","source":"NINTENDO 64のゲームタイトル一覧"},
 {"id":"n64-161","title":"マリオパーティ2","date":"1999-12-17","publishers":["任天堂"],"developers":["ハドソン"],"genres":["party"],"wiki":"マリオパーティ2","wikidata":"Q1205676","source":"NINTENDO 64のゲームタイトル一覧"},

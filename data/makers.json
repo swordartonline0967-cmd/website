@@ -543,7 +543,7 @@
 {"id":"542","name":"ESP","wiki":"ESP (ゲーム会社)"},
 {"id":"543","name":"Funbox Media"},
 {"id":"544","name":"GazeGames Interactive"},
-{"id":"545","name":"GSC Game World"},
+{"id":"545","name":"GSC Game World","wiki":"GSC Game World"},
 {"id":"546","name":"Lunaria Games"},
 {"id":"547","name":"moesoft","aliases":["Moesoft"]},
 {"id":"548","name":"NEOWIZ","wiki":"NEOWIZ","aliases":["Neowiz"]},
@@ -5934,5 +5934,6 @@
 {"id":"5933","name":"アンネームドムーン"},
 {"id":"5934","name":"さくなゲームズ"},
 {"id":"5935","name":"メシードソフトウェア"},
-{"id":"5936","name":"Digital Reality"}
+{"id":"5936","name":"Digital Reality"},
+{"id":"5937","name":"Joystick Ventures"}
 ]
