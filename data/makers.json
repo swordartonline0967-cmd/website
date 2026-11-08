@@ -1800,7 +1800,7 @@
 {"id":"1799","name":"Desarrollo Bromio SC"},
 {"id":"1800","name":"Desert Water Games"},
 {"id":"1801","name":"DESTINYbit, Amplifier Game Invest"},
-{"id":"1802","name":"DESTROYER DOGGO"},
+{"id":"1802","name":"DESTROYER DOGGO","aliases":["Destroyer Doggo"]},
 {"id":"1803","name":"Destructive Creations"},
 {"id":"1804","name":"Digerati Distribution"},
 {"id":"1805","name":"Digital Cybercherries Limited"},
@@ -5952,5 +5952,18 @@
 {"id":"5951","name":"三木よんた"},
 {"id":"5952","name":"オウルケミー・ラブズ"},
 {"id":"5953","name":"illuCalab"},
-{"id":"5954","name":"Senscape"}
+{"id":"5954","name":"Senscape"},
+{"id":"5955","name":"あにまるハーブ"},
+{"id":"5956","name":"Alcedo Games"},
+{"id":"5957","name":"Argonaut Games","wiki":"アルゴノートゲームス"},
+{"id":"5958","name":"Balor Games"},
+{"id":"5959","name":"Binogure Studio"},
+{"id":"5960","name":"Cavylabs"},
+{"id":"5961","name":"Electric Airship"},
+{"id":"5962","name":"Jackbox Games"},
+{"id":"5963","name":"Moon Game"},
+{"id":"5964","name":"The Socially Awkward Studio"},
+{"id":"5965","name":"カナメクト"},
+{"id":"5966","name":"シルバーギース"},
+{"id":"5967","name":"Endroad"}
 ]
