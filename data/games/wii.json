@@ -259,7 +259,7 @@
 {"id":"wii-258","title":"NEW 右脳キッズWii","date":"2008-11-13","publishers":["IEインスティテュート"],"source":"Wiiのゲームタイトル一覧"},
 {"id":"wii-259","title":"イルベロWii","date":"2008-11-13","publishers":["マイルストーン"],"wiki":"イルマティックエンベロープ","source":"Wiiのゲームタイトル一覧"},
 {"id":"wii-260","title":"ファミリースキー ワールドスキー&スノーボード","date":"2008-11-13","publishers":["バンダイナムコゲームス"],"developers":["バンダイナムコエンターテインメント"],"genres":["sports"],"altTitles":["We Ski & Snowboard"],"wiki":"ファミリースキー","wikidata":"Q2736358","source":"Wiiのゲームタイトル一覧"},
-{"id":"wii-261","title":"ブロブ カラフルなきぼう","date":"2008-11-13","publishers":["THQ"],"developers":["Blue Tongue Entertainment","THQ Nordic","Ronimo Games","Universomo"],"genres":["action","adventure","puzzle"],"altTitles":["De Blob"],"wiki":"ブロブ カラフルなきぼう","wikidata":"Q287409","source":"Wiiのゲームタイトル一覧"},
+{"id":"wii-261","title":"ブロブ カラフルなきぼう","date":"2008-11-13","publishers":["THQ"],"developers":["Blue Tongue Entertainment","THQ Nordic","Ronimo Games","Universomo"],"genres":["puzzle","action","adventure"],"altTitles":["De Blob"],"wiki":"ブロブ カラフルなきぼう","wikidata":"Q287409","source":"Wiiのゲームタイトル一覧"},
 {"id":"wii-262","title":"人生ゲームWii EX","date":"2008-11-13","publishers":["タカラトミー"],"wiki":"人生ゲーム","source":"Wiiのゲームタイトル一覧"},
 {"id":"wii-263","title":"キュースポーツ Wi-Fi対戦ビリヤード","date":"2008-11-18","publishers":["ハドソン"],"digitalOnly":true,"source":"Wiiウェアのゲームタイトル一覧"},
 {"id":"wii-264","title":"スゴロクロニクル 〜右手に剣を左手にサイコロを〜","date":"2008-11-20","publishers":["コンパイルハート"],"source":"Wiiのゲームタイトル一覧"},

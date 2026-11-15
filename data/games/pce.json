@@ -294,7 +294,7 @@
 {"id":"pce-293","title":"スクウィーク","date":"1991-08-02","publishers":["ビクター音楽産業"],"developers":["Loriciels"],"genres":["puzzle"],"format":"HC","note":"同名PCゲームの移植版 パネル塗り替え要素のあるパズルゲーム","wiki":"スクウィーク","wikidata":"Q3486409","source":"PCエンジンのゲームタイトル一覧"},
 {"id":"pce-294","title":"BURAI 八玉の勇士伝説","date":"1991-08-09","publishers":["リバーヒルソフト"],"genres":["rpg"],"format":"CR","note":"PCゲーム『BURAI 上巻』の移植","wiki":"BURAI (ゲーム)","source":"PCエンジンのゲームタイトル一覧"},
 {"id":"pce-295","title":"はなたーかだか!?","date":"1991-08-09","publishers":["タイトー"],"format":"HC","note":"天狗を主人公にした横スクロールシューティングゲーム","source":"PCエンジンのゲームタイトル一覧"},
-{"id":"pce-296","title":"パワーリーグ4","date":"1991-08-09","publishers":["ハドソン"],"format":"HC","note":"パワーリーグシリーズ第4弾","wiki":"パワーリーグ4","source":"PCエンジンのゲームタイトル一覧"},
+{"id":"pce-296","title":"パワーリーグ4","date":"1991-08-09","publishers":["ハドソン"],"format":"HC","note":"パワーリーグシリーズ第4弾","wiki":"パワーリーグ4","wikidata":"Q11329597","source":"PCエンジンのゲームタイトル一覧"},
 {"id":"pce-297","title":"1941 Counter Attack","date":"1991-08-23","publishers":["ハドソン"],"developers":["カプコン"],"genres":["shooting"],"format":"SG","note":"同名アーケードゲームの移植版 最後のSGソフト","wiki":"1941 Counter Attack","wikidata":"Q1053093","source":"PCエンジンのゲームタイトル一覧"},
 {"id":"pce-298","title":"ヴァリスIV","date":"1991-08-23","publishers":["日本テレネット"],"developers":["日本テレネット"],"genres":["adventure","action"],"format":"CR","wikidata":"Q7911722","source":"PCエンジンのゲームタイトル一覧"},
 {"id":"pce-299","title":"パワーゲイト","date":"1991-08-30","publishers":["パック・イン・ビデオ"],"format":"HC","source":"PCエンジンのゲームタイトル一覧"},

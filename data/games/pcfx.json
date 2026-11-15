@@ -14,7 +14,7 @@
 {"id":"pcfx-13","title":"アニメフリークFX Vol.2","date":"1995-12-22","publishers":["NECホームエレクトロニクス"],"genreText":"アニメ","wiki":"アニメフリークFX","source":"PC-FXのゲームタイトル一覧"},
 {"id":"pcfx-14","title":"アンジェリークSpecial","date":"1995-12-22","publishers":["NECホームエレクトロニクス"],"genres":["adventure"],"genreText":"SLG","note":"スーパーファミコン用ソフト『アンジェリーク』に声優による音声を付与した作品。","wiki":"アンジェリーク","source":"PC-FXのゲームタイトル一覧"},
 {"id":"pcfx-15","title":"鬼神童子ZENKI FX 金剛炎闘（ヴァジュラファイト）","date":"1995-12-22","publishers":["ハドソン"],"genreText":"ACT","wiki":"鬼神童子ZENKI","source":"PC-FXのゲームタイトル一覧"},
-{"id":"pcfx-16","title":"ときめきカードパラダイス 〜恋のロイヤルストレートフラッシュ〜","date":"1996-01-26","publishers":["ソネット・コンピュータエンタテイメント"],"genreText":"TBL","wiki":"ときめきカードパラダイス 〜恋のロイヤルストレートフラッシュ〜","source":"PC-FXのゲームタイトル一覧"},
+{"id":"pcfx-16","title":"ときめきカードパラダイス 〜恋のロイヤルストレートフラッシュ〜","date":"1996-01-26","publishers":["ソネット・コンピュータエンタテイメント"],"genres":["table"],"genreText":"TBL","wiki":"ときめきカードパラダイス 〜恋のロイヤルストレートフラッシュ〜","wikidata":"Q142108016","source":"PC-FXのゲームタイトル一覧"},
 {"id":"pcfx-17","title":"パワードールFX","date":"1996-02-23","publishers":["NECホームエレクトロニクス"],"genres":["simulation"],"genreText":"SLG","wiki":"パワードール","source":"PC-FXのゲームタイトル一覧"},
 {"id":"pcfx-18","title":"銀河お嬢様伝説ユナFX 哀しみのセイレーン","date":"1996-03-08","publishers":["ハドソン"],"developers":["レッド・エンタテインメント"],"genres":["adventure"],"genreText":"ADV","wiki":"銀河お嬢様伝説ユナ","wikidata":"Q116870483","source":"PC-FXのゲームタイトル一覧"},
 {"id":"pcfx-19","title":"上海 万里の長城","date":"1996-03-15","publishers":["NECホームエレクトロニクス"],"genres":["table"],"genreText":"TBL","wiki":"上海 (ゲーム)","source":"PC-FXのゲームタイトル一覧"},
