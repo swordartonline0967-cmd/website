@@ -1,7 +1,7 @@
 [
 {"id":"pcfx-1","title":"TEAM INNOCENT -The Point of No Return-","date":"1994-12-23","publishers":["ハドソン"],"genreText":"ADV","note":"ローンチタイトル。","wiki":"TEAM INNOCENT -The Point of No Return-","wikidata":"Q11248436","source":"PC-FXのゲームタイトル一覧"},
 {"id":"pcfx-2","title":"バトルヒート","date":"1994-12-23","publishers":["ハドソン"],"genreText":"ACT","note":"ローンチタイトル。","wiki":"バトルヒート","wikidata":"Q11327906","source":"PC-FXのゲームタイトル一覧"},
-{"id":"pcfx-3","title":"卒業II 〜Neo Generation〜","date":"1994-12-23","publishers":["NECホームエレクトロニクス"],"genreText":"SLG","note":"ローンチタイトル。同名PCゲームの移植版","wiki":"卒業II 〜Neo Generation〜","source":"PC-FXのゲームタイトル一覧"},
+{"id":"pcfx-3","title":"卒業II 〜Neo Generation〜","date":"1994-12-23","publishers":["NECホームエレクトロニクス"],"genres":["simulation"],"genreText":"SLG","note":"ローンチタイトル。同名PCゲームの移植版","wiki":"卒業II 〜Neo Generation〜","source":"PC-FXのゲームタイトル一覧"},
 {"id":"pcfx-4","title":"全日本女子プロレス Queen of Queen","date":"1995-03-24","publishers":["NECホームエレクトロニクス"],"genreText":"SPT","note":"実写取り込みを用いた対戦型格闘ゲームであり、実在の女子プロレスラーが登場している。 『PCエンジン＆メガドライブ発売中止ゲーム図鑑』の著者・鯨武長之介によると、テレビ番組『ゲーム王』にて取り上げられた「ストリートファイト」（未発売）は、同作のプロトタイプではないかと推測している。","source":"PC-FXのゲームタイトル一覧"},
 {"id":"pcfx-5","title":"麻雀悟空 天竺","date":"1995-03-24","publishers":["NECホームエレクトロニクス"],"genreText":"TBL","source":"PC-FXのゲームタイトル一覧"},
 {"id":"pcfx-6","title":"紺碧の艦隊","date":"1995-03-31","publishers":["NECホームエレクトロニクス"],"genres":["simulation"],"genreText":"SLG","wiki":"紺碧の艦隊","source":"PC-FXのゲームタイトル一覧"},
